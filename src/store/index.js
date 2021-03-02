@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import fb from '../firebase.js'
+import * as fb from '../firebase'
+import "firebase/auth";
 import router from '../router/index.js'
 
 Vue.use(Vuex)
 
-const store = new Vuex.Store({
+export default new Vuex.Store({
   state: {
     userProfile: {}
   },

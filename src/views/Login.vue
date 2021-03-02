@@ -1,5 +1,6 @@
 <template>
   <div id="login">
+    <!-- <PasswordReset v-if="showPasswordReset" @close="togglePasswordReset()"></PasswordReset> -->
     <section>
       <div class="col1">
         <h1>Vuegram</h1>
@@ -18,11 +19,10 @@
             <input v-model.trim="loginForm.password" type="password" placeholder="******" id="password1" />
           </div>
           <button @click="login()" class="button">Log In</button>
-          <!-- <div class="extras">
-            <a>Forgot Password</a>
-            <a>Create an Account</a>
-          </div> -->
-          <a @click="toggleForm()">Create an Account</a>
+          <div class="extras">
+            <!-- <a @click="togglePasswordReset()">Forgot Password</a> -->
+            <a @click="toggleForm()">Create an Account</a>
+          </div>
         </form>
         <form v-else @submit.prevent>
           <h1>Get Started</h1>
@@ -43,10 +43,9 @@
             <input v-model.trim="signupForm.password" type="password" placeholder="min 6 characters" id="password2" />
           </div>
           <button @click="signup()" class="button">Sign Up</button>
-          <!-- <div class="extras">
+          <div class="extras">
             <a @click="toggleForm()">Back to Log In</a>
-          </div> -->
-          <a @click="toggleForm()">Back to Log In</a>
+          </div>
         </form>
       </div>
     </section>
@@ -54,7 +53,11 @@
 </template>
 
 <script>
+// import PasswordReset from '@/components/PasswordReset'
 export default {
+  // components: {
+  //   PasswordReset
+  // },
   data() {
     return {
       loginForm: {
@@ -68,26 +71,30 @@ export default {
         password: ''
       },
       showLoginForm: true,
+      // showPasswordReset: false
     }
   },
   methods: {
     toggleForm() {
-        this.showLoginForm = !this.showLoginForm
+      this.showLoginForm = !this.showLoginForm
     },
+    // togglePasswordReset() {
+    //   this.showPasswordReset = !this.showPasswordReset
+    // },
     login() {
-        this.$store.dispatch('login', {
+      this.$store.dispatch('login', {
         email: this.loginForm.email,
         password: this.loginForm.password
-        })
+      })
     },
     signup() {
-        this.$store.dispatch('signup', {
-            email: this.signupForm.email,
-            password: this.signupForm.password,
-            name: this.signupForm.name,
-            title: this.signupForm.title
-        })
-    },
+      this.$store.dispatch('signup', {
+        email: this.signupForm.email,
+        password: this.signupForm.password,
+        name: this.signupForm.name,
+        title: this.signupForm.title
+      })
+    }
   }
 }
 </script>

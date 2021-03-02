@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <MenuTop/>
-    <SiteNav v-if="showNav"></SiteNav>
+    <SiteNav></SiteNav>
     <router-view/>
     <!-- <img alt="Forsage" src="./assets/forsage_logo.png" width="250" height="250"> -->
     <!-- <HelloWorld msg="Hello World!"/> -->
