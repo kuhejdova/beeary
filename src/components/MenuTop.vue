@@ -2,13 +2,15 @@
     <div id="main">
       <div class="wrap">
         <nav v-bind:class="active" v-on:click.prevent>
-            <router-link tag="a" to="/" class="home" @click.native="makeActive('home')">Hlavní stránka</router-link>
-            <router-link tag="a" to="/" class="timeline" @click.native="makeActive('timeline')">Časová osa</router-link>
-            <router-link tag="a" to="/" class="my_hives" @click.native="makeActive('my_hives')">Moje úly</router-link>
-            <router-link tag="a" to="/settings" class="profile" @click.native="makeActive('profile')">Profil</router-link>
+            <router-link to="/" class="home" @click.native="makeActive('home')">Hlavní stránka</router-link>
+            <router-link to="/" class="timeline" @click.native="makeActive('timeline')">Časová osa</router-link>
+            <router-link to="/" class="my_hives" @click.native="makeActive('my_hives')">Moje úly</router-link>
+            <router-link to="/settings" class="profile" @click.native="makeActive('profile')">Profil</router-link>
+            <a @click="logout()">Odhlásit se</a>
+            <!-- <li><a @click="logout()">Odhlásit se</a></li> -->
         </nav>
       </div>
-    <p> Toto bude stránka <b>{{ active }}</b></p>
+    <!-- <p> Toto bude stránka <b>{{ active }}</b></p> -->
     </div>
 
 </template>
@@ -22,6 +24,9 @@ export default {
   methods: {
     makeActive: function(item){
       this.active = item;
+    },
+    logout() {
+      this.$store.dispatch('logout')
     }
   }
 }
@@ -92,6 +97,7 @@ nav a{
 
 nav a:hover {
   background-color: #FFCACA; /* #fadb6a nice light yellow */
+  cursor: pointer;
 }
 
 nav a:first-child{

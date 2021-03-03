@@ -2,6 +2,12 @@
   <header>
     <section>
       <div class="col1">
+        <br>
+        <img src="../../public/beeary_logo_v1.png" alt="Beeary">
+        <p>Webová aplikace pro všechny včelaře. Ovládněte včelařství.</p>
+        <br>
+      </div>
+      <!-- <div class="col1">
           <h3>Vítejte zpět</h3>
         <ul class="inline">
           <li>
@@ -12,7 +18,7 @@
           </li>
           <li><a @click="logout()">logout</a></li>
         </ul>
-      </div>
+      </div> -->
     </section>
   </header>
 </template>
