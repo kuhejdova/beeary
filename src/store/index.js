@@ -47,6 +47,16 @@ export default new Vuex.Store({
         if (router.currentRoute.path === '/login') {
           router.push('/')
         }
-    }
+    },
+    async logout({ commit }) {
+      // log user out
+      await fb.auth.signOut()
+
+      // clear user data from state
+      commit('setUserProfile', {})
+
+      // redirect to login view
+      router.push('/login')
+    },
   }
 })

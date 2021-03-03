@@ -10,7 +10,7 @@
           <li>
             <router-link to="/settings">Settings</router-link>
           </li>
-          <li><a @click="logout()">logout</a></li>
+          <li><a @click="logout()">Odhlásit se</a></li>
         </ul>
       </div>
     </section>

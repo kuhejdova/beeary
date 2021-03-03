@@ -2,10 +2,10 @@
     <div id="main">
       <div class="wrap">
         <nav v-bind:class="active" v-on:click.prevent>
-            <router-link to="/" class="home" v-on:click="makeActive('home')">Hlavní stránka</router-link>
-            <router-link to="/" class="timeline" v-on:click="makeActive('timeline')">Časová osa</router-link>
-            <router-link to="/" class="my_hives" v-on:click="makeActive('my_hives')">Moje úly</router-link>
-            <router-link to="/settings" class="profile" v-on:click="makeActive('profile')">Profil</router-link>
+            <router-link tag="a" to="/" class="home" @click.native="makeActive('home')">Hlavní stránka</router-link>
+            <router-link tag="a" to="/" class="timeline" @click.native="makeActive('timeline')">Časová osa</router-link>
+            <router-link tag="a" to="/" class="my_hives" @click.native="makeActive('my_hives')">Moje úly</router-link>
+            <router-link tag="a" to="/settings" class="profile" @click.native="makeActive('profile')">Profil</router-link>
         </nav>
       </div>
     <p> Toto bude stránka <b>{{ active }}</b></p>
@@ -60,7 +60,7 @@ section, footer, header, aside, nav{
 
 div.wrap{
   width: 100%;
-  background-color: #FFC700;
+  background-color: #FF8181; /* #FFC700 nice yellow*/
   float:right;
   margin-bottom: 20px;
 }
@@ -69,7 +69,7 @@ nav{
   float: right;
   /* display:inline-block; */
   /* margin:60px auto 45px; */
-  background-color:#FFC700;
+  background-color:#FF8181;
   box-shadow:0 1px 1px #ccc;
   border-radius:2px;
 }
@@ -91,7 +91,7 @@ nav a{
 }
 
 nav a:hover {
-  background-color: #fadb6a;
+  background-color: #FFCACA; /* #fadb6a nice light yellow */
 }
 
 nav a:first-child{
@@ -106,7 +106,7 @@ nav.home .home,
 nav.timeline .timeline,
 nav.my_hives .my_hives,
 nav.profile .profile{
-  background-color:#fadb6a;
+  background-color:#FFCACA;
 }
 
 p{

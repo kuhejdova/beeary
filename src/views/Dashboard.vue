@@ -2,9 +2,7 @@
   <header>
     <section>
       <div class="col1">
-        <router-link to="/">
           <h3>Vítejte zpět</h3>
-        </router-link>
         <ul class="inline">
           <li>
             <router-link to="/">Dashboard</router-link>
