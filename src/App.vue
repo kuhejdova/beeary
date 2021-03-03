@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <MenuTop/>
-    <SiteNav></SiteNav>
+    <SiteNav v-if="showNav"></SiteNav>
     <router-view/>
     <!-- <img alt="Forsage" src="./assets/forsage_logo.png" width="250" height="250"> -->
     <!-- <HelloWorld msg="Hello World!"/> -->
@@ -10,6 +10,7 @@
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
+import { mapState } from 'vuex'
 import MenuTop from './components/MenuTop.vue'
 import SiteNav from './components/SiteNav.vue'
 
@@ -18,6 +19,12 @@ export default {
   components: {
     SiteNav,
     MenuTop,
+  },
+  computed: {
+    ...mapState(['userProfile']),
+    showNav() {
+      return Object.keys(this.userProfile).length > 1
+    }
   }
 }
 </script>

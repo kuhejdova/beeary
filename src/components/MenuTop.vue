@@ -2,10 +2,10 @@
     <div id="main">
       <div class="wrap">
         <nav v-bind:class="active" v-on:click.prevent>
-            <a href="#" class="home" v-on:click="makeActive('home')">Hlavní stránka</a>
-            <a href="#" class="timeline" v-on:click="makeActive('timeline')">Časová osa</a>
-            <a href="#" class="my_hives" v-on:click="makeActive('my_hives')">Moje úly</a>
-            <a href="#" class="profile" v-on:click="makeActive('profile')">Profil</a>
+            <router-link to="/" class="home" v-on:click="makeActive('home')">Hlavní stránka</router-link>
+            <router-link to="/" class="timeline" v-on:click="makeActive('timeline')">Časová osa</router-link>
+            <router-link to="/" class="my_hives" v-on:click="makeActive('my_hives')">Moje úly</router-link>
+            <router-link to="/settings" class="profile" v-on:click="makeActive('profile')">Profil</router-link>
         </nav>
       </div>
     <p> Toto bude stránka <b>{{ active }}</b></p>
