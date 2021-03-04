@@ -5,7 +5,7 @@
           <h3>Vuegram</h3>
         <ul class="inline">
           <li>
-            <router-link to="/">Dashboard</router-link>
+            <router-link to="/home">Dashboard</router-link>
           </li>
           <li>
             <router-link to="/settings">Settings</router-link>

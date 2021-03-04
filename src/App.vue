@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <MenuTop/>
-    <SiteNav v-if="showNav"></SiteNav>
+    <!-- <MenuTop /> -->
+    <MenuTop v-if="showNav"/>
+    <!-- <SiteNav v-if="showNav"></SiteNav> -->
+    <div>{{showNav()}}</div>
     <router-view/>
     <!-- <img alt="Forsage" src="./assets/forsage_logo.png" width="250" height="250"> -->
     <!-- <HelloWorld msg="Hello World!"/> -->
@@ -9,22 +11,33 @@
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
 import { mapState } from 'vuex'
 import MenuTop from './components/MenuTop.vue'
-import SiteNav from './components/SiteNav.vue'
+// import SiteNav from './components/SiteNav.vue'
+// import firebase from './firebase'
+// import "firebase/auth";
+
 
 export default {
   name: 'App',
+  // data() {
+  //   userstate: false
+  // },
   components: {
-    SiteNav,
+    // SiteNav,
     MenuTop,
   },
-  computed: {
+  methods: {
     ...mapState(['userProfile']),
     showNav() {
-      return Object.keys(this.userProfile).length > 1
-    }
+      console.log(this.userProfile)
+      console.log(Object.keys(this.userProfile).length)
+      return Object.keys(this.userProfile).length > 0
+    },
+    // change_userstate(){
+    //   this.userstate = firebase.auth().currentUser; 
+    //   // return this.$userstate;
+    // }
   }
 }
 </script>

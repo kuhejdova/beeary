@@ -2,33 +2,40 @@
   <header>
     <section>
       <div class="col1">
+        <h1>Vítejte zpět</h1>
         <br>
-        <img src="../../public/beeary_logo_v1.png" alt="Beeary">
-        <p>Webová aplikace pro všechny včelaře. Ovládněte včelařství.</p>
-        <br>
+        <h3>Dnes je: {{getDate()}}</h3>
       </div>
-      <!-- <div class="col1">
-          <h3>Vítejte zpět</h3>
-        <ul class="inline">
-          <li>
-            <router-link to="/">Dashboard</router-link>
-          </li>
-          <li>
-            <router-link to="/settings">Settings</router-link>
-          </li>
-          <li><a @click="logout()">logout</a></li>
-        </ul>
-      </div> -->
     </section>
   </header>
 </template>
 
+
 <script>
+import moment from 'moment'
+
 export default {
   methods: {
-    logout() {
-      this.$store.dispatch('logout')
+    getDate(){
+      return moment(String(new Date())).format('DD. MM. YYYY');
     }
   }
 }
+
+
+
 </script>
+
+<style scoped>
+*{
+  margin:0;
+  margin-left: 20px;
+  padding:0;
+}
+
+div{
+  font:15px/1.3 'Open Sans', sans-serif;
+  color: #5e5b64;
+  text-align:left;
+}
+</style>

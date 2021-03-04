@@ -2,7 +2,7 @@
     <div id="main">
       <div class="wrap">
         <nav v-bind:class="active" v-on:click.prevent>
-            <router-link to="/" class="home" @click.native="makeActive('home')">Hlavní stránka</router-link>
+            <router-link to="/home" class="home" @click.native="makeActive('home')">Hlavní stránka</router-link>
             <router-link to="/" class="timeline" @click.native="makeActive('timeline')">Časová osa</router-link>
             <router-link to="/" class="my_hives" @click.native="makeActive('my_hives')">Moje úly</router-link>
             <router-link to="/settings" class="profile" @click.native="makeActive('profile')">Profil</router-link>

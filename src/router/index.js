@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Dashboard from '../views/Dashboard.vue'
+import Landing from '../views/Landing.vue'
 // import App from '../App.vue'
 import { auth } from '../firebase'
 
@@ -8,9 +9,17 @@ Vue.use(VueRouter)
 
 const routes = [
     {
-      path: '/',
+      path: '/home',
       name: 'Dashboard',
       component: Dashboard,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/',
+      name: 'Landing',
+      component: Landing,
       meta: {
         requiresAuth: true
       }

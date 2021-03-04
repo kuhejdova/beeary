@@ -7,7 +7,7 @@
           <h1>Vítejte zpět</h1>
           <div>
             <label for="email1">Email </label>
-            <input v-model.trim="loginForm.email" type="text" placeholder="you@email.com" id="email1" />
+            <input v-model.trim="loginForm.email" type="text" placeholder="maja@email.cz" id="email1" />
           </div>
           <div>
             <label for="password1">Heslo </label>
@@ -25,15 +25,15 @@
           <h1>Začínáme</h1>
           <div>
             <label for="name">Jméno </label>
-            <input v-model.trim="signupForm.name" type="text" placeholder="Savvy Apps" id="name" />
+            <input v-model.trim="signupForm.name" type="text" placeholder="Včelka Mája" id="name" />
           </div>
           <div>
             <label for="email2">Email </label>
-            <input v-model.trim="signupForm.email" type="text" placeholder="you@email.com" id="email2" />
+            <input v-model.trim="signupForm.email" type="text" placeholder="maja@email.cz" id="email2" />
           </div>
           <div>
             <label for="password2">Heslo </label>
-            <input v-model.trim="signupForm.password" type="password" placeholder="min 6 characters" id="password2" />
+            <input v-model.trim="signupForm.password" type="password" placeholder="******" id="password2" />
           </div>
           <button @click="signup()" class="button">Zaregistrovat se</button>
           <br><br>
