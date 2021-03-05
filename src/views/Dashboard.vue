@@ -17,7 +17,7 @@ import moment from 'moment'
 export default {
   methods: {
     getDate(){
-      return moment(String(new Date())).format('DD. MM. YYYY');
+      return moment(new Date()).format('DD. MM. YYYY');
     }
   }
 }

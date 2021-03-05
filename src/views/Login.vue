@@ -48,6 +48,9 @@
 </template>
 
 <script>
+
+import * as fb from '../firebase'
+
 // import PasswordReset from '@/components/PasswordReset'
 export default {
   // components: {
@@ -76,13 +79,24 @@ export default {
     // togglePasswordReset() {
     //   this.showPasswordReset = !this.showPasswordReset
     // },
-    login() {
+    async login ()  {
+      const { user } = await fb.auth.signInWithEmailAndPassword(this.loginForm.email, this.loginForm.password)
+
+      localStorage.setItem("user", user)
+
+      const userProfile = await fb.usersCollection.doc(user.uid).get()
+      localStorage.setItem("userProfile", userProfile)
+
+
       this.$store.dispatch('login', {
         email: this.loginForm.email,
         password: this.loginForm.password
       })
     },
     signup() {
+
+    localStorage.removeItem("user")
+
       this.$store.dispatch('signup', {
         email: this.signupForm.email,
         password: this.signupForm.password,
