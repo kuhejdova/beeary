@@ -47,8 +47,10 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     const requiresAuth = to.matched.some(x => x.meta.requiresAuth)
-  
-    if (requiresAuth && !auth.currentUser) {
+    if (window.location.href == 'http://0.0.0.0:8080/'){
+      next()
+    }
+    else if (requiresAuth && !auth.currentUser ) {
       next('/login')
     } else {
       next()

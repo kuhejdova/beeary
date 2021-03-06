@@ -3,7 +3,7 @@
     <!-- <MenuTop /> -->
     <MenuTop v-if="userstate"/>
     <!-- <SiteNav v-if="showNav"></SiteNav> -->
-    <div>{{userstate}}</div>
+    <!-- <div>{{userstate!=null}}</div> -->
     <router-view/>
     <!-- <img alt="Forsage" src="./assets/forsage_logo.png" width="250" height="250"> -->
     <!-- <HelloWorld msg="Hello World!"/> -->
@@ -22,7 +22,8 @@ export default {
   name: 'App',
   data() {
     return{
-      userstate: true
+      // userstate: firebase.auth().currentUser
+      userstate: false
     }
     
   },
