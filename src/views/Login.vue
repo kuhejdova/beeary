@@ -121,9 +121,6 @@ body{
   text-align:left;
 }
 
-#login{
-  margin-top: 200px;
-}
 
 div{
   margin-bottom: 10px;

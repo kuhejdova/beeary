@@ -25,7 +25,7 @@
           <p>Přehled všech úlů</p>
         </div>
         <div class="description2">
-          <p>Ćasová osa s poznámkami</p>
+          <p>Časová osa s poznámkami</p>
         </div>
         <div class="description3">
           <p>Celoroční monitoring</p>
@@ -82,24 +82,15 @@ export default {
     'pictogram1 pictogram2 pictogram3'
     'description1 description2 description3'
     'button button button';
-  grid-template-rows: 30% 10% 40% 10% 5%;
+  grid-template-rows: 30% 6% 40% 6% 10%;
   grid-gap: 20px;
-  /* background-color: #2196F3;
-  padding: 10px; */
-  height: calc(100vh - 100px);
+
+  height: calc(100vh - 70px);
   padding-right: 5%;
   padding-left: 5%;
   padding-bottom: 3%
 }
 
-
-/* .grid-container{
-  display: grid;
-  grid-row-gap: 20px;
-  grid-template-columns: auto;
-  grid-template-rows: 30% 10% 50% 5%;
-  height: calc(100vh - 80px);
-} */
 .grid-container > div {
   background-color: rgba(255, 255, 255, 0.8);
 }
@@ -114,12 +105,6 @@ body{
   margin-top: 200px;
 }
 
-div{
-  margin-bottom: 10px;
-}
-h1 {
-  margin-bottom: 20px;
-}
 
 img {
   height: 100%
@@ -130,20 +115,18 @@ section, footer, header, aside, nav{
   display: block;
 }
 
-/*-------------------------
-  The menu
---------------------------*/
 
 button{
   display:inline-block;
-  padding: 10px 22px;
+  padding: 0.5% 5%;
   color:rgb(0, 0, 0) !important;
   font-weight:bold;
-  font-size:14px;
+  font-size:3vh;
   text-decoration:none !important;
   line-height:1;
   text-transform: uppercase;
   background-color:#FF8181;
+  height: 100%;
 
   -webkit-transition:background-color 0.25s;
   -moz-transition:background-color 0.25s;
@@ -157,7 +140,7 @@ button:hover {
 
 
 p{
-  font-size:22px;
+  font-size: 4vh;
   font-weight:bold;
   color:#7d9098;
 }
