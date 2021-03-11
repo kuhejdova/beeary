@@ -1,48 +1,47 @@
 <template>
   <div id="app">
     <!-- <MenuTop /> -->
-    <MenuTop v-if="userstate"/>
+    <!-- <MenuTop v-if="userstate"/> -->
     <!-- <SiteNav v-if="showNav"></SiteNav> -->
     <!-- <div>{{userstate}}</div> -->
     <router-view/>
-    <!-- <img alt="Forsage" src="./assets/forsage_logo.png" width="250" height="250"> -->
-    <!-- <HelloWorld msg="Hello World!"/> -->
   </div>
 </template>
 
 <script>
 // import { mapState } from 'vuex'
-import MenuTop from './components/MenuTop.vue'
+// import MenuTop from './components/MenuTop.vue'
 // import SiteNav from './components/SiteNav.vue'
-import firebase from './firebase'
-import "firebase/auth";
+// import firebase from './firebase'
+// import "firebase/auth";
 
 
 export default {
   name: 'App',
-  data() {
-    return{
-      // userstate: (firebase.auth().onAuthStateChanged() && firebase.auth().currentUser ? false : true)
-      userstate: true
-    }
+  // data() {
+  //   return{
+  //     // userstate: (firebase.auth().onAuthStateChanged() && firebase.auth().currentUser ? false : true)
+  //     userstate: firebase.auth().currentUser
+  //     // userstate: true
+  //   }
     
-  },
-  components: {
-    // SiteNav,
-    MenuTop,
-  },
-  methods: {
-    // ...mapState(['userProfile']),
-    // showNav() {
-    //   console.log(this.userProfile)
-    //   console.log(Object.keys(this.userProfile).length)
-    //   return Object.keys(this.userProfile).length > 0
-    // },
-    change_userstate(){
-      this.userstate = firebase.auth().currentUser; 
-      // return this.$userstate;
-    }
-  }
+  // },
+  // // components: {
+  // //   // SiteNav,
+  // //   MenuTop,
+  // // },
+  // methods: {
+  //   // ...mapState(['userProfile']),
+  //   // showNav() {
+  //   //   console.log(this.userProfile)
+  //   //   console.log(Object.keys(this.userProfile).length)
+  //   //   return Object.keys(this.userProfile).length > 0
+  //   // },
+  //   change_userstate(){
+  //     this.userstate = firebase.auth().currentUser; 
+  //     // return this.$userstate;
+  //   }
+  // }
 }
 </script>
 

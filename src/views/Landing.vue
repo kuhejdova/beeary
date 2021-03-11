@@ -46,7 +46,6 @@ export default {
   methods: {
     redirectHome(){
       if (!auth.currentUser ) {
-      // next('/login')
         this.$router.push('/login')
       }
       else {

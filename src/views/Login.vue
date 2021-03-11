@@ -64,7 +64,6 @@ export default {
       },
       signupForm: {
         name: '',
-        // title: '',
         email: '',
         password: ''
       },
@@ -101,7 +100,6 @@ export default {
         email: this.signupForm.email,
         password: this.signupForm.password,
         name: this.signupForm.name,
-        // title: this.signupForm.title
       })
     }
   }
@@ -121,6 +119,9 @@ body{
   text-align:left;
 }
 
+#login {
+  margin-top: 150px;
+}
 
 div{
   margin-bottom: 10px;
