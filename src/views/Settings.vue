@@ -2,7 +2,6 @@
 
   <header>
     <MenuTop/>
-    <Timeline/>
     <section>
       
       <!-- <div class="col1">
@@ -14,12 +13,10 @@
 
 <script>
 import MenuTop from '../components/MenuTop.vue'
-import Timeline from '../components/Timeline.vue'
 
 export default {
   components: {
     MenuTop,
-    Timeline
   }
 }
 </script>

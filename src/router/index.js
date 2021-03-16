@@ -2,12 +2,19 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Dashboard from '../views/Dashboard.vue'
 import Landing from '../views/Landing.vue'
+
+import Ping from '../components/Ping.vue';
 // import App from '../App.vue'
 import { auth } from '../firebase'
 
 Vue.use(VueRouter)
 
 const routes = [
+    {
+      path: '/ping',
+      name: 'Ping',
+      component: Ping,
+    },
     {
       path: '/home',
       name: 'Dashboard',
