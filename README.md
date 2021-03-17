@@ -1,4 +1,4 @@
-# bee_diary
+# Beeary
 
 ## Project setup
 ```
@@ -10,15 +10,34 @@ npm install
 npm run serve
 ```
 
-### Compiles and minifies for production
+
+
+## Run Python backend
 ```
-npm run build
+source env/bin/activate
+
+python app.py
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+[comment]: <> (### Compiles and minifies for production)
+
+[comment]: <> (```)
+
+[comment]: <> (npm run build)
+
+[comment]: <> (```)
+
+[comment]: <> (### Lints and fixes files)
+
+[comment]: <> (```)
+
+[comment]: <> (npm run lint)
+
+[comment]: <> (```)
+
+[comment]: <> (### Customize configuration)
+
+[comment]: <> (See [Configuration Reference]&#40;https://cli.vuejs.org/config/&#41;.)
