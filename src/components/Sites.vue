@@ -6,7 +6,8 @@
         <tr v-for="(site, index) in sites" :key="index">
             <td>
                 <div id="inner">
-                {{ site.name }} <br><br>
+                {{ site.name }} <br>
+                - {{ site.location }} <br><br>
                 {{ site.event }}
                 </div>
             </td>
@@ -29,7 +30,7 @@ export default {
   },
   methods: {
     getSites() {
-      const path = 'http://localhost:5000/home';
+      const path = 'http://localhost:5000/sites';
       axios.get(path)
         .then((res) => {
           this.sites = res.data.sites;

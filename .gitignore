@@ -2,7 +2,8 @@
 node_modules
 /dist
 
-
+server/*.db
+server/__pycache__/*
 /env
 
 # local env files
