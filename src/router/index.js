@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Dashboard from '../views/Dashboard.vue'
 import Landing from '../views/Landing.vue'
+import Hives from '../views/MyHives.vue'
 
 import Ping from '../components/Ping.vue';
 // import App from '../App.vue'
@@ -27,6 +28,14 @@ const routes = [
       path: '/',
       name: 'Landing',
       component: Landing,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/hives',
+      name: 'Hives',
+      component: Hives,
       meta: {
         requiresAuth: true
       }
