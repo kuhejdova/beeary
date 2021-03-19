@@ -64,16 +64,15 @@ def all_sites():
     })
 
 
-@app.route('/hives', methods=['GET', 'POST'])
+@app.route('/hives', methods=['POST'])
 def all_hives():
-    if request.method == 'POST':
-        post_data = request.get_json()
-        sid = database.select_site_id(post_data['sid'])[0]
-        result = database.select_hives(sid)
+    sid = request.get_json()
+    if sid is not None:
+        print(sid)
+        result = database.select_hives(sid['sid'])
         hives = database.hives_to_jsonify(result)
-        print(post_data)
         print(hives)
-    if request.method == 'GET':
+    else:
         sid = 1
         result = database.select_hives(sid)
         hives = database.hives_to_jsonify(result)
