@@ -43,18 +43,21 @@ export default {
   overflow: auto;
 }
 
+ /* Hide scrollbar for Chrome, Safari and Opera */
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.container {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+} 
+
 body {
   background-color: var(--main_color) 24;
 }
-/* body::-webkit-scrollbar {
-  width: 13px;
-  background: var(--main_color) 24;
-} */
-/* body::-webkit-scrollbar-thumb {
-  background-color: gold;
-  border-radius: 10px;
-  box-shadow: inset 0 0 100px 50px #ff9a00;
-} */
+
 .grid {
   display: grid;
   width: auto;
@@ -80,7 +83,7 @@ body {
   font-weight: bold;
   font-style: italic;
   font-size: 35px;
-  box-shadow: inset 0 0 70px 35px #ff9a00 73;
+  box-shadow: inset 0 0 70px 35px var(--main_color) 73;
   transition: clip-path 300ms, background-color 300ms;
 }
 .block:hover {

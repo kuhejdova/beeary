@@ -122,7 +122,7 @@ p b {
   text-transform: uppercase;
   font-size: 18px;
 }
-.resource {
+/* .resource {
   margin: 20px 0;
-}
+} */
 </style>

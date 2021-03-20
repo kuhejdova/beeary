@@ -56,7 +56,7 @@ export default {
 
 .wrapper{
   display: grid;
-  grid-template-columns: 60% 30%;
+  grid-template-columns: 59% 39%;
   column-gap: 40px;
   row-gap: 10px;
 
@@ -70,6 +70,15 @@ div {
   font-weight: bold;
   color: #5e5b64;
   text-align: left;
+}
+
+.right {
+  margin: auto;
+  padding: 10px; 
+}
+
+.left {
+  padding-left: 20px;
 }
 
 .col1 {
