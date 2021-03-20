@@ -3,7 +3,7 @@
     <router-link to="/home" class="home" @click.native="makeActive('home')"
       >Hlavní stránka</router-link
     >
-    <router-link to="/" class="timeline" @click.native="makeActive('timeline')"
+    <router-link to="/timeline" class="timeline" @click.native="makeActive('timeline')"
       >Časová osa</router-link
     >
     <router-link
@@ -64,7 +64,7 @@ nav {
 nav {
   /* display:inline-block; */
   /* margin:60px auto 45px; */
-  background-color: #ff8181;
+  background-color: var(--main_color);
   box-shadow: 0 1px 1px #ccc;
   border-radius: 2px;
   display: flex;
@@ -88,7 +88,7 @@ nav a {
 }
 
 nav a:hover {
-  background-color: #ffcaca; /* #fadb6a nice light yellow */
+  background-color: var(--light_color); /* #fadb6a nice light yellow */
   cursor: pointer;
 }
 
@@ -104,7 +104,7 @@ nav.home .home,
 nav.timeline .timeline,
 nav.my_hives .my_hives,
 nav.profile .profile {
-  background-color: #ffcaca;
+  background-color: var(--light_color);
 }
 
 p {

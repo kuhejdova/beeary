@@ -16,20 +16,14 @@
       </div>
     </form>
     <br /><br />
-    <div class="rowaa">
-      <table>
-        <tbody>
-          <tr v-for="(hive, index) in hives" :key="index">
-            <td>
-              <div id="inner">
-                {{ hive.name }} <br />
-                <br /><br />
-                {{ hive.graph }}
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="wrapper">
+      <div v-for="(hive, index) in hives" :key="index">
+        <div id="inner">
+          {{ hive.name }} <br />
+          <br /><br />
+          {{ hive.graph }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -96,6 +90,16 @@ export default {
 #inner {
   background: #f4f4f4;
   padding: 20px;
-  margin-bottom: 10px;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 25% 25%;
+  column-gap: 10px;
+  row-gap: 10px;
+
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 </style>

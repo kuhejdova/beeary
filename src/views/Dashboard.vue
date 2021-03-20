@@ -45,10 +45,6 @@ export default {
   padding: 0;
 }
 
-section {
-  margin-left: 20px;
-}
-
 div {
   /* font:15px/1.3 'Open Sans', sans-serif; */
   font-weight: bold;
@@ -58,7 +54,11 @@ div {
 
 .col1 {
   background: #f4f4f4;
-  margin-top: 50px;
+  margin-top: 10px;
   padding: 20px;
+  width: 50%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 </style>
