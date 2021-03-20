@@ -5,15 +5,22 @@
     </header>
     <main>
       <section>
-        <div class="col1">
-          <h1>Vítejte zpět</h1>
-          <br />
-          <h3>Dnes je: {{ getDate() }}</h3>
-        </div>
+        <div class="wrapper">
+          <div class="left">
+            <div class="col1">
+              <h1>Vítejte zpět</h1>
+              <br />
+              <h3>Dnes je: {{ getDate() }}</h3>
+            </div>
 
-        <br /><br />
-        <div class="col2">
-          <Sites />
+            <br /><br />
+            <div class="col2">
+              <Sites />
+            </div>
+          </div>
+          <div class="right">
+            <Timeline/>
+          </div>
         </div>
       </section>
     </main>
@@ -24,6 +31,7 @@
 import moment from "moment";
 import MenuTop from "../components/MenuTop.vue";
 import Sites from "../components/Sites.vue";
+import Timeline from "../components/Timeline.vue"
 
 export default {
   methods: {
@@ -34,6 +42,7 @@ export default {
   components: {
     MenuTop,
     Sites,
+    Timeline,
   },
 };
 </script>
@@ -43,6 +52,17 @@ export default {
   margin: 0;
 
   padding: 0;
+}
+
+.wrapper{
+  display: grid;
+  grid-template-columns: 60% 30%;
+  column-gap: 40px;
+  row-gap: 10px;
+
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 div {
@@ -56,7 +76,7 @@ div {
   background: #f4f4f4;
   margin-top: 10px;
   padding: 20px;
-  width: 50%;
+  /* width: 50%; */
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;

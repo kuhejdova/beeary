@@ -49,7 +49,7 @@ export default {
 
 .wrapper {
   display: grid;
-  grid-template-columns: 25% 25%;
+  grid-template-columns: 50% 50%;
   column-gap: 10px;
   row-gap: 10px;
 
