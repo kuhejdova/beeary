@@ -7,19 +7,10 @@
       <section>
         <div class="wrapper">
           <div class="left">
-            <div class="col1">
-              <h1>Vítejte zpět</h1>
-              <br />
-              <h3>Dnes je: {{ getDate() }}</h3>
-            </div>
-
-            <br /><br />
-            <div class="col2">
-              <Sites />
-            </div>
+            <Timeline />
           </div>
           <div class="right">
-            <Timeline/>
+            <Month />
           </div>
         </div>
       </section>
@@ -30,19 +21,32 @@
 <script>
 import moment from "moment";
 import MenuTop from "../components/MenuTop.vue";
-import Sites from "../components/Sites.vue";
-import Timeline from "../components/Timeline.vue"
+import Timeline from "../components/Timeline.vue";
+import Month from "../components/Month.vue"
 
 export default {
+  data() {
+    return {
+      noteToSave: [],
+    };
+  },
   methods: {
     getDate() {
-      return moment(new Date()).format("DD. MM. YYYY");
+      moment.locale("cs");
+      var dateCapitalized = moment(new Date()).format("MMMM YYYY");
+      return dateCapitalized.charAt(0).toUpperCase() + dateCapitalized.slice(1);
+    },
+    onSubmit() {
+      const payload = {
+        noteToSave: this.noteToSave,
+      };
+      return payload
     },
   },
   components: {
     MenuTop,
-    Sites,
     Timeline,
+    Month,
   },
 };
 </script>
@@ -54,9 +58,9 @@ export default {
   padding: 0;
 }
 
-.wrapper{
+.wrapper {
   display: grid;
-  grid-template-columns: 59% 39%;
+  grid-template-columns: 39% 58%;
   column-gap: 40px;
   row-gap: 10px;
 
@@ -72,7 +76,7 @@ div {
   text-align: left;
 }
 
-.right {
+.left {
   margin-left: auto;
   margin-right: auto;
   /* padding: 10px;  */
@@ -91,4 +95,5 @@ div {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
 </style>

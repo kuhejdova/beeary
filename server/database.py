@@ -55,17 +55,6 @@ def insert_hive(name, sid):
     con.close()
 
 
-def select_site_id(name):
-    con = sqlite3.connect('beeary.db')
-    cur = con.cursor()
-
-    sql_get_sid = '''SELECT site_id FROM sites WHERE site_name = ?'''
-    cur.execute(sql_get_sid, (name,))
-    this_sid = cur.fetchone()
-    print(this_sid)
-    return this_sid
-
-
 def select_hives(sid):
     con = sqlite3.connect('beeary.db')
     cur = con.cursor()
@@ -83,6 +72,26 @@ def hives_to_jsonify(hives):
         hive_dict = {'id': hive[0], 'name': hive[1], 'graph': 'Tady bude graf'}
         res_list.append(hive_dict)
     return res_list
+
+
+def insert_notes(note_text, hid):
+    con = sqlite3.connect('beeary.db')
+    cur = con.cursor()
+    sql = '''INSERT INTO notes(note_text, hid) VALUES (?, ?)'''
+    cur.execute(sql, (note_text, hid))
+    con.commit()
+    con.close()
+
+
+def select_notes(hid):
+    con = sqlite3.connect('beeary.db')
+    cur = con.cursor()
+
+    sql = '''SELECT note_id, note_text FROM notes WHERE hid = ?'''
+    cur.execute(sql, (hid,))
+    res = cur.fetchall()
+    con.close()
+    return res
 
 
 if __name__ == '__main__':

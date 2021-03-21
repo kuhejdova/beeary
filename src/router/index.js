@@ -6,7 +6,7 @@ import Hives from '../views/MyHives.vue'
 
 import Ping from '../components/Ping.vue';
 
-import Timeline from '../components/Timeline.vue'
+import TimelineDetail from '../views/TimelineDetail.vue'
 
 // import App from '../App.vue'
 import { auth } from '../firebase'
@@ -45,8 +45,8 @@ const routes = [
     },
     {
       path: '/timeline',
-      name: 'Timeline',
-      component: Timeline,
+      name: 'TimelineDetail',
+      component: TimelineDetail,
       meta: {
         requiresAuth: true
       }

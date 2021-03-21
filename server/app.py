@@ -68,10 +68,8 @@ def all_sites():
 def all_hives():
     sid = request.get_json()
     if sid is not None:
-        print(sid)
         result = database.select_hives(sid['sid'])
         hives = database.hives_to_jsonify(result)
-        print(hives)
     else:
         sid = 1
         result = database.select_hives(sid)

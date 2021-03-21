@@ -46,7 +46,6 @@ export default {
         .post(path, payload)
         .then((res) => {
           this.hives = res.data.hives;
-          console.log(this.hives);
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -94,7 +93,7 @@ export default {
 
 .wrapper {
   display: grid;
-  grid-template-columns: 25% 25%;
+  grid-template-columns: 50% 50%;
   column-gap: 10px;
   row-gap: 10px;
 
