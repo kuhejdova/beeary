@@ -64,6 +64,17 @@ def all_sites():
     })
 
 
+@app.route('/add_site', methods=['POST'])
+def add_site():
+    post_data = request.get_json()
+    database.insert_sites(post_data['site_name'], post_data['uid'], post_data['location'])
+    print(post_data['site_name'], post_data['uid'], post_data['location'])
+    return jsonify({
+        'status': 'success',
+        'message': 'ok'
+    })
+
+
 @app.route('/hives', methods=['POST'])
 def all_hives():
     sid = request.get_json()
