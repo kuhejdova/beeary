@@ -3,25 +3,67 @@
     <MenuTop />
     <section>
       <div class="col1">
-      <button @click="showForm" class="button" v-show="!show">Přidat stanoviště</button>
-    <form @submit="onSubmit" v-show="show">
-      Název stanoviště <input v-model="name"
-        id="form-title-input"
-        type="text"
-        required
-        placeholder="Název"
-      /><br><br>
-      Lokace <input v-model="location"
-        id="form-title-input"
-        type="text"
-        required
-        placeholder="Lokace"
-      />
-      <br /><br />
-      <button @click="onSubmit" class="button">Uložit</button>
-      <button @click="showForm" class="button">Zrušit</button>
-    </form>
-    </div>
+        <h1>Profil</h1>
+      </div>
+      <div class="col1">
+        <br />
+        <button @click="showFormSite" class="button" v-show="!showSite">
+          Přidat stanoviště
+        </button>
+        <form @submit="onSubmitSite" v-show="showSite">
+          Název stanoviště
+          <input
+            v-model="site_name"
+            id="form-title-input"
+            type="text"
+            required
+            placeholder="Název"
+          /><br /><br />
+          Lokace
+          <input
+            v-model="location"
+            id="form-title-input"
+            type="text"
+            required
+            placeholder="Lokace"
+          />
+          <br /><br />
+          <button @click="onSubmitSite" class="button">Uložit</button>
+          <button @click="showFormSite" class="button">Zrušit</button>
+        </form>
+        <br /><br />
+      </div>
+
+      <div class="col1">
+        <button @click="showFormHive" class="button" v-show="!showHive">
+          Přidat úl
+        </button>
+        <form @submit="onSubmitHive" v-show="showHive">
+          Stanoviště
+          <select v-model="selected" @change="onChange">
+            <option
+              v-for="(site, index) in sites"
+              :key="index"
+              v-bind:value="site.id"
+            >
+              {{ site.name }}
+            </option>
+          </select>
+          <br /><br />
+          <!-- <div>{{ selected }}</div> -->
+          Název úlu
+          <input
+            v-model="hive_name"
+            id="form-title-input"
+            type="text"
+            required
+            placeholder="Název"
+          /><br /><br />
+          <br /><br />
+          <button @click="onSubmitHive" class="button">Uložit</button>
+          <button @click="showFormHive" class="button">Zrušit</button>
+        </form>
+      </div>
     </section>
   </header>
 </template>
@@ -33,49 +75,96 @@ import MenuTop from "../components/MenuTop.vue";
 export default {
   data() {
     return {
-      show: false,
-      name: '',
-      location: '',
+      showSite: false,
+      showHive: false,
+      site_name: "",
+      hive_name: "",
+      location: "",
+      selected: 1,
+      sites: [],
     };
   },
   components: {
     MenuTop,
   },
   methods: {
-    // onSubmit() {
-    //   const payload = {
-    //     noteToSave: this.noteToSave,
-    //   };
-    //   return payload;
-    // },
-    showForm(){
-        this.show = !this.show;
+
+    showFormSite() {
+      this.showSite = !this.showSite;
+    },
+    showFormHive() {
+      this.showHive = !this.showHive;
+    },
+
+    onChange() {
+      // evt.preventDefault();
+      const payload = {
+        sid: this.selected,
+      };
+      this.onSubmitSite(payload);
+    },
+    getSites() {
+      const path = "http://localhost:5000/sites";
+      axios
+        .get(path)
+        .then((res) => {
+          this.sites = res.data.sites;
+          this.selected = res.data.sites[0].id;
+          // console.log(res.data.sites[0]);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
     postSid(payload) {
       const path = "http://localhost:5000/add_site";
       axios
         .post(path, payload)
-        // .then((res) => {
-        //   this.hives = res.data.hives;
-        // })
         .catch((error) => {
           console.error(error);
         });
+      this.getSites();
     },
-    onSubmit(evt) {
+    postHid(payload) {
+      const path = "http://localhost:5000/add_hive";
+      axios
+        .post(path, payload)
+        .catch((error) => {
+          console.error(error);
+        });
+      this.getSites();
+    },
+    onSubmitSite(evt) {
       evt.preventDefault();
       const payload = {
         uid: "gXifKfOg06XvU9NewGfqiFwasE12",
-        site_name: this.name,
+        site_name: this.site_name,
         location: this.location,
       };
       // console.log(this.selected)
-      // console.log(payload)
+      console.log(payload)
       this.postSid(payload);
-    
-      this.name= '';
-      this.location= '';
+
+      this.site_name = "";
+      this.location = "";
     },
+    onSubmitHive(evt) {
+      evt.preventDefault();
+      const payload = {
+        sid: this.selected,
+        hive_name: this.hive_name,
+      };
+      // console.log(this.selected)
+      // console.log(payload)
+      this.postHid(payload);
+
+      this.hive_name = "";
+      this.selected = 0;
+    },
+  },
+  created() {
+
+    this.getSites();
   },
 };
 </script>
@@ -86,7 +175,6 @@ export default {
 
   padding: 0;
 }
-
 
 div {
   /* font:15px/1.3 'Open Sans', sans-serif; */

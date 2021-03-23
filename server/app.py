@@ -58,6 +58,7 @@ def all_sites():
     uid = "gXifKfOg06XvU9NewGfqiFwasE12"
     result = database.select_sites(uid)
     sites = database.sites_to_jsonify(result)
+    print(sites)
     return jsonify({
         'status': 'success',
         'sites': sites
@@ -68,7 +69,7 @@ def all_sites():
 def add_site():
     post_data = request.get_json()
     database.insert_sites(post_data['site_name'], post_data['uid'], post_data['location'])
-    print(post_data['site_name'], post_data['uid'], post_data['location'])
+    # print(post_data['site_name'], post_data['uid'], post_data['location'])
     return jsonify({
         'status': 'success',
         'message': 'ok'
@@ -88,6 +89,17 @@ def all_hives():
     return jsonify({
         'status': 'success',
         'hives': hives
+    })
+
+
+@app.route('/add_hive', methods=['POST'])
+def add_hive():
+    post_data = request.get_json()
+    database.insert_hive(post_data['hive_name'], post_data['sid'])
+    # print(post_data['site_name'], post_data['uid'], post_data['location'])
+    return jsonify({
+        'status': 'success',
+        'message': 'ok'
     })
 
 
