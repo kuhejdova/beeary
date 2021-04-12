@@ -21,13 +21,13 @@
         <div id="inner">
           {{ hive.name }} <br />
           <br /><br />
-          {{ hive.graph }}
           <line-chart
             v-if="loaded"
-            :chartdata="chartdata"
+            :chartdata="hive.graph"
+            :chartdata2="hive.temperature"
             :options="options"/>
           <br>
-          <button  class="button">Detail</button>
+          <button class="button">Detail</button>
         </div>
         
       </div>
@@ -51,16 +51,6 @@ export default {
       options: null,
     };
   },
-  // async mounted () {
-  //   this.loaded = false
-  //   try {
-  //     const { userlist } = await fetch('/api/userlist')
-  //     this.chartdata = userlist
-  //     this.loaded = true
-  //   } catch (e) {
-  //     console.error(e)
-  //   }
-  // },
   methods: {
     postSid(payload) {
       const path = "http://localhost:5000/hives";
@@ -68,13 +58,14 @@ export default {
         .post(path, payload)
         .then((res) => {
           this.hives = res.data.hives;
-          this.chartdata = res.data.hives.graph
+          this.chartdata = res.data.hives
+      
           this.loaded = true
         })
         .catch((error) => {
           // eslint-disable-next-line
           console.error(error);
-          this.getHives();
+         
         });
     },
     onSubmit(evt) {
@@ -85,7 +76,7 @@ export default {
       // console.log(this.selected)
       // console.log(payload)
       this.postSid(payload);
-      this.getHives();
+      
     },
     getSites() {
       const path = "http://localhost:5000/sites";

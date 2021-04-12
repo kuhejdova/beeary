@@ -1,5 +1,5 @@
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 def create_connection():
@@ -71,7 +71,7 @@ def select_hives(sid):
     return res
 
 
-def select_data_graph():
+def select_humidity_graph():
     curr_month = datetime.today().month
     con = sqlite3.connect('beeary.db')
     cur = con.cursor()
@@ -83,19 +83,38 @@ def select_data_graph():
     return res
 
 
+def select_temperature_graph():
+    curr_month = datetime.today().month
+    con = sqlite3.connect('beeary.db')
+    cur = con.cursor()
+
+    sql = '''SELECT date, value FROM temperature WHERE month = ?'''
+    cur.execute(sql, (curr_month,))
+    res = cur.fetchall()
+    con.close()
+    return res
+
+
 def graph_data_to_jsonify(graphdata):
     data_list = []
+    now = datetime.today()
+    fake_now = now - timedelta(days=2*366-1)
+    week_back = fake_now - timedelta(days=7)
     for row in graphdata:
-        line_dict = {'date': row[0], 'value': row[1]}
-        data_list.append(line_dict)
+        dt = datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S')
+        if week_back <= dt <= fake_now:
+            line_dict = {'date': row[0], 'value': row[1]}
+            data_list.append(line_dict)
     return data_list
 
 
 def hives_to_jsonify(hives):
     res_list = []
-    data = select_data_graph()
+    data_humidity = select_humidity_graph()
+    data_temperature = select_temperature_graph()
     for hive in hives:
-        hive_dict = {'id': hive[0], 'name': hive[1], 'graph': graph_data_to_jsonify(data)}
+        hive_dict = {'id': hive[0], 'name': hive[1], 'graph': graph_data_to_jsonify(data_humidity),
+                     'temperature': graph_data_to_jsonify(data_temperature)}
         res_list.append(hive_dict)
     return res_list
 
