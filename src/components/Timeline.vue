@@ -1,8 +1,14 @@
 <template>
   <section>
     <div class="container">
-      <div class="grid">
-        <div v-for="(hex, index) in hexagons" :key="index" v-bind:class="isActive(hex) ? 'block-highlight' : 'block'">{{ hex.date }}</div>
+      <div class="grid" v-for="(hex, index) in hexagons" :key="index" >
+        <div class='block' :style="{visibility: randomShow() ? 'visible' : 'hidden'}"></div>
+        <div class='block'></div>
+        <div class='block'></div>
+        <div class='block' :style="{visibility: randomShow() ? 'visible' : 'hidden'}"></div>
+        <div class='block' ></div>
+        <div v-bind:class="isActive(hex) ? 'block-highlight' : 'block'">{{ hex.date}}</div>
+        <div class='block' ></div>
       </div>
     </div>
   </section>
@@ -16,9 +22,23 @@ export default {
     return {
       hexagons: [],
       active: false,
+      show: true,
     };
   },
   methods: {
+    randomShow(){
+      var min = 2;
+      var max = 4;
+      var rand = Math.floor(Math.random() * (max - min + 1)) + min;
+      console.log(rand)
+      if (rand === 3){
+        return false;
+      }
+      else{
+        return true;
+      }
+    },
+
     fillHexagons() {
       var startyear = 2015;
       var startmonth = 1;
@@ -65,7 +85,7 @@ export default {
 
 <style scoped>
 .container {
-  width: 450px;
+  width: 400px;
   margin-top: 10px;
   height: 88vh;
   overflow: auto;
@@ -91,10 +111,10 @@ body {
   width: auto;
   justify-content: center;
   grid-auto-flow: dense;
-  grid-template-columns: repeat(auto-fit, 70px);
-  grid-template-rows: repeat(auto-fit, minmax(112px, 112px));
-  grid-auto-rows: 112px;
-  margin-bottom: 42px;
+  grid-template-columns: repeat(auto-fit, 50px);
+  grid-template-rows: repeat(auto-fit, minmax(78px, 78px));
+  grid-auto-rows: 78px;
+  /* margin-bottom: 42px; */
 }
 .grid > * {
   -webkit-clip-path: polygon(50% 0, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
@@ -102,13 +122,13 @@ body {
 }
 .block {
   position: relative;
-  height: 140px;
+  height: 95px;
   background-color: var(--light_color);
   grid-column: 2 span;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 25px;
+  font-size: 20px;
   box-shadow: inset 0 0 70px 35px var(--main_color) 73;
   transition: clip-path 300ms, background-color 300ms;
 }
@@ -118,21 +138,25 @@ body {
 
 .block-highlight {
   position: relative;
-  height: 140px;
+  height: 95px;
   background-color: var(--main_color);
   grid-column: 2 span;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 25px;
+  font-size: 20px;
   box-shadow: inset 0 0 70px 35px var(--main_color) 73;
   transition: clip-path 300ms, background-color 300ms;
 }
 
 @media screen {
-  .block:nth-child(4),
+  /* .block:nth-child(4),
   .block:nth-child(5n + 9) {
     grid-column: 2 / span 2;
-  }
+  } */
+  .block:nth-child(5), 
+  .block:nth-child(7n + 12) {
+    grid-column: 2 / span 2;
+    }
 }
 </style>
