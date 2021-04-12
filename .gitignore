@@ -6,6 +6,8 @@ server/*.db
 server/__pycache__/*
 /env
 
+server/utils/*.csv
+
 # local env files
 .env.local
 .env.*.local

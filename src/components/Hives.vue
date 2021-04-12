@@ -22,7 +22,14 @@
           {{ hive.name }} <br />
           <br /><br />
           {{ hive.graph }}
+          <line-chart
+            v-if="loaded"
+            :chartdata="chartdata"
+            :options="options"/>
+          <br>
+          <button  class="button">Detail</button>
         </div>
+        
       </div>
     </div>
   </div>
@@ -30,15 +37,30 @@
 
 <script>
 import axios from "axios";
+import LineChart from './Chart.vue'
 
 export default {
+  components: { LineChart },
   data() {
     return {
       selected: 1,
       hives: [],
       sites: [],
+      loaded: false,
+      chartdata: null,
+      options: null,
     };
   },
+  // async mounted () {
+  //   this.loaded = false
+  //   try {
+  //     const { userlist } = await fetch('/api/userlist')
+  //     this.chartdata = userlist
+  //     this.loaded = true
+  //   } catch (e) {
+  //     console.error(e)
+  //   }
+  // },
   methods: {
     postSid(payload) {
       const path = "http://localhost:5000/hives";
@@ -46,6 +68,8 @@ export default {
         .post(path, payload)
         .then((res) => {
           this.hives = res.data.hives;
+          this.chartdata = res.data.hives.graph
+          this.loaded = true
         })
         .catch((error) => {
           // eslint-disable-next-line

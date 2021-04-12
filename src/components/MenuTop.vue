@@ -3,7 +3,10 @@
     <router-link to="/home" class="home" @click.native="makeActive('home')"
       >Hlavní stránka</router-link
     >
-    <router-link to="/timeline" class="timeline" @click.native="makeActive('timeline')"
+    <router-link
+      to="/timeline"
+      class="timeline"
+      @click.native="makeActive('timeline')"
       >Časová osa</router-link
     >
     <router-link

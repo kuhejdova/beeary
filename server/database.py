@@ -1,4 +1,5 @@
 import sqlite3
+from datetime import datetime
 
 
 def create_connection():
@@ -14,6 +15,10 @@ def create_tables():
     cur.execute('''CREATE TABLE hives (hive_id INTEGER PRIMARY KEY, hive_name text, sid integer)''')
     cur.execute('''CREATE TABLE data (hid integer, date text, value real)''')
     cur.execute('''CREATE TABLE notes (hid integer, note_text text)''')
+    cur.execute('''CREATE TABLE temperature (hid integer, date text, year integer, month integer, value real)''')
+    cur.execute('''CREATE TABLE weight (hid integer, date text, year integer, month integer, value real)''')
+    cur.execute('''CREATE TABLE humidity (hid integer, date text, year integer, month integer, value real)''')
+    cur.execute('''CREATE TABLE flow (hid integer, date text, year integer, month integer, value real)''')
     con.commit()
     con.close()
 
@@ -66,10 +71,31 @@ def select_hives(sid):
     return res
 
 
+def select_data_graph():
+    curr_month = datetime.today().month
+    con = sqlite3.connect('beeary.db')
+    cur = con.cursor()
+
+    sql = '''SELECT date, value FROM humidity WHERE month = ?'''
+    cur.execute(sql, (curr_month,))
+    res = cur.fetchall()
+    con.close()
+    return res
+
+
+def graph_data_to_jsonify(graphdata):
+    data_list = []
+    for row in graphdata:
+        line_dict = {'date': row[0], 'value': row[1]}
+        data_list.append(line_dict)
+    return data_list
+
+
 def hives_to_jsonify(hives):
     res_list = []
+    data = select_data_graph()
     for hive in hives:
-        hive_dict = {'id': hive[0], 'name': hive[1], 'graph': 'Tady bude graf'}
+        hive_dict = {'id': hive[0], 'name': hive[1], 'graph': graph_data_to_jsonify(data)}
         res_list.append(hive_dict)
     return res_list
 

@@ -82,6 +82,7 @@ export default {
       location: "",
       selected: 1,
       sites: [],
+      active: "profile"
     };
   },
   components: {
