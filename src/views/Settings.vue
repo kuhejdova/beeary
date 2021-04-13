@@ -1,6 +1,6 @@
 <template>
   <header>
-    <MenuTop />
+
     <section>
       <div class="col1">
         <h1>Profil</h1>
@@ -70,7 +70,7 @@
 
 <script>
 import axios from "axios";
-import MenuTop from "../components/MenuTop.vue";
+
 
 export default {
   data() {
@@ -85,9 +85,7 @@ export default {
       active: "profile"
     };
   },
-  components: {
-    MenuTop,
-  },
+
   methods: {
 
     showFormSite() {

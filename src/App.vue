@@ -1,14 +1,28 @@
 <template>
   <div id="app">
+    <MenuTop v-show="isVisible()"/>
     <router-view/>
   </div>
 </template>
 
 <script>
 
+import MenuTop from './components/MenuTop.vue'
 
 export default {
   name: 'App',
+  components: {
+    MenuTop
+  },
+
+  methods:{
+    isVisible(){
+      const sites = ['/', '/login', '']
+      console.log(window.location.href)
+      console.log(sites.includes(window.location.pathname) )
+      return !sites.includes(window.location.pathname) 
+    }
+  }
 }
 </script>
 

@@ -30,7 +30,6 @@ export default {
       var min = 2;
       var max = 4;
       var rand = Math.floor(Math.random() * (max - min + 1)) + min;
-      console.log(rand)
       if (rand === 3){
         return false;
       }
@@ -40,7 +39,7 @@ export default {
     },
 
     fillHexagons() {
-      var startyear = 2015;
+      var startyear = 2017;
       var startmonth = 1;
       for (var i = 0; i < 100; i++) {
         var monthyear = startmonth + "/" + startyear;
@@ -65,7 +64,7 @@ export default {
       return this.active;
     },
     scrollToElement() {
-    const el = this.$el.getElementsByClassName('block-highlight')[0];
+    const el = document.getElementsByClassName('block-highlight')[0];
 
     if (el) {
       // Use el.scrollIntoView() to instantly scroll to the element

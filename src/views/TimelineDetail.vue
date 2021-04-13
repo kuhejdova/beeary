@@ -1,8 +1,6 @@
 <template>
   <div>
-    <header>
-      <MenuTop />
-    </header>
+
     <main>
       <section>
         <div class="wrapper">
@@ -20,7 +18,7 @@
 
 <script>
 import moment from "moment";
-import MenuTop from "../components/MenuTop.vue";
+
 import Timeline from "../components/Timeline.vue";
 import Month from "../components/Month.vue"
 
@@ -44,7 +42,7 @@ export default {
     },
   },
   components: {
-    MenuTop,
+
     Timeline,
     Month,
   },

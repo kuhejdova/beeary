@@ -1,8 +1,6 @@
 <template>
   <div>
-    <header>
-      <MenuTop />
-    </header>
+
     <main>
       <section>
         <div class="wrapper">
@@ -19,13 +17,13 @@
 </template>
 
 <script>
-import MenuTop from "../components/MenuTop.vue";
+
 import Hives from "../components/Hives.vue";
 import Hexagons from "../components/Hexagons.vue";
 
 export default {
   components: {
-    MenuTop,
+
     Hives,
     Hexagons,
   },

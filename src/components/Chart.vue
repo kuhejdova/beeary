@@ -50,26 +50,74 @@ export default {
         labels: myLabels,
         datasets: [
           {
-            label: "Vlhkost",
-            fill: false,
-            backgroundColor: "#0000000",
-            borderColor: "#7FD97E",
-            pointBackgroundColor: '#0000000',
-            pointBorderColor: '#7FD97E',
-            data: myValues,
-          },
-          {
             label: "Teplota",
             fill: false,
-            backgroundColor: "#7FD97E",
-            borderColor: '#0000ff',
-            pointBackgroundColor: '#7FD97E',
-            pointBorderColor: '0000ff',
+            backgroundColor: "#0000ff",
+            borderColor: "#0000ff",
+            pointBackgroundColor: "#0000ff",
+            pointBorderColor: "0000ff",
             data: myValues2,
+            yAxisID: "y",
+          },
+          {
+            label: "Vlhkost",
+            fill: false,
+            backgroundColor: "#7FD97E",
+            borderColor: "#7FD97E",
+            pointBackgroundColor: "#7FD97E",
+            pointBorderColor: "#7FD97E",
+            data: myValues,
+            yAxisID: "y1",
           },
         ],
       },
-      this.options
+      {
+        responsive: true,
+        interaction: {
+          mode: "index",
+          intersect: false,
+        },
+        stacked: false,
+        plugins: {
+          title: {
+            display: true,
+            text: "Chart.js Line Chart - Multi Axis",
+          },
+        },
+        scales: {
+          yAxes: [
+                  {
+                        type: 'linear',
+                  display: true,
+                  position: 'left',
+                  id: 'y',
+                    },
+                    {
+                  type: 'linear',
+                  display: true,
+                  position: 'right',
+                  id: 'y1',
+                    },
+                ],
+        //  {
+        //   y: {
+        //     type: "linear",
+        //     display: true,
+        //     position: "left",
+        //   },
+        //   y1: {
+        //     type: "linear",
+        //     display: true,
+        //     position: "right",
+
+        //     // grid line settings
+        //     grid: {
+        //       drawOnChartArea: false, // only want the grid lines for one axis to show up
+        //     },
+        //   },
+        // },
+      }
+      },
     );
   },
 };
