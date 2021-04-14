@@ -17,21 +17,21 @@ export default {
     return {
       root: null,
       gradientMain: [
-        // [129, 172, 255], // #81acff
+        [129, 172, 255], // #81acff
         [127, 217, 126], // #7fd97e
         [255, 199, 0], // #ffc700
         [255, 174, 99], // #ffae63
         [129, 172, 255], // #81acff
-        [127, 217, 126], // #7fd97e
+        // [127, 217, 126], // #7fd97e
       ],
       gradientLight: [
         // [255, 202, 173], // #ffd4ad
-        // [173, 201, 255], // #adc9ff
+        [173, 201, 255], // #adc9ff
         [193, 236, 191], // #c0ecbf
         [255, 237, 173], // #ffedad
         [255, 202, 173], // #ffd4ad
         [173, 201, 255], // #adc9ff
-        [193, 236, 191], // #c0ecbf
+        // [193, 236, 191], // #c0ecbf
       ],
     };
   },
@@ -39,19 +39,24 @@ export default {
   methods: {
     isVisible() {
       const sites = ["/", "/login", ""];
-      console.log(window.location.href);
-      console.log(sites.includes(window.location.pathname));
+      // console.log(window.location.href);
+      // console.log(sites.includes(window.location.pathname));
       return !sites.includes(window.location.pathname);
     },
     getColorSchema(gradient, name) {
       var oneDay = 1000 * 60 * 60 * 24;
-      var presentDate = new Date(2021, 11, 21);
-      // var presentDate = new Date();
-      console.log(presentDate)
-      var spring = new Date(presentDate.getFullYear(), 3, 20);
-      var summer = new Date(presentDate.getFullYear(), 6, 21);
-      var autumn = new Date(presentDate.getFullYear(), 9, 22);
-      var winter = new Date(presentDate.getFullYear(), 12, 21);
+      // var presentDate = new Date(2021, 3, 14);
+      // console.log("present", present)
+
+      var today = new Date();
+      var presentDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      console.log("present date", presentDate)
+      var spring = new Date(today.getFullYear(), 2, 20);
+      var summer = new Date(today.getFullYear(), 5, 21);
+      var autumn = new Date(today.getFullYear(), 8, 22);
+      var winter = new Date(today.getFullYear(), 11, 21);
+
+      // console.log(spring)
       
       // var dates = [spring, summer, autumn, winter]
       var resultDays;
@@ -59,42 +64,26 @@ export default {
       var seasonDays;
 
       if (spring < presentDate  && presentDate <= summer) {
-        resultDays = (
-          Math.round(summer.getTime() - presentDate.getTime()) / oneDay
-        ).toFixed(0);
-
-        seasonDays = (
-          Math.round(summer.getTime() - spring.getTime()) / oneDay
-        ).toFixed(0);
+        resultDays = parseInt((summer.getTime() - presentDate.getTime()) / (1000 * 60 * 60 * 24), 10);
+        seasonDays = parseInt((summer.getTime() - spring.getTime()) / (1000 * 60 * 60 * 24), 10);
         colorRange = [gradient[0], gradient[1]];
 
       } else if (summer < presentDate && presentDate <= autumn) {
-        console.log("here")
-        resultDays = (
-          Math.round(autumn.getTime() - presentDate.getTime()) / oneDay
-        ).toFixed(0);
-        seasonDays = (
-          Math.round(autumn.getTime() - summer.getTime()) / oneDay
-        ).toFixed(0);
+        resultDays = parseInt((autumn.getTime() - presentDate.getTime()) / (1000 * 60 * 60 * 24), 10);
+        seasonDays = parseInt((autumn.getTime() - summer.getTime()) / (1000 * 60 * 60 * 24), 10);
         colorRange = [gradient[1], gradient[2]];
 
       } else if (autumn < presentDate && presentDate  <= winter) {
-        resultDays = (
-          Math.round(winter.getTime() - presentDate.getTime()) / oneDay
-        ).toFixed(0);
-        seasonDays = (
-          Math.round(winter.getTime() - autumn.getTime()) / oneDay
-        ).toFixed(0);
+        resultDays = parseInt((winter.getTime() - presentDate.getTime()) / (1000 * 60 * 60 * 24), 10);
+        seasonDays = parseInt((winter.getTime() - autumn.getTime()) / (1000 * 60 * 60 * 24), 10);
         colorRange = [gradient[2], gradient[3]];
 
       } else {
-        spring.setFullYear(spring.getFullYear() + 1);
-        resultDays = (
-          Math.round(spring.getTime() - presentDate.getTime()) / oneDay
-        ).toFixed(0);
-        seasonDays = (
-          Math.round(spring.getTime() - winter.getTime()) / oneDay
-        ).toFixed(0);
+        // console.log(spring)
+        var nextSpring = new Date(spring.getFullYear() + 1, 3, 20);
+        // spring.setFullYear(spring.getFullYear() + 1);
+        resultDays = parseInt((nextSpring.getTime() - presentDate.getTime()) / (1000 * 60 * 60 * 24), 10);
+        seasonDays = parseInt((nextSpring.getTime() - winter.getTime()) / (1000 * 60 * 60 * 24), 10);
         colorRange = [gradient[3], gradient[4]];
       }
 
@@ -105,9 +94,11 @@ export default {
       //Calculate ratio between the two closest colors
       var ratio = resultDays / seasonDays;
 
-      console.log(seasonDays);
-      console.log(resultDays);
-      console.log(ratio);
+      // console.log(seasonDays);
+      // console.log(resultDays);
+      // console.log(ratio);
+
+
       // console.log(secondcolor);
       //Get the color with pickHex(thx, less.js's mix function!)
       var result = this.pickHex(secondcolor, firstcolor, ratio);
