@@ -5,6 +5,7 @@ import { Line } from "vue-chartjs";
 export default {
   extends: Line,
   props: {
+    onChange: function(){},
     chartdata: {
       type: Array,
       default: null,

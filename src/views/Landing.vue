@@ -59,8 +59,6 @@ export default {
 <style scoped>
 *{
   margin:0;
-  padding:0;
-
 }
 
 .logo { grid-area: logo; }
@@ -101,7 +99,7 @@ body{
 }
 
 #login{
-  margin-top: 200px;
+  /* margin-top: 200px; */
 }
 
 
@@ -112,29 +110,6 @@ img {
 
 section, footer, header, aside, nav{
   display: block;
-}
-
-
-button{
-  display:inline-block;
-  padding: 0.5% 5%;
-  color:rgb(0, 0, 0) !important;
-  font-weight:bold;
-  font-size:3vh;
-  text-decoration:none !important;
-  line-height:1;
-  text-transform: uppercase;
-  background-color: var(--main_color); /* #FF8181 nice pink */
-  height: 100%;
-
-  -webkit-transition:background-color 0.25s;
-  -moz-transition:background-color 0.25s;
-  transition:background-color 0.25s;
-}
-
-button:hover {
-  background-color: var(--light_color); /* #fadb6a nice light yellow, #FFCACA nice pink */
-  cursor: pointer;
 }
 
 

@@ -1,5 +1,7 @@
 <template>
   <nav v-bind:class="active" v-on:click.prevent>
+    <a href= '/' class="logoImg"><img src="../../public/beeary_logo_v1.png" alt="Beeary"></a>
+
     <router-link to="/home" class="home" @click.native="makeActive('home')"
       >Hlavní stránka</router-link
     >
@@ -60,6 +62,9 @@ nav {
   display: block;
 }
 
+.push {
+    margin-left: auto;
+}
 /*-------------------------
   The menu
 --------------------------*/
@@ -108,6 +113,7 @@ nav.timeline .timeline,
 nav.my_hives .my_hives,
 nav.profile .profile {
   background-color: var(--light_color);
+  /* margin-left: auto; */
 }
 
 p {
@@ -125,6 +131,36 @@ p b {
   text-transform: uppercase;
   font-size: 18px;
 }
+
+a.logoImg {
+   display: inline-block;
+  padding: 4px 20px;
+  color: rgb(0, 0, 0) !important;
+  font-weight: bold;
+  font-size: 16px;
+  text-decoration: none !important;
+  line-height: 1;
+  text-transform: uppercase;
+  background-color: transparent;
+  vertical-align: middle;
+  margin-right: auto;
+
+  -webkit-transition: background-color 0.25s;
+  -moz-transition: background-color 0.25s;
+  transition: background-color 0.25s;
+}
+
+a.logoImg:hover {
+  background-color: var(--main_color); /* #fadb6a nice light yellow */
+
+}
+
+
+img {
+  height: 40px;
+  padding: 0px;
+}
+
 /* .resource {
   margin: 20px 0;
 } */

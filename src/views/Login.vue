@@ -109,8 +109,6 @@ export default {
 <style scoped>
 *{
   margin:0;
-  padding:0;
-
 }
 
 body{
@@ -130,35 +128,9 @@ h1 {
   margin-bottom: 20px;
 }
 
-
 section, footer, header, aside, nav{
   display: block;
 }
-
-/*-------------------------
-  The menu
---------------------------*/
-
-button{
-  display:inline-block;
-  padding: 10px 22px;
-  color:rgb(0, 0, 0) !important;
-  font-weight:bold;
-  font-size:14px;
-  text-decoration:none !important;
-  line-height:1;
-  text-transform: uppercase;
-  background-color:#FF8181;
-
-  -webkit-transition:background-color 0.25s;
-  -moz-transition:background-color 0.25s;
-  transition:background-color 0.25s;
-}
-
-button:hover {
-  background-color: #FFCACA; /* #fadb6a nice light yellow */
-}
-
 
 p{
   font-size:22px;

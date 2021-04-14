@@ -25,6 +25,7 @@
             v-if="loaded"
             :chartdata="hive.graph"
             :chartdata2="hive.temperature"
+            :onChange="onSubmit"
             :options="options"/>
           <br>
           <button class="button">Detail</button>

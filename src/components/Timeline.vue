@@ -7,7 +7,7 @@
         <div class='block'></div>
         <div class='block' :style="{visibility: randomShow() ? 'visible' : 'hidden'}"></div>
         <div class='block' ></div>
-        <div v-bind:class="isActive(hex) ? 'block-highlight' : 'block'">{{ hex.date}}</div>
+        <div onclick="window.location='/timeline';" v-bind:class="isActive(hex) ? 'block-highlight' : 'block-button'">{{ hex.date}}</div>
         <div class='block' ></div>
       </div>
     </div>
@@ -131,9 +131,25 @@ body {
   box-shadow: inset 0 0 70px 35px var(--main_color) 73;
   transition: clip-path 300ms, background-color 300ms;
 }
-.block:hover {
-  background-color: var(--main_color);
+
+
+.block-button {
+  position: relative;
+  height: 95px;
+  background-color: var(--light_color);
+  grid-column: 2 span;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: inset 0 0 70px 35px var(--main_color) 73;
+  transition: clip-path 300ms, background-color 300ms;
 }
+.block-button:hover {
+  background-color: var(--main_color);
+  cursor: pointer;
+}
+
 
 .block-highlight {
   position: relative;
@@ -146,6 +162,7 @@ body {
   font-size: 20px;
   box-shadow: inset 0 0 70px 35px var(--main_color) 73;
   transition: clip-path 300ms, background-color 300ms;
+  cursor: pointer;
 }
 
 @media screen {

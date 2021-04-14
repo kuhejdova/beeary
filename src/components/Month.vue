@@ -52,7 +52,6 @@ export default {
 * {
   margin: 0;
 
-  padding: 0;
 }
 
 div {
@@ -72,27 +71,4 @@ div {
   box-sizing: border-box;
 }
 
-button {
-  display: inline-block;
-  padding: 0.5% 5%;
-  color: rgb(0, 0, 0) !important;
-  font-weight: bold;
-  font-size: 2vh;
-  text-decoration: none !important;
-  line-height: 1;
-  text-transform: uppercase;
-  background-color: var(--main_color); /* #FF8181 nice pink */
-  height: 100%;
-
-  -webkit-transition: background-color 0.25s;
-  -moz-transition: background-color 0.25s;
-  transition: background-color 0.25s;
-}
-
-button:hover {
-  background-color: var(
-    --light_color
-  ); /* #fadb6a nice light yellow, #FFCACA nice pink */
-  cursor: pointer;
-}
 </style>
