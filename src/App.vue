@@ -83,14 +83,14 @@ export default {
       //Calculate ratio between the two closest colors
       var ratio = resultDays / seasonDays;
 
-      console.log(seasonDays);
-      console.log(resultDays);
-      console.log(ratio);
+      // console.log(seasonDays);
+      // console.log(resultDays);
+      // console.log(ratio);
 
       //Get the color with pickHex(thx, less.js's mix function!)
       var result = this.pickHex(secondcolor, firstcolor, ratio);
 
-      console.log(result)
+      // console.log(result)
 
       this.root.style.setProperty(name, result);
     },
@@ -111,7 +111,7 @@ export default {
         return hex.length == 1 ? "0" + hex : hex;
       }
 
-console.log(rgb);
+// console.log(rgb);
       function rgbToHex(r, g, b) {
         return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
       }
@@ -153,6 +153,8 @@ button {
   background-color: var(--main_color); /* #FF8181 nice pink */
   height: 100%;
   min-height: 40px;
+  width: 20vh;
+  min-width: 120px;
 
   -webkit-transition: background-color 0.25s;
   -moz-transition: background-color 0.25s;
