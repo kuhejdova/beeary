@@ -43,7 +43,11 @@ export default {
     },
     getColorSchema(gradient, name) {
       var today = new Date();
-      var presentDate = new Date(today.getFullYear(), today.getMonth(), today.getDay());
+      var presentDate = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDay()
+      );
 
       var spring = new Date(today.getFullYear(), 2, 20);
       var summer = new Date(today.getFullYear(), 5, 21);
@@ -54,25 +58,47 @@ export default {
       var colorRange;
       var seasonDays;
 
-      if (spring < presentDate  && presentDate <= summer) {
-        resultDays = parseInt((summer.getTime() - presentDate.getTime()) / (1000 * 60 * 60 * 24), 10);
-        seasonDays = parseInt((summer.getTime() - spring.getTime()) / (1000 * 60 * 60 * 24), 10);
+      if (spring < presentDate && presentDate <= summer) {
+        resultDays = parseInt(
+          (summer.getTime() - presentDate.getTime()) / (1000 * 60 * 60 * 24),
+          10
+        );
+        seasonDays = parseInt(
+          (summer.getTime() - spring.getTime()) / (1000 * 60 * 60 * 24),
+          10
+        );
         colorRange = [gradient[2], gradient[1]];
-
       } else if (summer < presentDate && presentDate <= autumn) {
-        resultDays = parseInt((autumn.getTime() - presentDate.getTime()) / (1000 * 60 * 60 * 24), 10);
-        seasonDays = parseInt((autumn.getTime() - summer.getTime()) / (1000 * 60 * 60 * 24), 10);
+        resultDays = parseInt(
+          (autumn.getTime() - presentDate.getTime()) / (1000 * 60 * 60 * 24),
+          10
+        );
+        seasonDays = parseInt(
+          (autumn.getTime() - summer.getTime()) / (1000 * 60 * 60 * 24),
+          10
+        );
         colorRange = [gradient[3], gradient[2]];
-
-      } else if (autumn < presentDate && presentDate  <= winter) {
-        resultDays = parseInt((winter.getTime() - presentDate.getTime()) / (1000 * 60 * 60 * 24), 10);
-        seasonDays = parseInt((winter.getTime() - autumn.getTime()) / (1000 * 60 * 60 * 24), 10);
+      } else if (autumn < presentDate && presentDate <= winter) {
+        resultDays = parseInt(
+          (winter.getTime() - presentDate.getTime()) / (1000 * 60 * 60 * 24),
+          10
+        );
+        seasonDays = parseInt(
+          (winter.getTime() - autumn.getTime()) / (1000 * 60 * 60 * 24),
+          10
+        );
         colorRange = [gradient[0], gradient[3]];
-
       } else {
         var nextSpring = new Date(spring.getFullYear() + 1, 2, 20);
-        resultDays = parseInt((nextSpring.getTime() - presentDate.getTime()) / (1000 * 60 * 60 * 24), 10);
-        seasonDays = parseInt((nextSpring.getTime() - winter.getTime()) / (1000 * 60 * 60 * 24), 10);
+        resultDays = parseInt(
+          (nextSpring.getTime() - presentDate.getTime()) /
+            (1000 * 60 * 60 * 24),
+          10
+        );
+        seasonDays = parseInt(
+          (nextSpring.getTime() - winter.getTime()) / (1000 * 60 * 60 * 24),
+          10
+        );
         colorRange = [gradient[1], gradient[0]];
       }
 
@@ -111,7 +137,7 @@ export default {
         return hex.length == 1 ? "0" + hex : hex;
       }
 
-// console.log(rgb);
+      // console.log(rgb);
       function rgbToHex(r, g, b) {
         return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
       }
@@ -133,6 +159,13 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  /* height: 100%; */
+}
+
+body, html, #app {
+  height: 100%;
+  width: 100%;
+  margin: 0px;
 }
 
 :root {
@@ -142,12 +175,14 @@ export default {
 }
 
 button {
-  display: inline-block;
-  padding: 0.5% 5%;
-  color: rgb(0, 0, 0) !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  color: rgb(0, 0, 0);
   font-weight: bold;
   font-size: calc(8px + 0.5vw);
-  text-decoration: none !important;
+  text-decoration: none;
   line-height: 1;
   text-transform: uppercase;
   background-color: var(--main_color); /* #FF8181 nice pink */
@@ -167,5 +202,4 @@ button:hover {
   ); /* #fadb6a nice light yellow, #FFCACA nice pink */
   cursor: pointer;
 }
-
 </style>
