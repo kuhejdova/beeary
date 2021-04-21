@@ -51,9 +51,9 @@ export default {
     Month,
   },
   mounted(){
-    console.log("here", this.$route.params.query)
-    if (this.$route.params.query){
-      this.date = this.$route.params.query
+    console.log("here", this.$route.query.date)
+    if (this.$route.query.date){
+      this.date = this.$route.query.date
       console.log("here", this.date)
     }
   }

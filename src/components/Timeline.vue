@@ -7,7 +7,7 @@
         <div class='block'></div>
         <div class='block' :style="{visibility: randomShow() ? 'visible' : 'hidden'}"></div>
         <div class='block' ></div>
-        <div onclick=changeUrl(hex.date) v-bind:class="isActive(hex, selectedDate) ? 'block-highlight' : 'block-button'">{{ hex.date }}</div>
+        <div v-on:click="changeUrl(hex.date)" v-bind:class="urlDate === hex.date ? 'block-highlight' : 'block-button'">{{ hex.date }}</div>
         <div class='block' ></div>
       </div>
     </div>
@@ -15,21 +15,29 @@
 </template>
 
 <script>
-// import moment from "moment";
+import moment from "moment";
 
 export default {
-  props: ['selectedDate'],
-  // props: {selectedDate: String},
+  // props: ['selectedDate'],
+  props: {selectedDate: String},
   data() {
     return {
       hexagons: [],
-      active: false,
+      // active: false,
       show: true,
+      urlDate: moment(new Date()).format("M/YYYY")
     };
   },
+//   watch:{
+//     $route (to, from){
+//         this.show = false;
+//     }
+// } ,
   methods: {
+
     changeUrl(hexDate){
-      this.$router.push({ path: '/timeline', params: { query: hexDate }});
+      this.urlDate = hexDate;
+      this.$router.push({ path: '/timeline', query: { date: hexDate.replace("/", "-") }});
       
     },
 
@@ -59,19 +67,21 @@ export default {
         }
       }
     },
-    isActive(hex, selectedDate){
-      // moment.locale("cs");
-      // // var now_date = moment(new Date()).format("M/YYYY").toString();
-      // console.log(selectedDate);
-
-
-      if (hex.date.toString() == selectedDate.replace("-", "/")){
-        this.active = true;
-      } else {
-        this.active = false;
-      }
-      return this.active;
-    },
+    // isActive(hex, selectedDate){
+    //   // moment.locale("cs");
+    //   // // var now_date = moment(new Date()).format("M/YYYY").toString();
+    //   // console.log(selectedDate);
+    //   console.log("this should be active", selectedDate.replace("-", "/"))
+    //   console.log("active",hex.date.toString())
+    //   // if (hex.date.toString() == selectedDate.replace("-", "/")){
+        
+    //   //   console.log("active",hex.date.toString())
+    //   // } else {
+    //   //   this.active = false;
+    //   // }
+    //   // return this.active;
+    //   this.active = hex.date.toString() == selectedDate.replace("-", "/")
+    // },
     scrollToElement() {
     const el = document.getElementsByClassName('block-highlight')[0];
 
@@ -86,6 +96,9 @@ export default {
     this.scrollToElement();
   },
   mounted() {
+    if (this.$route.query.date){
+      this.urlDate = this.$route.query.date.replace("-", "/")
+    }
   this.scrollToElement();
 },
 };
