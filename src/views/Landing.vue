@@ -1,5 +1,5 @@
 <template>
-    <div class="grid-container">
+    <div class="container">
       <div class="logo">
         <img src="../../public/images/logo_text.svg" alt="Beeary" />
       </div>
@@ -86,18 +86,29 @@ export default {
   margin: 0;
 }
 
-
 .pictograms {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   overflow-x: scroll;
   flex: 0 0 auto;
   widows: 100%;
+  
 }
 .pictograms > div {
   width: 100%;
   flex: 0 0 auto;
 }
+
+   /* Hide scrollbar for Chrome, Safari and Opera */
+.pictograms::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.pictograms {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+} 
 
 .pictograms > div > object{
   height: 300px;
@@ -106,20 +117,22 @@ export default {
 .buttonwrapper {
   display: flex;
   justify-content: center;
+  margin-bottom: 10px;
 }
 
-.grid-container, section{
+.container, section{
   height: 100%;
 }
 
-.grid-container{
+.container{
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
   width: 100%;
+  /* margin-bottom: 10px; */
 }
 
-.grid-container > div {
+.container > div {
   background-color: rgba(255, 255, 255, 0.8);
   align-self: center;
   min-width: 250px;
@@ -128,7 +141,7 @@ export default {
 
 img {
   height: 100%;
-  width: 100%;
+  width: 70%;
   /* height: min(30vw, 100%);
     width: 90vw; */
 }
@@ -141,12 +154,15 @@ object {
 }
 
 @media (min-width: 690px) {
-  img {
-    height: min(30vw, 100%);
-    width: min(30vw, 100%);
-  }
+  /* img {
+    height: 100%;
+    width: 70%;
+    /* height: min(30vw, 100%);
+    width: min(30vw, 100%); 
+  } */
   .pictograms {
     overflow-x: auto;
+    justify-content: space-evenly;
   }
 
   .pictograms > div {
@@ -162,9 +178,9 @@ body {
   text-align: left;
 }
 
-#login {
-  /* margin-top: 200px; */
-}
+/* #login {
+  margin-top: 200px; 
+} */
 
 svg {
   fill: #ff0000;

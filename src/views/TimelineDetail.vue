@@ -5,7 +5,7 @@
       <section>
         <div class="wrapper">
           <div class="left">
-            <Timeline />
+            <Timeline :selectedDate="date" />
           </div>
           <div class="right">
             <Month />
@@ -23,9 +23,13 @@ import Timeline from "../components/Timeline.vue";
 import Month from "../components/Month.vue"
 
 export default {
+  // props:{
+  //   selectedDate
+  // },
   data() {
     return {
       noteToSave: [],
+      date: moment(new Date()).format("M-YYYY")
     };
   },
   methods: {
@@ -46,6 +50,13 @@ export default {
     Timeline,
     Month,
   },
+  mounted(){
+    console.log("here", this.$route.params.query)
+    if (this.$route.params.query){
+      this.date = this.$route.params.query
+      console.log("here", this.date)
+    }
+  }
 };
 </script>
 

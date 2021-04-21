@@ -7,7 +7,7 @@
         <div class='block'></div>
         <div class='block' :style="{visibility: randomShow() ? 'visible' : 'hidden'}"></div>
         <div class='block' ></div>
-        <div onclick="window.location='/timeline';" v-bind:class="isActive(hex) ? 'block-highlight' : 'block-button'">{{ hex.date}}</div>
+        <div onclick=changeUrl(hex.date) v-bind:class="isActive(hex, selectedDate) ? 'block-highlight' : 'block-button'">{{ hex.date }}</div>
         <div class='block' ></div>
       </div>
     </div>
@@ -15,9 +15,11 @@
 </template>
 
 <script>
-import moment from "moment";
+// import moment from "moment";
 
 export default {
+  props: ['selectedDate'],
+  // props: {selectedDate: String},
   data() {
     return {
       hexagons: [],
@@ -26,6 +28,11 @@ export default {
     };
   },
   methods: {
+    changeUrl(hexDate){
+      this.$router.push({ path: '/timeline', params: { query: hexDate }});
+      
+    },
+
     randomShow(){
       var min = 2;
       var max = 4;
@@ -52,11 +59,13 @@ export default {
         }
       }
     },
-    isActive(hex){
-      moment.locale("cs");
-      var now_date = moment(new Date()).format("M/YYYY").toString();
-      
-      if (hex.date.toString() == now_date){
+    isActive(hex, selectedDate){
+      // moment.locale("cs");
+      // // var now_date = moment(new Date()).format("M/YYYY").toString();
+      // console.log(selectedDate);
+
+
+      if (hex.date.toString() == selectedDate.replace("-", "/")){
         this.active = true;
       } else {
         this.active = false;

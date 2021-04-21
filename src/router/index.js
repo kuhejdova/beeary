@@ -11,7 +11,17 @@ import TimelineDetail from '../views/TimelineDetail.vue'
 // import App from '../App.vue'
 import { auth } from '../firebase'
 
+import moment from "moment";
+
 Vue.use(VueRouter)
+
+
+// function dynamicPropsFn (route) {
+//   // const now = new Date()
+//   console.log(route)
+//   return { date: route.date.d != null ? route.date.d :  moment(new Date()).format("M-YYYY")}
+// }
+
 
 const routes = [
     {
@@ -49,7 +59,13 @@ const routes = [
       component: TimelineDetail,
       meta: {
         requiresAuth: true
-      }
+      },
+      props: function (route) {
+        // const now = new Date()
+        console.log(route.query.date)
+        return { query: route.query.date != null ? route.query.date :  moment(new Date()).format("M-YYYY")}
+      },     
+      // props: route => ({ date: route.date.d ? route.date.d :  moment(new Date()).format("M-YYYY")})
     },
     {
       path: '/login',
