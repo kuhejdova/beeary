@@ -4,10 +4,10 @@
       <section>
         <div class="wrapper">
           <div class="left">
-            <Timeline :selectedDate="date" />
+            <Timeline :selectedDate="date" v-on:event_child="onChange"/>
           </div>
           <div class="right">
-            <Month :selectedDate="date" v-on:event_child="onChange" />
+            <Month :selectedDate="date" />
           </div>
         </div>
       </section>
@@ -31,10 +31,7 @@ export default {
   },
   methods: {
     onChange(selectedDate) {
-      console.log(selectedDate)
-      if (this.$route.query.date) {
-        this.date = this.$route.query.date;
-      }
+      this.date = selectedDate
     },
     onSubmit() {
       const payload = {

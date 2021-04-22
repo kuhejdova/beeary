@@ -1,6 +1,6 @@
 <template>
   <div class="col1">
-    <h2>{{ urlDate }}</h2>
+    <h2>{{ getDate() }}</h2>
     <br />
     <p>Poznámky</p>
     <br /><br />
@@ -34,7 +34,7 @@ export default {
   methods: {
     getDate() {
       moment.locale("cs");
-      var dateCapitalized = moment(new Date()).format("MMMM YYYY");
+      var dateCapitalized = moment(this.selectedDate, "MM-YYYY").format("MMMM YYYY");
       return dateCapitalized.charAt(0).toUpperCase() + dateCapitalized.slice(1);
     },
     onSubmit() {

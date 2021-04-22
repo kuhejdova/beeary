@@ -42,6 +42,8 @@ export default {
   methods: {
     changeUrl(hexDate) {
       this.urlDate = hexDate;
+      // this.selectedDate = hexDate.replace("/", "-");
+      // console.log(this.selectedDate);
       this.$router.push({
         path: "/timeline",
         query: { date: hexDate.replace("/", "-") },
@@ -76,23 +78,16 @@ export default {
       }
     },
     scrollToElement() {
-
       var xpath = "//div[contains(text(),'" + this.urlDate +"')]";
-      console.log(xpath)
-      // var xpath = "//a[text()='SearchingText']";
       var matchingElement = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-      // const el = document.getElementsByClassName("block-highlight")[0];
-      console.log(matchingElement)
 
       if (matchingElement) {
-        // Use el.scrollIntoView() to instantly scroll to the element
         matchingElement.scrollIntoView({ behavior: "smooth" });
       }
     },
   },
   created() {
     this.fillHexagons();
-    // this.scrollToElement();
   },
   mounted() {  
     if (this.$route.query.date) {
