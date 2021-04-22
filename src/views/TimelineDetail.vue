@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <main>
       <section>
         <div class="wrapper">
@@ -8,7 +7,7 @@
             <Timeline :selectedDate="date" />
           </div>
           <div class="right">
-            <Month />
+            <Month :selectedDate="date" v-on:event_child="onChange" />
           </div>
         </div>
       </section>
@@ -20,43 +19,39 @@
 import moment from "moment";
 
 import Timeline from "../components/Timeline.vue";
-import Month from "../components/Month.vue"
+import Month from "../components/Month.vue";
+
 
 export default {
-  // props:{
-  //   selectedDate
-  // },
   data() {
     return {
       noteToSave: [],
-      date: moment(new Date()).format("M-YYYY")
+      date: moment(new Date()).format("M-YYYY"),
     };
   },
   methods: {
-    getDate() {
-      moment.locale("cs");
-      var dateCapitalized = moment(new Date()).format("MMMM YYYY");
-      return dateCapitalized.charAt(0).toUpperCase() + dateCapitalized.slice(1);
+    onChange(selectedDate) {
+      console.log(selectedDate)
+      if (this.$route.query.date) {
+        this.date = this.$route.query.date;
+      }
     },
     onSubmit() {
       const payload = {
         noteToSave: this.noteToSave,
       };
-      return payload
+      return payload;
     },
   },
   components: {
-
     Timeline,
     Month,
   },
-  mounted(){
-    console.log("here", this.$route.query.date)
-    if (this.$route.query.date){
-      this.date = this.$route.query.date
-      console.log("here", this.date)
+  mounted() {
+    if (this.$route.query.date) {
+      this.date = this.$route.query.date;
     }
-  }
+  },
 };
 </script>
 
@@ -104,5 +99,4 @@ div {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-
 </style>

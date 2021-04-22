@@ -1,6 +1,6 @@
 <template>
   <div class="col1">
-    <h2>{{ getDate() }}</h2>
+    <h2>{{ urlDate }}</h2>
     <br />
     <p>Poznámky</p>
     <br /><br />
@@ -23,10 +23,12 @@
 import moment from "moment";
 
 export default {
+  props: { selectedDate: String },
   data() {
     return {
       noteToSave: [],
       show: false,
+      urlDate: moment(new Date()).format("M/YYYY"),
     };
   },
   methods: {
@@ -44,6 +46,11 @@ export default {
     showForm(){
         this.show = !this.show;
     }
+  },
+  mounted() {  
+    if (this.$route.query.date) {
+      this.urlDate = this.$route.query.date.replace("-", "/");
+    }  
   },
 };
 </script>

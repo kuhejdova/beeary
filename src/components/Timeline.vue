@@ -1,14 +1,27 @@
 <template>
   <section>
     <div class="container">
-      <div class="grid" v-for="(hex, index) in hexagons" :key="index" >
-        <div class='block' :style="{visibility: randomShow() ? 'visible' : 'hidden'}"></div>
-        <div class='block'></div>
-        <div class='block'></div>
-        <div class='block' :style="{visibility: randomShow() ? 'visible' : 'hidden'}"></div>
-        <div class='block' ></div>
-        <div v-on:click="changeUrl(hex.date)" v-bind:class="urlDate === hex.date ? 'block-highlight' : 'block-button'">{{ hex.date }}</div>
-        <div class='block' ></div>
+      <div class="grid" v-for="(hex, index) in hexagons" :key="index">
+        <div
+          class="block"
+          :style="{ visibility: randomShow() ? 'visible' : 'hidden' }"
+        ></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div
+          class="block"
+          :style="{ visibility: randomShow() ? 'visible' : 'hidden' }"
+        ></div>
+        <div class="block"></div>
+        <div
+          v-on:click="changeUrl(hex.date);"
+          v-bind:class="
+            urlDate === hex.date ? 'block-highlight' : 'block-button'
+          "
+        >
+          {{ hex.date }}
+        </div>
+        <div class="block"></div>
       </div>
     </div>
   </section>
@@ -18,37 +31,32 @@
 import moment from "moment";
 
 export default {
-  // props: ['selectedDate'],
-  props: {selectedDate: String},
+  props: { selectedDate: String },
   data() {
     return {
       hexagons: [],
-      // active: false,
       show: true,
-      urlDate: moment(new Date()).format("M/YYYY")
+      urlDate: moment(new Date()).format("M/YYYY"),
     };
   },
-//   watch:{
-//     $route (to, from){
-//         this.show = false;
-//     }
-// } ,
   methods: {
-
-    changeUrl(hexDate){
+    changeUrl(hexDate) {
       this.urlDate = hexDate;
-      this.$router.push({ path: '/timeline', query: { date: hexDate.replace("/", "-") }});
-      
+      this.$router.push({
+        path: "/timeline",
+        query: { date: hexDate.replace("/", "-") },
+      });
+      this.scrollToElement();
+      this.$emit('event_child', hexDate.replace("/", "-"))
     },
 
-    randomShow(){
+    randomShow() {
       var min = 2;
       var max = 4;
       var rand = Math.floor(Math.random() * (max - min + 1)) + min;
-      if (rand === 3){
+      if (rand === 3) {
         return false;
-      }
-      else{
+      } else {
         return true;
       }
     },
@@ -59,7 +67,7 @@ export default {
       for (var i = 0; i < 100; i++) {
         var monthyear = startmonth + "/" + startyear;
         this.hexagons.push({ id: i, date: monthyear });
-        if (startmonth == 12){
+        if (startmonth == 12) {
           startmonth = 1;
           startyear++;
         } else {
@@ -67,40 +75,32 @@ export default {
         }
       }
     },
-    // isActive(hex, selectedDate){
-    //   // moment.locale("cs");
-    //   // // var now_date = moment(new Date()).format("M/YYYY").toString();
-    //   // console.log(selectedDate);
-    //   console.log("this should be active", selectedDate.replace("-", "/"))
-    //   console.log("active",hex.date.toString())
-    //   // if (hex.date.toString() == selectedDate.replace("-", "/")){
-        
-    //   //   console.log("active",hex.date.toString())
-    //   // } else {
-    //   //   this.active = false;
-    //   // }
-    //   // return this.active;
-    //   this.active = hex.date.toString() == selectedDate.replace("-", "/")
-    // },
     scrollToElement() {
-    const el = document.getElementsByClassName('block-highlight')[0];
 
-    if (el) {
-      // Use el.scrollIntoView() to instantly scroll to the element
-      el.scrollIntoView({behavior: 'smooth'});
-    }
-  },
+      var xpath = "//div[contains(text(),'" + this.urlDate +"')]";
+      console.log(xpath)
+      // var xpath = "//a[text()='SearchingText']";
+      var matchingElement = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+      // const el = document.getElementsByClassName("block-highlight")[0];
+      console.log(matchingElement)
+
+      if (matchingElement) {
+        // Use el.scrollIntoView() to instantly scroll to the element
+        matchingElement.scrollIntoView({ behavior: "smooth" });
+      }
+    },
   },
   created() {
     this.fillHexagons();
-    this.scrollToElement();
+    // this.scrollToElement();
   },
-  mounted() {
-    if (this.$route.query.date){
-      this.urlDate = this.$route.query.date.replace("-", "/")
+  mounted() {  
+    if (this.$route.query.date) {
+      this.urlDate = this.$route.query.date.replace("-", "/");
     }
-  this.scrollToElement();
-},
+    this.scrollToElement();
+    
+  },
 };
 </script>
 
@@ -112,16 +112,16 @@ export default {
   overflow: auto;
 }
 
- /* Hide scrollbar for Chrome, Safari and Opera */
+/* Hide scrollbar for Chrome, Safari and Opera */
 .container::-webkit-scrollbar {
   display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .container {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-} 
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
 
 body {
   background-color: var(--main_color) 24;
@@ -154,7 +154,6 @@ body {
   transition: clip-path 300ms, background-color 300ms;
 }
 
-
 .block-button {
   position: relative;
   height: 95px;
@@ -171,7 +170,6 @@ body {
   background-color: var(--main_color);
   cursor: pointer;
 }
-
 
 .block-highlight {
   position: relative;
@@ -192,9 +190,9 @@ body {
   .block:nth-child(5n + 9) {
     grid-column: 2 / span 2;
   } */
-  .block:nth-child(5), 
+  .block:nth-child(5),
   .block:nth-child(7n + 12) {
     grid-column: 2 / span 2;
-    }
+  }
 }
 </style>
