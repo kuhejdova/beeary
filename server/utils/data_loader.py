@@ -32,5 +32,25 @@ def insert_line(con, cur, date, year, month, value):
     con.commit()
 
 
+def load_csv_months():
+    con, cur = create_connection()
+    with open('months.csv') as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=';')
+        line_count = 0
+        for row in csv_reader:
+            if line_count == 0:
+                line_count += 1
+            else:
+                insert_line_month(con, cur, row[0], row[1], row[2])
+                line_count += 1
+    con.close()
+
+
+def insert_line_month(con, cur, month, description, pictogram):
+    sql = '''INSERT INTO months(month_id, description, pictogram) VALUES (?, ?, ?)'''
+    cur.execute(sql, (month, description, pictogram))
+    con.commit()
+
+
 # if __name__ == '__main__':
-#     load_csv()
+#     load_csv_months()

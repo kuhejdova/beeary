@@ -39,13 +39,13 @@ app.config.from_object(__name__)
 CORS(app, resources={r'/*': {'origins': '*'}})
 
 
-@app.after_request
-def add_header(response):
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Headers'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS, HEAD'
-
-    return response
+# @app.after_request
+# def add_header(response):
+#     response.headers['Access-Control-Allow-Origin'] = '*'
+#     response.headers['Access-Control-Allow-Headers'] = '*'
+#     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS, HEAD'
+#
+#     return response
 
 # sanity check route
 @app.route('/ping', methods=['GET']) # prepsat na post
@@ -58,7 +58,7 @@ def all_sites():
     uid = "gXifKfOg06XvU9NewGfqiFwasE12"
     result = database.select_sites(uid)
     sites = database.sites_to_jsonify(result)
-    print(sites)
+    # print(sites)
     return jsonify({
         'status': 'success',
         'sites': sites
@@ -89,6 +89,23 @@ def all_hives():
     return jsonify({
         'status': 'success',
         'hives': hives
+    })
+
+
+@app.route('/activities', methods=['POST'])
+def get_month_activities():
+    month = request.get_json()
+    if month is not None:
+        result = database.select_month(month['month'])
+        activities = database.months_to_jsonify(result)
+    else:
+        month = 1
+        result = database.select_hives(month)
+        activities = database.hives_to_jsonify(result)
+    # print(activities)
+    return jsonify({
+        'status': 'success',
+        'activities': activities
     })
 
 

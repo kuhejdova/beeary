@@ -19,6 +19,7 @@ def create_tables():
     cur.execute('''CREATE TABLE weight (hid integer, date text, year integer, month integer, value real)''')
     cur.execute('''CREATE TABLE humidity (hid integer, date text, year integer, month integer, value real)''')
     cur.execute('''CREATE TABLE flow (hid integer, date text, year integer, month integer, value real)''')
+    cur.execute('''CREATE TABLE months (id integer primary key, month_id integer, description text, pictogram integer)''')
     con.commit()
     con.close()
 
@@ -116,6 +117,25 @@ def hives_to_jsonify(hives):
         hive_dict = {'id': hive[0], 'name': hive[1], 'graph': graph_data_to_jsonify(data_humidity),
                      'temperature': graph_data_to_jsonify(data_temperature)}
         res_list.append(hive_dict)
+    return res_list
+
+
+def select_month(month):
+    con = sqlite3.connect('beeary.db')
+    cur = con.cursor()
+    sql = '''SELECT description, pictogram  FROM months WHERE month_id = ?'''
+    cur.execute(sql, (month, ))
+    # con.commit()
+    res = cur.fetchall()
+    con.close()
+    return res
+
+
+def months_to_jsonify(activities):
+    res_list = []
+    for activity in activities:
+        act_dict = {'description': activity[0], 'pictogram': activity[1]}
+        res_list.append(act_dict)
     return res_list
 
 
