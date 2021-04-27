@@ -120,5 +120,33 @@ def add_hive():
     })
 
 
+@app.route('/notes', methods=['POST'])
+def get_notes():
+    hive = request.get_json()
+    if hive is not None:
+        result = database.select_notes(hive['hid'])
+        notes = database.notes_to_jsonify(result)
+    else:
+        # hid = 1
+        # result = database.select_month(hid)
+        notes = []
+    print(notes)
+    return jsonify({
+        'status': 'success',
+        'notes': notes
+    })
+
+
+@app.route('/add_note', methods=['POST'])
+def add_note():
+    post_data = request.get_json()
+    database.insert_notes(post_data['note_text'], post_data['hid'])
+    # print(post_data['site_name'], post_data['uid'], post_data['location'])
+    return jsonify({
+        'status': 'success',
+        'message': 'ok'
+    })
+
+
 if __name__ == '__main__':
     app.run()

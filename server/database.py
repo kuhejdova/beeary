@@ -152,11 +152,19 @@ def select_notes(hid):
     con = sqlite3.connect('beeary.db')
     cur = con.cursor()
 
-    sql = '''SELECT note_id, note_text FROM notes WHERE hid = ?'''
+    sql = '''SELECT note_text FROM notes WHERE hid = ?'''
     cur.execute(sql, (hid,))
     res = cur.fetchall()
     con.close()
     return res
+
+
+def notes_to_jsonify(notes):
+    res_list = []
+    for note in notes:
+        act_dict = {'note_text': note[0]}
+        res_list.append(act_dict)
+    return res_list
 
 
 if __name__ == '__main__':
