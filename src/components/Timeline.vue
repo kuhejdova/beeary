@@ -29,6 +29,7 @@
 
 <script>
 import moment from "moment";
+// import MenuTop from "MenuTop.vue";
 
 export default {
   props: { selectedDate: String },
@@ -39,6 +40,9 @@ export default {
       urlDate: moment(new Date()).format("M/YYYY"),
     };
   },
+  // components:{
+  //   m
+  // }
   methods: {
     changeUrl(hexDate) {
       this.urlDate = hexDate;
@@ -48,6 +52,7 @@ export default {
         path: "/timeline",
         query: { date: hexDate.replace("/", "-") },
       });
+      // this.MenuTop.makeActive("timeline")
       this.scrollToElement();
       this.$emit('event_child', hexDate.replace("/", "-"))
     },

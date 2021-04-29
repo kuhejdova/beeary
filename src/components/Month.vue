@@ -49,21 +49,29 @@
       <p>Poznámky</p>
       <br />
       <div v-for="(note, index) in notes" :key="index">
-        <li>
-          <div>{{ note.note_text }}</div>
+        <li v-if="displayNoteDate(note.note_date)">
+          <span >{{note.note_date}} - {{ note.note_text }}</span>
         </li>
       </div>
-      <br /><br />
+      <br />
       <button @click="showForm" class="button" v-show="!show">Přidat</button>
-      <form @submit="onSubmitNote" v-show="show">
+      <form @submit="selectNotes" v-show="show">
         <input
+        v-model="noteDateToSave"
           id="form-title-input"
+          type="text"
+          required
+          placeholder="D.M.YYYY"
+        />
+        <input
+        v-model="noteToSave"
+          id="form-date-input"
           type="text"
           required
           placeholder="Přitejte poznámku"
         />
         <br /><br />
-        <button @click="onSubmit" class="button">Uložit</button>
+        <button @click="onSubmitNote" class="button">Uložit</button>
         <button @click="showForm" class="button">Zrušit</button>
       </form>
     </div>
@@ -78,7 +86,8 @@ export default {
   props: { selectedDate: String },
   data() {
     return {
-      noteToSave: [],
+      noteToSave: "",
+      noteDateToSave: this.todayDate(),
       notes: [],
       show: false,
       urlDate: moment(new Date()).format("M/YYYY"),
@@ -105,11 +114,14 @@ export default {
       );
       return dateCapitalized.charAt(0).toUpperCase() + dateCapitalized.slice(1);
     },
-    onSubmitNote() {
-      const payload = {
-        note_text: this.noteToSave,
-      };
-      return payload;
+    todayDate(){
+      return moment(new Date()).format("D.M.YYYY");
+      
+    },
+
+    displayNoteDate(noteDate){
+      var dateToFormat = moment(noteDate, "D.M.YYYY").format("M-YYYY");
+      return dateToFormat === this.selectedDate;
     },
 
     postNote(payload) {
@@ -136,22 +148,26 @@ export default {
           console.error(error);
         });
 
-      console.log(this.notes);
+      // console.log(this.notes);
     },
 
-    // onSubmitNote(evt) {
-    //   evt.preventDefault();
-    //   const payload = {
-    //     sid: this.selected,
-    //     hive_name: this.hive_name,
-    //   };
-    //   // console.log(this.selected)
-    //   // console.log(payload)
-    //   this.postHid(payload);
+    onSubmitNote(evt) {
+      evt.preventDefault();
+      const payload = {
+        note_text: this.noteToSave,
+        hid: this.selectedHive,
+        note_date: this.noteDateToSave
+      };
+      // console.log(this.selected)
+      console.log(payload.note_date)
+      this.postNote(payload);
 
-    //   this.hive_name = "";
-    //   this.selected = 0;
-    // },
+      this.note_text = "";
+      this.note_date = this.todayDate();
+      this.selectNotes();
+      // this.show = !this.show;
+      // this.selected = 0;
+    },
 
     showForm() {
       this.show = !this.show;
@@ -260,6 +276,7 @@ export default {
     this.postSid();
     this.getSites();
     this.selectNotes();
+    this.todayDate();
   },
 };
 </script>

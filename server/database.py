@@ -139,11 +139,11 @@ def months_to_jsonify(activities):
     return res_list
 
 
-def insert_notes(note_text, hid):
+def insert_notes(note_text, hid, note_date):
     con = sqlite3.connect('beeary.db')
     cur = con.cursor()
-    sql = '''INSERT INTO notes(note_text, hid) VALUES (?, ?)'''
-    cur.execute(sql, (note_text, hid))
+    sql = '''INSERT INTO notes(note_text, hid, note_date) VALUES (?, ?, ?)'''
+    cur.execute(sql, (note_text, hid, note_date))
     con.commit()
     con.close()
 
@@ -152,7 +152,7 @@ def select_notes(hid):
     con = sqlite3.connect('beeary.db')
     cur = con.cursor()
 
-    sql = '''SELECT note_text FROM notes WHERE hid = ?'''
+    sql = '''SELECT note_text, note_date FROM notes WHERE hid = ?'''
     cur.execute(sql, (hid,))
     res = cur.fetchall()
     con.close()
@@ -162,7 +162,7 @@ def select_notes(hid):
 def notes_to_jsonify(notes):
     res_list = []
     for note in notes:
-        act_dict = {'note_text': note[0]}
+        act_dict = {'note_text': note[0], 'note_date': note[1]}
         res_list.append(act_dict)
     return res_list
 

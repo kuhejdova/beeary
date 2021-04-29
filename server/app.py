@@ -130,7 +130,7 @@ def get_notes():
         # hid = 1
         # result = database.select_month(hid)
         notes = []
-    print(notes)
+    # print(notes)
     return jsonify({
         'status': 'success',
         'notes': notes
@@ -140,8 +140,8 @@ def get_notes():
 @app.route('/add_note', methods=['POST'])
 def add_note():
     post_data = request.get_json()
-    database.insert_notes(post_data['note_text'], post_data['hid'])
-    # print(post_data['site_name'], post_data['uid'], post_data['location'])
+    database.insert_notes(post_data['note_text'], post_data['hid'], post_data['note_date'])
+    print(post_data['note_text'], post_data['hid'], post_data['note_date'])
     return jsonify({
         'status': 'success',
         'message': 'ok'
