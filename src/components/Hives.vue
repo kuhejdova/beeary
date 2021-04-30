@@ -28,7 +28,7 @@
             :onChange="onSubmit"
             :options="options"/>
           <br>
-          <button class="button">Detail</button>
+          <button class="button" @click="changeUrl(hive.id)">Detail</button>
         </div>
         
       </div>
@@ -44,6 +44,7 @@ export default {
   components: { LineChart },
   data() {
     return {
+       hid: 1,
       selected: 1,
       hives: [],
       sites: [],
@@ -53,6 +54,17 @@ export default {
     };
   },
   methods: {
+changeUrl(selectedHid) {
+      this.hid = selectedHid;
+      console.log(selectedHid);
+      this.$router.push({
+        path: "/hives",
+        query: { hid: this.hid },
+      });
+      this.$emit('event_child', selectedHid);
+    },
+
+
     postSid(payload) {
       const path = "http://localhost:5000/hives";
       axios

@@ -40,19 +40,13 @@ export default {
       urlDate: moment(new Date()).format("M/YYYY"),
     };
   },
-  // components:{
-  //   m
-  // }
   methods: {
     changeUrl(hexDate) {
       this.urlDate = hexDate;
-      // this.selectedDate = hexDate.replace("/", "-");
-      // console.log(this.selectedDate);
       this.$router.push({
         path: "/timeline",
         query: { date: hexDate.replace("/", "-") },
       });
-      // this.MenuTop.makeActive("timeline")
       this.scrollToElement();
       this.$emit('event_child', hexDate.replace("/", "-"))
     },

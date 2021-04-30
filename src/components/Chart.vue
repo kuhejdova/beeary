@@ -5,7 +5,7 @@ import { Line } from "vue-chartjs";
 export default {
   extends: Line,
   props: {
-    onChange: function(){},
+    // onChange: function(){},
     chartdata: {
       type: Array,
       default: null,
@@ -88,7 +88,7 @@ export default {
         scales: {
           yAxes: [
                   {
-                        type: 'linear',
+                  type: 'linear',
                   display: true,
                   position: 'left',
                   id: 'y',
@@ -97,6 +97,9 @@ export default {
                   type: 'linear',
                   display: true,
                   position: 'right',
+                  grid: {
+                    display: false, // only want the grid lines for one axis to show up
+                  },
                   id: 'y1',
                     },
                 ],

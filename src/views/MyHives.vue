@@ -4,8 +4,10 @@
     <main>
       <section>
         <div class="wrapper">
-          <div class="left">
-            <Hives />
+          <div class="left"> 
+            <!-- Nejaky vif aby tu mohly byt dve komponenty, jedna pro detail a jedna pro vsechny -->
+            <Hives v-on:event_child="onChange" v-show="show"/>
+            <HiveDetail :currentHive="currentHive" v-show="!show"/>
           </div>
           <div class="right">
             <Hexagons />
@@ -19,14 +21,59 @@
 <script>
 
 import Hives from "../components/Hives.vue";
+import HiveDetail from "../components/HiveDetail"
 import Hexagons from "../components/Hexagons.vue";
 
 export default {
-  components: {
+    components: {
 
     Hives,
+    HiveDetail,
     Hexagons,
   },
+  data() {
+    return {
+      currentHive: 0,
+      show: true,
+    };
+  },
+  watch: {
+    $route: function() {
+      if (parseInt(this.$route.query.hid) == 0 || !this.$route.query.hid){
+        this.show = true
+      }
+      else {
+        this.show = false
+      }
+    },
+  },
+  methods: {
+    onChange(current) {
+      this.currentHive = current
+      console.log(parseInt(this.$route.query.hid))
+      if (parseInt(this.$route.query.hid) == 0){
+        this.show = true
+        // console.log('here', parseInt(this.$route.query.hid))
+      }
+      else {
+        this.show = false
+      }
+      console.log(this.show)
+
+    },
+    // onSubmit() {
+    //   const payload = {
+    //     noteToSave: this.noteToSave,
+    //   };
+    //   return payload;
+    // },
+  },
+  mounted() {
+    if (this.$route.query.hid) {
+      this.currentHive = parseInt(this.$route.query.hid);
+    }
+  },
+
 };
 </script>
 
@@ -59,9 +106,10 @@ div {
   box-sizing: border-box;
 }
 
-/* .right {
-  margin-top: -40px;
-} */
+.right {
+  width: 26vw;
+  overflow-x: hidden;
+}
 
 .left {
   padding-left: 20px;

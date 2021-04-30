@@ -43,7 +43,10 @@ const routes = [
       component: Hives,
       meta: {
         requiresAuth: true
-      }
+      },
+      props: function (route) {
+        return { query: route.query.hid != null ? route.query.hid : ""}
+      }, 
     },
     {
       path: '/timeline',

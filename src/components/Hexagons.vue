@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     fillHexagons() {
-      for (var i = 0; i < 30; i++) {
+      for (var i = 0; i < 150; i++) {
         this.hexagons.push({ id: i });
       }
     },
@@ -31,7 +31,7 @@ export default {
 
 <style scoped>
 .container {
-  width: 450px;
+  width: 400px;
   margin-top: 10px;
   height: 88vh;
   overflow: hidden;
@@ -55,12 +55,12 @@ body {
 .grid {
   display: grid;
   width: auto;
-  justify-content: left;
+  justify-content: center;
   grid-auto-flow: dense;
-  grid-template-columns: repeat(auto-fit, 70px);
-  grid-template-rows: repeat(auto-fit, minmax(112px, 112px));
-  grid-auto-rows: 112px;
-  margin-bottom: 42px;
+  grid-template-columns: repeat(auto-fit, 50px);
+  grid-template-rows: repeat(auto-fit, minmax(78px, 78px));
+  grid-auto-rows: 78px;
+  /* margin-bottom: 42px; */
 }
 .grid > * {
   -webkit-clip-path: polygon(50% 0, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
@@ -68,15 +68,13 @@ body {
 }
 .block {
   position: relative;
-  height: 140px;
+  height: 95px;
   background-color: var(--light_color);
   grid-column: 2 span;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  font-style: italic;
-  font-size: 35px;
+  font-size: 20px;
   box-shadow: inset 0 0 70px 35px var(--main_color) 73;
   transition: clip-path 300ms, background-color 300ms;
 }
@@ -85,8 +83,8 @@ body {
 }
 
 @media screen {
-  .block:nth-child(4),
-  .block:nth-child(5n + 9) {
+  .block:nth-child(5),
+  .block:nth-child(7n + 12) {
     grid-column: 2 / span 2;
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <nav v-bind:class="active" v-on:click.prevent>
-    <a href= '/' class="logoImg"><img src="../../public/beeary_logo_v1.png" alt="Beeary"></a>
+    <a href= '/' class="logoImg"><img src="../../public/images/logo_text.svg" alt="Beeary"></a>
 
     <router-link to="/home" class="home" @click.native="makeActive('home')"
       >Hlavní stránka</router-link
