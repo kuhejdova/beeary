@@ -73,24 +73,36 @@ def select_hives(sid):
 
 
 def select_humidity_graph():
-    curr_month = datetime.today().month
+    # curr_month = datetime.today().month
     con = sqlite3.connect('beeary.db')
     cur = con.cursor()
 
-    sql = '''SELECT date, value FROM humidity WHERE month = ?'''
-    cur.execute(sql, (curr_month,))
+    sql = '''SELECT date, value FROM humidity'''
+    cur.execute(sql)
     res = cur.fetchall()
     con.close()
     return res
 
 
 def select_temperature_graph():
-    curr_month = datetime.today().month
+    # curr_month = datetime.today().month
     con = sqlite3.connect('beeary.db')
     cur = con.cursor()
 
-    sql = '''SELECT date, value FROM temperature WHERE month = ?'''
-    cur.execute(sql, (curr_month,))
+    sql = '''SELECT date, value FROM temperature'''
+    cur.execute(sql)
+    res = cur.fetchall()
+    con.close()
+    return res
+
+
+def select_weight_graph():
+    # curr_month = datetime.today().month
+    con = sqlite3.connect('beeary.db')
+    cur = con.cursor()
+
+    sql = '''SELECT date, value FROM weight'''
+    cur.execute(sql)
     res = cur.fetchall()
     con.close()
     return res
@@ -109,13 +121,29 @@ def graph_data_to_jsonify(graphdata):
     return data_list
 
 
+def graph_data_by_date_to_jsonify(graphdata):
+    data_list = []
+    now = datetime.today()
+    fake_now = now - timedelta(days=2*366-1)
+    week_back = fake_now - timedelta(days=7)
+    for row in graphdata:
+        dt = datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S')
+        if week_back <= dt <= fake_now:
+            line_dict = {'date': row[0], 'value': row[1]}
+            data_list.append(line_dict)
+    return data_list
+
+
 def hives_to_jsonify(hives):
     res_list = []
     data_humidity = select_humidity_graph()
     data_temperature = select_temperature_graph()
+    data_weight = select_weight_graph()
     for hive in hives:
-        hive_dict = {'id': hive[0], 'name': hive[1], 'graph': graph_data_to_jsonify(data_humidity),
-                     'temperature': graph_data_to_jsonify(data_temperature)}
+        hive_dict = {'id': hive[0], 'name': hive[1],
+                     'humidity': graph_data_to_jsonify(data_humidity),
+                     'temperature': graph_data_to_jsonify(data_temperature),
+                     'weight': graph_data_to_jsonify(data_weight)}
         res_list.append(hive_dict)
     return res_list
 
@@ -165,6 +193,15 @@ def notes_to_jsonify(notes):
         act_dict = {'note_text': note[0], 'note_date': note[1]}
         res_list.append(act_dict)
     return res_list
+
+
+def select_hive_graph_data(hid, date_from, date_to):
+    pass
+
+
+def graph_data_for_hid_to_jsonify(graph_data):
+    pass
+
 
 
 if __name__ == '__main__':

@@ -148,5 +148,24 @@ def add_note():
     })
 
 
+@app.route('/hive_graph', methods=['POST'])
+def get_hive_graph():
+    data = request.get_json()
+    if data is not None:
+        result = database.select_hive_graph_data(data['hid'], data['dateFrom'], data['dateTo'])
+        graph_data = database.graph_data_for_hid_to_jsonify(result)
+    else:
+        pass
+        # sid = 1
+        # result = database.select_hives(sid)
+        # hives = database.hives_to_jsonify(result)
+    return jsonify({
+        'status': 'success',
+        'graphData': graph_data
+    })
+
+
+
+
 if __name__ == '__main__':
     app.run()

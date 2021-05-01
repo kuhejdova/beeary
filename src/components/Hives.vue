@@ -23,8 +23,9 @@
           <br /><br />
           <line-chart
             v-if="loaded"
-            :chartdata="hive.graph"
+            :chartdata="hive.humidity"
             :chartdata2="hive.temperature"
+            :chartdata3="hive.weight"
             :onChange="onSubmit"
             :options="options"/>
           <br>

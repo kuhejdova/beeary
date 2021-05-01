@@ -16,6 +16,11 @@ export default {
       default: null,
       require: false,
     },
+    chartdata3: {
+      type: Array,
+      default: null,
+      require: false,
+    },
     options: {
       type: Object,
       default: null,
@@ -39,12 +44,14 @@ export default {
 
     // var myLabels2;
     var myValues2;
+    var myValues3;
 
     myLabels = this.parseDataset(this.chartdata)[0];
     myValues = this.parseDataset(this.chartdata)[1];
 
     // myLabels2 = this.parseDataset(this.chartdata2)[0];
     myValues2 = this.parseDataset(this.chartdata2)[1];
+    myValues3 = this.parseDataset(this.chartdata3)[1];
 
     this.renderChart(
       {
@@ -69,6 +76,16 @@ export default {
             pointBorderColor: "#7FD97E",
             data: myValues,
             yAxisID: "y1",
+          },
+          {
+            label: "Hmotnost",
+            fill: false,
+            backgroundColor: "#ff0000",
+            borderColor: "#ff0000",
+            pointBackgroundColor: "#ff0000",
+            pointBorderColor: "#ff0000",
+            data: myValues3,
+            yAxisID: "y2",
           },
         ],
       },
@@ -101,6 +118,15 @@ export default {
                     display: false, // only want the grid lines for one axis to show up
                   },
                   id: 'y1',
+                    },
+                    {
+                  type: 'linear',
+                  display: true,
+                  position: 'left',
+                  grid: {
+                    display: false, // only want the grid lines for one axis to show up
+                  },
+                  id: 'y2',
                     },
                 ],
         //  {
