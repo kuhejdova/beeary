@@ -2,7 +2,7 @@
   <section>
     <div class="container">
       <div class="grid">
-        <div v-for="(hex, index) in hexagons" :key="index" class="block"></div>
+        <div v-for="(hex, index) in hexagons" :key="index" class="block"><img v-if="index%5 ==0" src="../../public/images/hives.svg" alt="Beeary" /></div>
       </div>
     </div>
   </section>
@@ -87,5 +87,9 @@ body {
   .block:nth-child(7n + 12) {
     grid-column: 2 / span 2;
   }
+}
+
+img {
+  height: 100%;
 }
 </style>

@@ -50,7 +50,7 @@ export default {
   methods: {
     onChange(current) {
       this.currentHive = current
-      console.log(parseInt(this.$route.query.hid))
+
       if (parseInt(this.$route.query.hid) == 0){
         this.show = true
         // console.log('here', parseInt(this.$route.query.hid))
@@ -58,7 +58,7 @@ export default {
       else {
         this.show = false
       }
-      console.log(this.show)
+
 
     },
     // onSubmit() {

@@ -90,6 +90,7 @@ export default {
         ],
       },
       {
+        maintainAspectRatio: false,
         responsive: true,
         interaction: {
           mode: "index",

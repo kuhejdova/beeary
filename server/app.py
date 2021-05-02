@@ -152,13 +152,14 @@ def add_note():
 def get_hive_graph():
     data = request.get_json()
     if data is not None:
-        result = database.select_hive_graph_data(data['hid'], data['dateFrom'], data['dateTo'])
-        graph_data = database.graph_data_for_hid_to_jsonify(result)
+        graph_data = database.hive_with_graphs(data['hid'], data['dateFrom'], data['dateTo'])
+        # graph_data = database.graph_data_for_hid_to_jsonify(result)
     else:
-        pass
+        graph_data = []
         # sid = 1
         # result = database.select_hives(sid)
         # hives = database.hives_to_jsonify(result)
+    # print(graph_data)
     return jsonify({
         'status': 'success',
         'graphData': graph_data

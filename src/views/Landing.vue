@@ -172,6 +172,11 @@ object {
   }
 }
 
+
+.pictogram1, .pictogram2, .pictogram3{
+  padding: 10px;
+}
+
 body {
   font: max(8px, 10vw) "Open Sans", sans-serif;
   color: #5e5b64;

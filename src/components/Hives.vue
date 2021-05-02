@@ -39,7 +39,7 @@
 
 <script>
 import axios from "axios";
-import LineChart from './Chart.vue'
+import LineChart from './MultilineChart.vue'
 
 export default {
   components: { LineChart },

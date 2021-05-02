@@ -121,17 +121,42 @@ def graph_data_to_jsonify(graphdata):
     return data_list
 
 
-def graph_data_by_date_to_jsonify(graphdata):
+def graph_data_by_date_to_jsonify(graphdata, date_from, date_to):
     data_list = []
     now = datetime.today()
-    fake_now = now - timedelta(days=2*366-1)
-    week_back = fake_now - timedelta(days=7)
+    # fake_now = now - timedelta(days=2*366-1)
+    date_from_date = datetime.strptime(date_from, '%d.%m.%Y') - timedelta(days=2*366-1)
+    date_to_date = datetime.strptime(date_to, '%d.%m.%Y') - timedelta(days=2*366-1)
+    # week_back = fake_now - timedelta(days=7)
     for row in graphdata:
         dt = datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S')
-        if week_back <= dt <= fake_now:
+        if date_from_date <= dt <= date_to_date:
             line_dict = {'date': row[0], 'value': row[1]}
             data_list.append(line_dict)
     return data_list
+
+
+def hive_with_graphs(hid, date_from, date_to):
+    con = sqlite3.connect('beeary.db')
+    cur = con.cursor()
+
+    sql = '''SELECT hive_name FROM hives WHERE hive_id = ?'''
+    cur.execute(sql, (hid,))
+    hive = cur.fetchone()
+    con.close()
+
+    res_list = []
+    data_humidity = select_humidity_graph()
+    data_temperature = select_temperature_graph()
+    data_weight = select_weight_graph()
+
+    hive_dict = {'name': hive[0],
+                 'humidity': graph_data_by_date_to_jsonify(data_humidity, date_from, date_to),
+                 'temperature': graph_data_by_date_to_jsonify(data_temperature, date_from, date_to),
+                 'weight': graph_data_by_date_to_jsonify(data_weight, date_from, date_to)}
+    res_list.append(hive_dict)
+    return res_list
+
 
 
 def hives_to_jsonify(hives):
@@ -193,15 +218,6 @@ def notes_to_jsonify(notes):
         act_dict = {'note_text': note[0], 'note_date': note[1]}
         res_list.append(act_dict)
     return res_list
-
-
-def select_hive_graph_data(hid, date_from, date_to):
-    pass
-
-
-def graph_data_for_hid_to_jsonify(graph_data):
-    pass
-
 
 
 if __name__ == '__main__':
