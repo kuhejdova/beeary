@@ -83,8 +83,9 @@ export default {
       chartData: null,
       options: null,
 
-      dateFrom: "1.1.2019",
-      dateTo: "1.2.2019",
+      dateFrom: moment(new Date(), "D.M.YYYY").subtract(7,'d').format("D.M.YYYY"),
+      dateTo: moment(new Date(), "D.M.YYYY").format("D.M.YYYY"),
+      
 
       Teplota: "Teplota",
       Vlhkost: "Vlhkost",
@@ -133,10 +134,15 @@ export default {
         this.$refs.displayError.innerHTML = "Zadané datum je ve špatném formátu. Datum zadejte ve formátu D.M.YYYY"
         return;
       }
-      console.log(checkFrom)
-      console.log(checkTo)
-      if (checkTo.isBefore(checkFrom)){
+      // console.log(checkFrom)
+      // console.log(checkTo)
+      if (checkTo.isSameOrBefore(checkFrom)){ 
         this.$refs.displayError.innerHTML = "Neplatný rozsah dat, datum OD musí být před datum DO"
+        return;
+      }
+      var today = moment(new Date(), "D.M.YYYY");
+      if (checkTo.isAfter(today)){
+        this.$refs.displayError.innerHTML = "Data jsou dostupná pouze do dnešního dne"
         return;
       }
 
