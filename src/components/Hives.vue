@@ -57,7 +57,7 @@ export default {
   methods: {
 changeUrl(selectedHid) {
       this.hid = selectedHid;
-      console.log(selectedHid);
+      // console.log(selectedHid);
       this.$router.push({
         path: "/hives",
         query: { hid: this.hid },

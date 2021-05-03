@@ -38,6 +38,16 @@ export default {
       });
       return [labels, values];
     },
+
+    humidityWarning(context){
+      let index = context.dataIndex;
+      let value = context.dataset.data[ index ];
+      
+      var res = value >= 95 ? "#ff0000" : "#0000ff";
+      console.log(res)
+      return res
+    },
+
     createChart(){
       var myLabels;
     var myValues;
@@ -54,8 +64,8 @@ export default {
             fill: false,
             backgroundColor: "#0000ff",
             borderColor: "#0000ff",
-            pointBackgroundColor: "#0000ff",
-            pointBorderColor: "0000ff",
+            pointBackgroundColor: this.humidityWarning,
+            pointBorderColor: this.humidityWarning,
             data: myValues,
             yAxisID: "y",
           },
@@ -75,6 +85,13 @@ export default {
             text: "Chart.js Line Chart - Multi Axis",
           },
         },
+        // elements: {
+        //   point: {
+        //     pointBackgroundColor : this.humidityWarning,
+        //     pointBorderColor : this.humidityWarning,
+        //     display: true
+        //   }
+        // },
         scales: {
           yAxes: [
             {

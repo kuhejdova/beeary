@@ -101,7 +101,7 @@ export default {
           dateFrom: this.dateFrom,
           dateTo: this.dateTo,
         };
-        console.log(payload);
+        // console.log(payload);
         this.postHid(payload);
       }
     },

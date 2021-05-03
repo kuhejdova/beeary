@@ -19,6 +19,8 @@ def load_csv():
                 line_count += 1
             else:
                 dt = datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S')
+                if dt.year == 2018:
+                    break
                 if dt.minute == 0 and row[1] != '':
                     insert_line(con, cur, row[0], dt.year + 1, dt.month, round(float(row[1])/1000, 2))
                 line_count += 1
