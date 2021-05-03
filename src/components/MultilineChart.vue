@@ -66,6 +66,7 @@ export default {
             pointBorderColor: "0000ff",
             data: myValues2,
             yAxisID: "y",
+            xAxisID: "x",
           },
           {
             label: "Vlhkost",
@@ -76,6 +77,7 @@ export default {
             pointBorderColor: "#7FD97E",
             data: myValues,
             yAxisID: "y1",
+            xAxisID: "x",
           },
           {
             label: "Hmotnost",
@@ -86,6 +88,7 @@ export default {
             pointBorderColor: "#ff0000",
             data: myValues3,
             yAxisID: "y2",
+            xAxisID: "x",
           },
         ],
       },
@@ -104,51 +107,51 @@ export default {
           },
         },
         scales: {
+          xAxes: [
+            {
+              scaleLabel: {
+                display: true,
+              },
+              type: "time",
+              time: {
+                parser: "YYYY-MM-DD HH:mm:ss",
+                unit: "day",
+                displayFormats: {
+                  day: "DD. MM. YYYY",
+                },
+              },
+              id: "x",
+            },
+          ],
           yAxes: [
-                  {
-                  type: 'linear',
-                  display: true,
-                  position: 'left',
-                  id: 'y',
-                    },
-                    {
-                  type: 'linear',
-                  display: true,
-                  position: 'right',
-                  grid: {
-                    display: false, // only want the grid lines for one axis to show up
-                  },
-                  id: 'y1',
-                    },
-                    {
-                  type: 'linear',
-                  display: true,
-                  position: 'left',
-                  grid: {
-                    display: false, // only want the grid lines for one axis to show up
-                  },
-                  id: 'y2',
-                    },
-                ],
-        //  {
-        //   y: {
-        //     type: "linear",
-        //     display: true,
-        //     position: "left",
-        //   },
-        //   y1: {
-        //     type: "linear",
-        //     display: true,
-        //     position: "right",
-
-        //     // grid line settings
-        //     grid: {
-        //       drawOnChartArea: false, // only want the grid lines for one axis to show up
-        //     },
-        //   },
-        // },
+            {
+              type: "linear",
+              display: true,
+              position: "left",
+              
+              id: "y",
+            },
+            {
+              type: "linear",
+              display: true,
+              position: "right",
+              gridLines: {
+                display:false
+            },
+              id: "y1",
+            },
+            {
+              type: "linear",
+              display: true,
+              position: "left",
+              gridLines: {
+                display:false
+            },
+              id: "y2",
+            },
+          ],
+        },
       }
-      },
     );
   },
 };

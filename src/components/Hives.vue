@@ -125,9 +125,11 @@ changeUrl(selectedHid) {
   grid-template-columns: 50% 50%;
   column-gap: 10px;
   row-gap: 10px;
+  height: 50vh;
 
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
 </style>

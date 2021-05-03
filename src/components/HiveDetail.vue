@@ -23,12 +23,12 @@
       placeholder="Datum do"
     />
       </label>
-    <br /><br />
+    <br />
     <button @click="onSubmit" class="button">Zobrazit</button>
     </div>
     <br />
     <span id='displayError' ref="displayError"></span>
-    <br /><br />
+    <br />
     <div class="chart">
       <line-chart
         v-if="loaded"
@@ -211,5 +211,11 @@ this.$refs.displayError.innerHTML = ''
 
 #displayError {
   color: red;
+}
+
+h1 {
+  background: #f4f4f4;
+  padding: 10px;
+  height: auto;
 }
 </style>

@@ -23,7 +23,7 @@ export default {
     },
   },
   watch: {
-    chartData: function(){
+    chartData: function() {
       this.createChart();
     },
   },
@@ -39,74 +39,96 @@ export default {
       return [labels, values];
     },
 
-    humidityWarning(context){
+    colorWarning(context) {
       let index = context.dataIndex;
-      let value = context.dataset.data[ index ];
-      
-      var res = value >= 95 ? "#ff0000" : "#0000ff";
-      console.log(res)
-      return res
+      let value = context.dataset.data[index];
+      var res = "#0000ff";
+
+      if (this.title == "Vlhkost") {
+        res = value >= 95 || value <= 0 ? "#ff0000" : "#0000ff";
+      }
+
+      if (this.title == "Teplota") {
+        res = value < 10 ? "#ff0000" : "#0000ff";
+      }
+      return res;
     },
 
-    createChart(){
+    createChart() {
       var myLabels;
-    var myValues;
+      var myValues;
 
-    myLabels = this.parseDataset(this.chartData)[0];
-    myValues = this.parseDataset(this.chartData)[1];
+      myLabels = this.parseDataset(this.chartData)[0];
+      myValues = this.parseDataset(this.chartData)[1];
 
-    this.renderChart(
-      {
-        labels: myLabels,
-        datasets: [
-          {
-            label: this.title,
-            fill: false,
-            backgroundColor: "#0000ff",
-            borderColor: "#0000ff",
-            pointBackgroundColor: this.humidityWarning,
-            pointBorderColor: this.humidityWarning,
-            data: myValues,
-            yAxisID: "y",
-          },
-        ],
-      },
-      {
-        maintainAspectRatio: false,
-        responsive: true,
-        interaction: {
-          mode: "index",
-          intersect: false,
-        },
-        stacked: false,
-        plugins: {
-          title: {
-            display: true,
-            text: "Chart.js Line Chart - Multi Axis",
-          },
-        },
-        // elements: {
-        //   point: {
-        //     pointBackgroundColor : this.humidityWarning,
-        //     pointBorderColor : this.humidityWarning,
-        //     display: true
-        //   }
-        // },
-        scales: {
-          yAxes: [
+      this.renderChart(
+        {
+          labels: myLabels,
+          datasets: [
             {
-              type: "linear",
-              display: true,
-              position: "left",
-              id: "y",
+              label: this.title,
+              fill: false,
+              backgroundColor: "#0000ff",
+              borderColor: "#0000ff",
+              pointBackgroundColor: this.colorWarning,
+              pointBorderColor: this.colorWarning,
+              data: myValues,
+              yAxisID: "y",
+              xAxisID: "x",
             },
           ],
         },
-      }
-    );
-    }
-
-
+        {
+          maintainAspectRatio: false,
+          responsive: true,
+          interaction: {
+            mode: "index",
+            intersect: false,
+          },
+          stacked: false,
+          plugins: {
+            title: {
+              display: true,
+              text: "Chart.js Line Chart - Multi Axis",
+            },
+          },
+          // elements: {
+          //   point: {
+          //     pointBackgroundColor : this.humidityWarning,
+          //     pointBorderColor : this.humidityWarning,
+          //     display: true
+          //   }
+          // },
+          scales: {
+            xAxes: [
+              {
+                scaleLabel: {
+                  display: true,
+                  labelString: "Datum",
+                },
+                type: "time",
+                time: {
+                  parser: "YYYY-MM-DD HH:mm:ss",
+                  unit: "day",
+                  displayFormats: {
+                    day: "DD. MM. YYYY",
+                  },
+                },
+                id: "x",
+              },
+            ],
+            yAxes: [
+              {
+                type: "linear",
+                display: true,
+                position: "left",
+                id: "y",
+              },
+            ],
+          },
+        }
+      );
+    },
   },
   mounted() {
     this.createChart();

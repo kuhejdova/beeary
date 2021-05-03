@@ -111,7 +111,7 @@ def select_weight_graph():
 def graph_data_to_jsonify(graphdata):
     data_list = []
     now = datetime.today()
-    fake_now = now - timedelta(days=2*366-1)
+    fake_now = now
     week_back = fake_now - timedelta(days=7)
     for row in graphdata:
         dt = datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S')
@@ -125,8 +125,8 @@ def graph_data_by_date_to_jsonify(graphdata, date_from, date_to):
     data_list = []
     now = datetime.today()
     # fake_now = now - timedelta(days=2*366-1)
-    date_from_date = datetime.strptime(date_from, '%d.%m.%Y') - timedelta(days=2*366-1)
-    date_to_date = datetime.strptime(date_to, '%d.%m.%Y') - timedelta(days=2*366-1)
+    date_from_date = datetime.strptime(date_from, '%d.%m.%Y')
+    date_to_date = datetime.strptime(date_to, '%d.%m.%Y')
     # week_back = fake_now - timedelta(days=7)
     for row in graphdata:
         dt = datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S')
