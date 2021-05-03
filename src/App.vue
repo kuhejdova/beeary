@@ -153,8 +153,9 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;600&display=swap');
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Source Sans Pro, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -174,7 +175,12 @@ body, html, #app {
   --additional_color: #d3f4d3;
 }
 
+input {
+  font-family: Source Sans Pro, Helvetica, Arial, sans-serif;
+}
+
 button {
+  font-family: Source Sans Pro, Helvetica, Arial, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;

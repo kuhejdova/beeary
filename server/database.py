@@ -153,6 +153,24 @@ def generate_warnings_humidity(graphdata):
     con.close()
 
 
+def generate_warnings_temperature(graphdata):
+    con = sqlite3.connect('beeary.db')
+    cur = con.cursor()
+    dates_list = []
+    for row in graphdata:
+        if 10 <= row[1]:
+            continue
+        dt = datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S')
+        only_date = datetime.strftime(dt, '%Y-%m-%d')
+        if only_date in dates_list:
+            continue
+        dates_list.append(only_date)
+        sql = '''INSERT INTO warnings(hid, sid, warning_text, warning_date) VALUES (?, ?, ?, ?)'''
+        cur.execute(sql, (1, 1, "Příliš nízká teplota (pod 10°C), hrozí promrznutí včel", only_date))
+        con.commit()
+    con.close()
+
+
 def warnings_to_jsonify(date_from, date_to):
     con = sqlite3.connect('beeary.db')
     cur = con.cursor()
@@ -273,4 +291,6 @@ if __name__ == '__main__':
     # print(result)
     # graphdata = select_humidity_graph()
     # generate_warnings_humidity(graphdata)
+    # graphdata = select_temperature_graph()
+    # generate_warnings_temperature(graphdata)
 

@@ -79,6 +79,7 @@ export default {
       Chart.Legend.prototype.afterFit = function() {
         this.height = this.height + 10;
       };
+      // Chart.defaults.font: {family: "'Source Sans Pro', 'Helvetica', 'Arial', sans-serif"}
       var myLabels;
       var myValues;
 
@@ -125,6 +126,7 @@ export default {
           scales: {
             xAxes: [
               {
+                font: {family: "'Source Sans Pro', 'Helvetica', 'Arial', sans-serif"},
                 scaleLabel: {
                   display: true,
                   labelString: "Datum",
@@ -142,6 +144,7 @@ export default {
             ],
             yAxes: [
               {
+                font: {family: "'Source Sans Pro', 'Helvetica', 'Arial', sans-serif"},
                 scaleLabel: {
                   display: true,
                   labelString: this.description,

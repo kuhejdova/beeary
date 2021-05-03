@@ -5,7 +5,9 @@
         <div id="inner">
           {{ site.name }} <br />
           - {{ site.location }} <br /><br />
-          {{ site.event }}
+          <div v-for="(warning, index) in chartData.warnings" :key="index">
+        {{chartData.name}} {{'– '}} {{ formatDate(warning.date) }} {{'– '}}{{ warning.value }}
+    </div>
         </div>
       </div>
     </div>
@@ -14,14 +16,41 @@
 
 <script>
 import axios from "axios";
+import moment from "moment";
 
 export default {
   data() {
     return {
       sites: [],
+      chartData: [],
+       dateFrom: moment(new Date(), "D.M.YYYY")
+        .subtract(7, "d")
+        .format("D.M.YYYY"),
+      dateTo: moment(new Date(), "D.M.YYYY").format("D.M.YYYY"),
     };
   },
   methods: {
+    getHiveData() {
+      const payload = {
+          hid: 1,
+          dateFrom: this.dateFrom,
+          dateTo: this.dateTo,
+        };
+      const path = "http://localhost:5000/hive_graph";
+      axios
+        .post(path, payload)
+        .then((res) => {
+          this.chartData = res.data.graphData[0];
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    formatDate(dateToFormat){
+        return moment(dateToFormat, "YYYY-MM-DD").format("D. M. YYYY");
+    },
+
+
     getSites() {
       const path = "http://localhost:5000/sites";
       axios
@@ -37,6 +66,7 @@ export default {
   },
   created() {
     this.getSites();
+    this.getHiveData();
   },
 };
 </script>

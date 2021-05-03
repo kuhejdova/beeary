@@ -37,7 +37,7 @@
         v-if="loaded"
         :title="Teplota"
         :description="descriptionT"
-        :chartData="graphData.temperature"
+        :chartData="chartData.temperature"
         :onChange="onSubmit"
         :options="options"
       />
@@ -48,7 +48,7 @@
         v-if="loaded"
         :title="Hmotnost"
         :description="descriptionH"
-        :chartData="graphData.weight"
+        :chartData="chartData.weight"
         :onChange="onSubmit"
         :options="options"
       />
@@ -59,15 +59,18 @@
         v-if="loaded"
         :title="Vlhkost"
         :description="descriptionV"
-        :chartData="graphData.humidity"
+        :chartData="chartData.humidity"
         :onChange="onSubmit"
         :options="options"
       />
-      <div v-for="(warning, index) in graphData.warnings" :key="index">
-        {{ warning.date }} {{ warning.value }}
-    </div>
+      
     </div>
     <br />
+    <h3>Upozornění</h3>
+    <div class="chart" v-for="(warning, index) in chartData.warnings" :key="index">
+        {{ formatDate(warning.date) }} {{'– '}}{{ warning.value }}
+    </div>
+
   </div>
 </template>
 
@@ -85,7 +88,6 @@ export default {
     return {
       hid: 1,
 
-      graphData: null,
       hiveName: "",
 
       loaded: false,
@@ -128,7 +130,7 @@ export default {
         .then((res) => {
           this.hiveName = res.data.graphData[0].name;
           this.chartData = res.data.graphData[0];
-          this.graphData = res.data.graphData[0];
+          // this.graphData = res.data.graphData[0];
           this.loaded = true;
         })
         .catch((error) => {
@@ -136,6 +138,11 @@ export default {
           console.error(error);
         });
     },
+
+    formatDate(dateToFormat){
+        return moment(dateToFormat, "YYYY-MM-DD").format("D. M. YYYY");
+    },
+
     onSubmit(evt) {
       evt.preventDefault();
       var checkFrom = moment(this.dateFrom, "D.M.YYYY", true);
