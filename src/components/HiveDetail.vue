@@ -4,35 +4,39 @@
     <button class="button" v-on:click="changeUrl()">Zpět</button>
     <br /><br />
     <h1>{{ hiveName }}</h1>
+    
     <div class="formWrapper">
-      <label>Od
-    <input
-      v-model="dateFrom"
-      id="form-date-input"
-      type="text"
-      required
-      placeholder="Datum od"
-    />
+      <label
+        >Od
+        <input
+          v-model="dateFrom"
+          id="form-date-input"
+          type="text"
+          required
+          placeholder="Datum od"
+        />
       </label>
-      <label>Do
-    <input
-      v-model="dateTo"
-      id="form-date-input"
-      type="text"
-      required
-      placeholder="Datum do"
-    />
+      <label
+        >Do
+        <input
+          v-model="dateTo"
+          id="form-date-input"
+          type="text"
+          required
+          placeholder="Datum do"
+        />
       </label>
-    <br />
-    <button @click="onSubmit" class="button">Zobrazit</button>
+      <br />
+      <button @click="onSubmit" class="button">Zobrazit</button>
     </div>
     <br />
-    <span id='displayError' ref="displayError"></span>
+    <span id="displayError" ref="displayError"></span>
     <br />
     <div class="chart">
       <line-chart
         v-if="loaded"
         :title="Teplota"
+        :description="descriptionT"
         :chartData="graphData.temperature"
         :onChange="onSubmit"
         :options="options"
@@ -43,6 +47,7 @@
       <line-chart
         v-if="loaded"
         :title="Hmotnost"
+        :description="descriptionH"
         :chartData="graphData.weight"
         :onChange="onSubmit"
         :options="options"
@@ -53,13 +58,16 @@
       <line-chart
         v-if="loaded"
         :title="Vlhkost"
+        :description="descriptionV"
         :chartData="graphData.humidity"
         :onChange="onSubmit"
         :options="options"
       />
+      <div v-for="(warning, index) in graphData.warnings" :key="index">
+        {{ warning.date }} {{ warning.value }}
+    </div>
     </div>
     <br />
-    
   </div>
 </template>
 
@@ -67,10 +75,11 @@
 import axios from "axios";
 import moment from "moment";
 import LineChart from "./OnelineChart.vue";
+import Dashboard from '../views/Dashboard.vue';
 
 export default {
   props: { currentHive: Number },
-  components: { LineChart },
+  components: { LineChart, Dashboard },
 
   data() {
     return {
@@ -83,13 +92,18 @@ export default {
       chartData: null,
       options: null,
 
-      dateFrom: moment(new Date(), "D.M.YYYY").subtract(7,'d').format("D.M.YYYY"),
+      dateFrom: moment(new Date(), "D.M.YYYY")
+        .subtract(7, "d")
+        .format("D.M.YYYY"),
       dateTo: moment(new Date(), "D.M.YYYY").format("D.M.YYYY"),
-      
 
       Teplota: "Teplota",
       Vlhkost: "Vlhkost",
       Hmotnost: "Hmotnost",
+
+      descriptionT: "Teplota ve °C",
+      descriptionV: "Vlkhost v %",
+      descriptionH: "Hmotnost v kg",
     };
   },
   watch: {
@@ -107,7 +121,6 @@ export default {
     },
   },
   methods: {
-
     postHid(payload) {
       const path = "http://localhost:5000/hive_graph";
       axios
@@ -127,26 +140,28 @@ export default {
       evt.preventDefault();
       var checkFrom = moment(this.dateFrom, "D.M.YYYY", true);
       var checkTo = moment(this.dateTo, "D.M.YYYY", true);
-      if (!checkFrom.isValid() || !checkTo.isValid())
-      {
+      if (!checkFrom.isValid() || !checkTo.isValid()) {
         // console.error("wrong format");
         // alert("Zadané datum je ve špatném formátu. Datum zadejte ve formátu D.M.YYYY")
-        this.$refs.displayError.innerHTML = "Zadané datum je ve špatném formátu. Datum zadejte ve formátu D.M.YYYY"
+        this.$refs.displayError.innerHTML =
+          "Zadané datum je ve špatném formátu. Datum zadejte ve formátu D.M.YYYY";
         return;
       }
       // console.log(checkFrom)
       // console.log(checkTo)
-      if (checkTo.isSameOrBefore(checkFrom)){ 
-        this.$refs.displayError.innerHTML = "Neplatný rozsah dat, datum OD musí být před datum DO"
+      if (checkTo.isSameOrBefore(checkFrom)) {
+        this.$refs.displayError.innerHTML =
+          "Neplatný rozsah dat, datum OD musí být před datum DO";
         return;
       }
       var today = moment(new Date(), "D.M.YYYY");
-      if (checkTo.isAfter(today)){
-        this.$refs.displayError.innerHTML = "Data jsou dostupná pouze do dnešního dne"
+      if (checkTo.isAfter(today)) {
+        this.$refs.displayError.innerHTML =
+          "Data jsou dostupná pouze do dnešního dne";
         return;
       }
 
-this.$refs.displayError.innerHTML = ''
+      this.$refs.displayError.innerHTML = "";
       const payload = {
         hid: this.hid,
         dateFrom: this.dateFrom,

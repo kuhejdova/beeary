@@ -57,5 +57,5 @@ def insert_line_month(con, cur, month, description, pictogram):
     con.commit()
 
 
-if __name__ == '__main__':
-    load_csv()
+# if __name__ == '__main__':
+#     load_csv()

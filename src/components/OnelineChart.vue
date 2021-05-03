@@ -12,6 +12,10 @@ export default {
       type: String,
       default: "",
     },
+    description: {
+      type: String,
+      default: "",
+    },
     chartData: {
       type: Array,
       default: null,
@@ -51,10 +55,30 @@ export default {
       if (this.title == "Teplota") {
         res = value < 10 ? "#ff0000" : "#0000ff";
       }
+      // console.log(res)
+      return res;
+    },
+
+    sizeWarning(context) {
+      let index = context.dataIndex;
+      let value = context.dataset.data[index];
+      var res = 3;
+
+      if (this.title == "Vlhkost") {
+        res = value >= 95 || value <= 0 ? 7 : 3;
+      }
+
+      if (this.title == "Teplota") {
+        res = value < 10 ? 7 : 3;
+      }
+      // console.log(res)
       return res;
     },
 
     createChart() {
+      Chart.Legend.prototype.afterFit = function() {
+        this.height = this.height + 10;
+      };
       var myLabels;
       var myValues;
 
@@ -68,8 +92,8 @@ export default {
             {
               label: this.title,
               fill: false,
-              backgroundColor: "#0000ff",
-              borderColor: "#0000ff",
+              backgroundColor: this.colorWarning,
+              borderColor: this.colorWarning,
               pointBackgroundColor: this.colorWarning,
               pointBorderColor: this.colorWarning,
               data: myValues,
@@ -92,13 +116,12 @@ export default {
               text: "Chart.js Line Chart - Multi Axis",
             },
           },
-          // elements: {
-          //   point: {
-          //     pointBackgroundColor : this.humidityWarning,
-          //     pointBorderColor : this.humidityWarning,
-          //     display: true
-          //   }
-          // },
+          elements: {
+            point: {
+              radius: this.sizeWarning,
+              display: true
+            }
+          },
           scales: {
             xAxes: [
               {
@@ -119,6 +142,10 @@ export default {
             ],
             yAxes: [
               {
+                scaleLabel: {
+                  display: true,
+                  labelString: this.description,
+                },
                 type: "linear",
                 display: true,
                 position: "left",

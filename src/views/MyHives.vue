@@ -71,6 +71,13 @@ export default {
   mounted() {
     if (this.$route.query.hid) {
       this.currentHive = parseInt(this.$route.query.hid);
+      if (this.currentHive == 0){
+        this.show = true
+        // console.log('here', parseInt(this.$route.query.hid))
+      }
+      else {
+        this.show = false
+      }
     }
   },
 

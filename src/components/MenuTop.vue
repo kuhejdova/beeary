@@ -1,6 +1,10 @@
 <template>
   <nav v-bind:class="active" v-on:click.prevent>
-    <a href= '/' class="logoImg"><img src="../../public/images/logo_text.svg" alt="Beeary"></a>
+    <router-link to="/" @click.native="makeActive('home')" class="logo"
+      ><img src="../../public/images/logo_text.svg" alt="Beeary"
+    /></router-link>
+
+    <!-- <a href= '/' class="logoImg"><img src="../../public/images/logo_text.svg" alt="Beeary"></a> -->
 
     <router-link to="/home" class="home" @click.native="makeActive('home')"
       >Hlavní stránka</router-link
@@ -63,7 +67,7 @@ nav {
 }
 
 .push {
-    margin-left: auto;
+  margin-left: auto;
 }
 /*-------------------------
   The menu
@@ -116,6 +120,15 @@ nav.profile .profile {
   /* margin-left: auto; */
 }
 
+.logo:hover {
+  background-color: var(--main_color);
+}
+
+.logo {
+  margin-right: auto;
+  height: auto;
+}
+
 p {
   font-size: 22px;
   font-weight: bold;
@@ -133,7 +146,7 @@ p b {
 }
 
 a.logoImg {
-   display: inline-block;
+  display: inline-block;
   padding: 4px 20px;
   color: rgb(0, 0, 0) !important;
   font-weight: bold;
@@ -152,13 +165,12 @@ a.logoImg {
 
 a.logoImg:hover {
   background-color: var(--main_color); /* #fadb6a nice light yellow */
-
 }
-
 
 img {
   height: 40px;
   padding: 0px;
+  margin: -15px;
 }
 
 /* .resource {

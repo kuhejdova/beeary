@@ -39,6 +39,9 @@ export default {
     },
   },
   mounted() {
+    Chart.Legend.prototype.afterFit = function() {
+      this.height = this.height + 10;
+    };
     var myLabels;
     var myValues;
 
@@ -128,7 +131,7 @@ export default {
               type: "linear",
               display: true,
               position: "left",
-              
+
               id: "y",
             },
             {
@@ -136,8 +139,8 @@ export default {
               display: true,
               position: "right",
               gridLines: {
-                display:false
-            },
+                display: false,
+              },
               id: "y1",
             },
             {
@@ -145,8 +148,8 @@ export default {
               display: true,
               position: "left",
               gridLines: {
-                display:false
-            },
+                display: false,
+              },
               id: "y2",
             },
           ],

@@ -13,13 +13,12 @@ def create_tables():
     cur = con.cursor()
     cur.execute('''CREATE TABLE sites (site_id INTEGER PRIMARY KEY, site_name text, uid text, location text)''')
     cur.execute('''CREATE TABLE hives (hive_id INTEGER PRIMARY KEY, hive_name text, sid integer)''')
-    cur.execute('''CREATE TABLE data (hid integer, date text, value real)''')
-    cur.execute('''CREATE TABLE notes (hid integer, note_text text)''')
+    cur.execute('''CREATE TABLE notes (note_id integer primary key, hid integer, note_text text, note_date text)''')
     cur.execute('''CREATE TABLE temperature (hid integer, date text, year integer, month integer, value real)''')
     cur.execute('''CREATE TABLE weight (hid integer, date text, year integer, month integer, value real)''')
     cur.execute('''CREATE TABLE humidity (hid integer, date text, year integer, month integer, value real)''')
-    cur.execute('''CREATE TABLE flow (hid integer, date text, year integer, month integer, value real)''')
     cur.execute('''CREATE TABLE months (id integer primary key, month_id integer, description text, pictogram integer)''')
+    cur.execute('''CREATE TABLE warnings (warning_id integer primary key, hid integer, sid integer, warning_text text, warning_date text)''')
     con.commit()
     con.close()
 
@@ -136,6 +135,43 @@ def graph_data_by_date_to_jsonify(graphdata, date_from, date_to):
     return data_list
 
 
+def generate_warnings_humidity(graphdata):
+    con = sqlite3.connect('beeary.db')
+    cur = con.cursor()
+    dates_list = []
+    for row in graphdata:
+        if 0 <= row[1] < 95:
+            continue
+        dt = datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S')
+        only_date = datetime.strftime(dt, '%Y-%m-%d')
+        if only_date in dates_list:
+            continue
+        dates_list.append(only_date)
+        sql = '''INSERT INTO warnings(hid, sid, warning_text, warning_date) VALUES (?, ?, ?, ?)'''
+        cur.execute(sql, (1, 1, "Příliš vysoká vlhkost (nad 95%)" if row[1] >= 95 else "Problém se senzorem, zkontroluje baterie", only_date))
+        con.commit()
+    con.close()
+
+
+def warnings_to_jsonify(date_from, date_to):
+    con = sqlite3.connect('beeary.db')
+    cur = con.cursor()
+    sql = '''SELECT warning_date, warning_text FROM warnings'''
+    cur.execute(sql)
+    res = cur.fetchall()
+    con.close()
+
+    data_list = []
+    date_from_date = datetime.strptime(date_from, '%d.%m.%Y')
+    date_to_date = datetime.strptime(date_to, '%d.%m.%Y')
+    for row in res:
+        dt = datetime.strptime(row[0], '%Y-%m-%d')
+        if date_from_date <= dt < date_to_date:
+            line_dict = {'date': row[0], 'value': row[1]}
+            data_list.append(line_dict)
+    return data_list
+
+
 def hive_with_graphs(hid, date_from, date_to):
     con = sqlite3.connect('beeary.db')
     cur = con.cursor()
@@ -153,10 +189,10 @@ def hive_with_graphs(hid, date_from, date_to):
     hive_dict = {'name': hive[0],
                  'humidity': graph_data_by_date_to_jsonify(data_humidity, date_from, date_to),
                  'temperature': graph_data_by_date_to_jsonify(data_temperature, date_from, date_to),
-                 'weight': graph_data_by_date_to_jsonify(data_weight, date_from, date_to)}
+                 'weight': graph_data_by_date_to_jsonify(data_weight, date_from, date_to),
+                 'warnings': warnings_to_jsonify(date_from, date_to)}
     res_list.append(hive_dict)
     return res_list
-
 
 
 def hives_to_jsonify(hives):
@@ -233,6 +269,8 @@ if __name__ == '__main__':
     #
     # insert_hive('ul1', 3)
     # insert_hive('ul2', 3)
-    result = select_hives(2)
-    print(result)
+    # result = select_hives(2)
+    # print(result)
+    # graphdata = select_humidity_graph()
+    # generate_warnings_humidity(graphdata)
 
