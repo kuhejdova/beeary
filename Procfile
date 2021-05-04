@@ -1,1 +1,1 @@
-backend: python ./server/app.py
+backend: gunicorn ./server/app:app
