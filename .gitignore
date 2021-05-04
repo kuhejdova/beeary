@@ -2,6 +2,9 @@
 node_modules
 /dist
 
+*.sql
+main
+database
 
 server/__pycache__/*
 /env

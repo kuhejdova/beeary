@@ -19,6 +19,11 @@ source env/bin/activate
 python app.py
 ```
 
+## Postgres DB
+```
+sudo -u postgres psql
+```
+
 
 
 

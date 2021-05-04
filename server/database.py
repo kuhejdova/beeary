@@ -1,11 +1,17 @@
+import os
 import sqlite3
 from datetime import datetime, timedelta
+from sqlalchemy import create_engine, text
 
+# postgresql+psycopg2://postgres:bakalarka@localhost:5432/beeary
+connection_string = os.getenv('DATABASE_URL', default="postgresql+psycopg2://postgres:bakalarka@localhost:5432/beeary")
+engine = create_engine(connection_string)
 
-def create_connection():
-    con = sqlite3.connect('beeary.db')
-    cur = con.cursor()
-    return con, cur
+#
+# def create_connection():
+#     con = sqlite3.connect('beeary.db')
+#     cur = con.cursor()
+#     return con, cur
 
 
 def create_tables():
@@ -37,13 +43,10 @@ def insert_sites(name, uid, location):
 
 
 def select_sites(uid):
-    con = sqlite3.connect('beeary.db')
-    cur = con.cursor()
-    sql = '''SELECT site_id, site_name, location FROM sites WHERE uid = ?'''
-    cur.execute(sql, (uid, ))
-    # con.commit()
-    res = cur.fetchall()
-    con.close()
+    conn = engine.connect()
+    sql = text('''SELECT site_id, site_name, location FROM sites WHERE uid = :u''')
+    data = conn.execute(sql, u=uid)
+    res = data.fetchall()
     return res
 
 
@@ -281,6 +284,9 @@ def notes_to_jsonify(notes):
 if __name__ == '__main__':
     # create_tables()
     uid = "gXifKfOg06XvU9NewGfqiFwasE12"
+    res = select_sites(uid)
+    hives = select_hives(1)
+    print(res)
     # insert_sites('Stanoviste1', uid, 'Ostrava')
     # insert_sites('Bees', uid, 'Metylovice')
     # insert_sites('Something', uid, 'Brno')

@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
@@ -166,7 +168,6 @@ def get_hive_graph():
     })
 
 
-
-
 if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 8000))
     app.run()
