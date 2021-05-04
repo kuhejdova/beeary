@@ -34,7 +34,7 @@ from . import database
 DEBUG = True
 
 # instantiate the app
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../dist', static_url_path='/')
 app.config.from_object(__name__)
 
 # enable CORS
@@ -48,6 +48,12 @@ def add_header(response):
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS, HEAD'
 
     return response
+
+
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
+
 
 # sanity check route
 @app.route('/ping', methods=['GET']) # prepsat na post
