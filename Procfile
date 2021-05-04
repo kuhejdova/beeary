@@ -1,1 +1,1 @@
-backend: cd server && python app.py
+backend: python app.py
