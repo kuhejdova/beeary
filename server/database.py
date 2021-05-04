@@ -11,14 +11,18 @@ def create_connection():
 def create_tables():
     con = sqlite3.connect('beeary.db')
     cur = con.cursor()
-    cur.execute('''CREATE TABLE sites (site_id INTEGER PRIMARY KEY, site_name text, uid text, location text)''')
-    cur.execute('''CREATE TABLE hives (hive_id INTEGER PRIMARY KEY, hive_name text, sid integer)''')
-    cur.execute('''CREATE TABLE notes (note_id integer primary key, hid integer, note_text text, note_date text)''')
-    cur.execute('''CREATE TABLE temperature (hid integer, date text, year integer, month integer, value real)''')
-    cur.execute('''CREATE TABLE weight (hid integer, date text, year integer, month integer, value real)''')
-    cur.execute('''CREATE TABLE humidity (hid integer, date text, year integer, month integer, value real)''')
-    cur.execute('''CREATE TABLE months (id integer primary key, month_id integer, description text, pictogram integer)''')
-    cur.execute('''CREATE TABLE warnings (warning_id integer primary key, hid integer, sid integer, warning_text text, warning_date text)''')
+    # cur.execute('''CREATE TABLE sites (site_id INTEGER PRIMARY KEY, site_name text, uid text, location text)''')
+    # cur.execute('''CREATE TABLE hives (hive_id INTEGER PRIMARY KEY, hive_name text, sid integer)''')
+    # cur.execute('''CREATE TABLE notes (note_id integer primary key, hid integer, note_text text, note_date text)''')
+    # cur.execute('''CREATE TABLE temperature (hid integer, date text, year integer, month integer, value real)''')
+    # cur.execute('''CREATE TABLE weight (hid integer, date text, year integer, month integer, value real)''')
+    # cur.execute('''CREATE TABLE humidity (hid integer, date text, year integer, month integer, value real)''')
+    # cur.execute('''CREATE TABLE months (id integer primary key, month_id integer, description text, pictogram integer)''')
+    # cur.execute('''CREATE TABLE warnings (warning_id integer primary key, hid integer, sid integer, warning_text text, warning_date text)''')
+    cur.execute(
+        '''CREATE TABLE warnings_temperature (warning_id integer primary key, hid integer, sid integer, warning_text text, warning_date text)''')
+    cur.execute(
+        '''CREATE TABLE warnings_weight (warning_id integer primary key, hid integer, sid integer, warning_text text, warning_date text)''')
     con.commit()
     con.close()
 
@@ -165,7 +169,7 @@ def generate_warnings_temperature(graphdata):
         if only_date in dates_list:
             continue
         dates_list.append(only_date)
-        sql = '''INSERT INTO warnings(hid, sid, warning_text, warning_date) VALUES (?, ?, ?, ?)'''
+        sql = '''INSERT INTO warnings_temperature(hid, sid, warning_text, warning_date) VALUES (?, ?, ?, ?)'''
         cur.execute(sql, (1, 1, "Příliš nízká teplota (pod 10°C), hrozí promrznutí včel", only_date))
         con.commit()
     con.close()
