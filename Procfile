@@ -1,1 +1,1 @@
-backend: python app.py
+backend: python ./server/app.py
