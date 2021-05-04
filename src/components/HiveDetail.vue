@@ -78,11 +78,10 @@
 import axios from "axios";
 import moment from "moment";
 import LineChart from "./OnelineChart.vue";
-import Dashboard from '../views/Dashboard.vue';
 
 export default {
   props: { currentHive: Number },
-  components: { LineChart, Dashboard },
+  components: { LineChart },
 
   data() {
     return {

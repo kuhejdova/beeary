@@ -107,7 +107,7 @@ changeUrl(selectedHid) {
         });
     },
   },
-  created() {
+  mounted() {
     this.postSid();
     this.getSites();
   },

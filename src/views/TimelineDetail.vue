@@ -1,18 +1,12 @@
 <template>
-  <div>
-    <main>
-      <section>
-        <div class="wrapper">
-          <div class="left">
-            <Timeline :selectedDate="date" v-on:event_child="onChange"/>
-          </div>
-          <div class="right">
-            <Month :selectedDate="date" />
-          </div>
-        </div>
-      </section>
-    </main>
-  </div>
+  <main class="wrapper">
+      <div class="left">
+        <Timeline :selectedDate="date" v-on:event_child="onChange" />
+      </div>
+      <div class="right">
+        <Month :selectedDate="date" />
+      </div>
+  </main>
 </template>
 
 <script>
@@ -20,7 +14,6 @@ import moment from "moment";
 
 import Timeline from "../components/Timeline.vue";
 import Month from "../components/Month.vue";
-
 
 export default {
   data() {
@@ -31,7 +24,7 @@ export default {
   },
   methods: {
     onChange(selectedDate) {
-      this.date = selectedDate
+      this.date = selectedDate;
     },
     onSubmit() {
       const payload = {
@@ -60,10 +53,8 @@ export default {
 }
 
 .wrapper {
-  display: grid;
-  grid-template-columns: 39% 58%;
-  column-gap: 40px;
-  row-gap: 10px;
+  width: 100%;
+  display: flex;
 
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -78,9 +69,28 @@ div {
 }
 
 .left {
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 500px;
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
   /* padding: 10px;  */
+}
+
+.right {
+  flex: 1 0 auto;
+}
+
+@media (max-width: 1000px) {
+  .wrapper {
+    position: relative;
+  }
+  .left {
+    left: 0px;
+    top: 0px;
+  }
+  .right {
+    position: absolute;
+  }
 }
 
 /* .left {

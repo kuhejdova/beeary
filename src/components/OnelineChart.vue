@@ -76,9 +76,9 @@ export default {
     },
 
     createChart() {
-      Chart.Legend.prototype.afterFit = function() {
-        this.height = this.height + 10;
-      };
+      // Chart.Legend.prototype.afterFit = function() {
+      //   this.height = this.height + 10;
+      // };
       // Chart.defaults.font: {family: "'Source Sans Pro', 'Helvetica', 'Arial', sans-serif"}
       var myLabels;
       var myValues;

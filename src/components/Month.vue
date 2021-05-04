@@ -50,21 +50,21 @@
       <br />
       <div v-for="(note, index) in notes" :key="index">
         <li v-if="displayNoteDate(note.note_date)">
-          <span >{{note.note_date}} - {{ note.note_text }}</span>
+          <span>{{ note.note_date }} - {{ note.note_text }}</span>
         </li>
       </div>
       <br />
       <button @click="showForm" class="button" v-show="!show">Přidat</button>
       <form @submit="selectNotes" v-show="show">
         <input
-        v-model="noteDateToSave"
+          v-model="noteDateToSave"
           id="form-title-input"
           type="text"
           required
           placeholder="D.M.YYYY"
         />
         <input
-        v-model="noteToSave"
+          v-model="noteToSave"
           id="form-date-input"
           type="text"
           required
@@ -72,7 +72,7 @@
         />
         <br /><br />
         <button @click="onSubmitNote" class="button">Uložit</button>
-        <button @click="showForm" class="button">Zrušit</button>
+        <button @click="showForm" class="button" type="button">Zrušit</button>
       </form>
     </div>
   </div>
@@ -114,12 +114,11 @@ export default {
       );
       return dateCapitalized.charAt(0).toUpperCase() + dateCapitalized.slice(1);
     },
-    todayDate(){
+    todayDate() {
       return moment(new Date()).format("D.M.YYYY");
-      
     },
 
-    displayNoteDate(noteDate){
+    displayNoteDate(noteDate) {
       var dateToFormat = moment(noteDate, "D.M.YYYY").format("M-YYYY");
       return dateToFormat === this.selectedDate;
     },
@@ -156,10 +155,10 @@ export default {
       const payload = {
         note_text: this.noteToSave,
         hid: this.selectedHive,
-        note_date: this.noteDateToSave
+        note_date: this.noteDateToSave,
       };
       // console.log(this.selected)
-      console.log(payload.note_date)
+      console.log(payload.note_date);
       this.postNote(payload);
 
       this.note_text = "";
@@ -286,7 +285,7 @@ export default {
   margin: 0;
 }
 
-div {
+.main-wrapper {
   /* font:15px/1.3 'Open Sans', sans-serif; */
   font-weight: bold;
   color: #5e5b64;

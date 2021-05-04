@@ -39,9 +39,9 @@ export default {
     },
   },
   mounted() {
-    Chart.Legend.prototype.afterFit = function() {
-      this.height = this.height + 10;
-    };
+    // Chart.Legend.prototype.afterFit = function() {
+    //   this.height = this.height + 10;
+    // };
     var myLabels;
     var myValues;
 

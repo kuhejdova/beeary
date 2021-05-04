@@ -6,8 +6,8 @@
         <div class="wrapper">
           <div class="left"> 
             <!-- Nejaky vif aby tu mohly byt dve komponenty, jedna pro detail a jedna pro vsechny -->
-            <Hives v-on:event_child="onChange" v-show="show"/>
-            <HiveDetail :currentHive="currentHive" v-show="!show"/>
+            <Hives v-on:event_child="onChange" v-if="show"/>
+            <HiveDetail :currentHive="currentHive" v-if="!show"/>
           </div>
           <div class="right">
             <Hexagons />

@@ -1,30 +1,25 @@
 <template>
   <nav v-bind:class="active" v-on:click.prevent>
-    <router-link to="/" @click.native="makeActive('home')" class="logo"
+    <router-link to="/" class="logo"
       ><img src="../../public/images/logo_text.svg" alt="Beeary"
     /></router-link>
 
-    <!-- <a href= '/' class="logoImg"><img src="../../public/images/logo_text.svg" alt="Beeary"></a> -->
-
-    <router-link to="/home" class="home" @click.native="makeActive('home')"
+    <router-link to="/home" class="home"
       >Hlavní stránka</router-link
     >
     <router-link
       to="/timeline"
       class="timeline"
-      @click.native="makeActive('timeline')"
       >Časová osa</router-link
     >
     <router-link
       to="/hives"
       class="my_hives"
-      @click.native="makeActive('my_hives')"
       >Moje úly</router-link
     >
     <router-link
       to="/settings"
       class="profile"
-      @click.native="makeActive('profile')"
       >Profil</router-link
     >
     <a @click="logout()">Odhlásit se</a>
@@ -34,19 +29,33 @@
 </template>
 
 <script>
+const routeMap = {
+  "/hives": "my_hives",
+  "/timeline": "timeline",
+  "/settings": "profile",
+  "/home": "home"
+}
+
 export default {
   name: "MenuTop",
   data() {
     return { active: "home" };
   },
   methods: {
-    makeActive: function(item) {
-      this.active = item;
-    },
     logout() {
       this.$store.dispatch("logout");
     },
   },
+  watch:{
+    $route (to){
+      console.log(routeMap[to.path])
+      this.active = routeMap[to.path]??'home';
+    }
+  },
+mounted(){
+  this.active = routeMap[this.$route.path]??'home';
+  
+}
 };
 </script>
 

@@ -160,10 +160,13 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+
+  display: flex;
+  flex-direction: column;
   /* height: 100%; */
 }
 
-body, html, #app {
+body, html {
   height: 100%;
   width: 100%;
   margin: 0px;
