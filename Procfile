@@ -1,1 +1,1 @@
-backend: gunicorn ./server/app:app
+backend: gunicorn server.app:app
