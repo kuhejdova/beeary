@@ -175,3 +175,5 @@ if __name__ == '__main__':
         app.run(port=port)
     except Exception as e:
         print(e)
+    finally:
+        print("I AM NO LONGER RUNNING")
