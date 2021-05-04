@@ -5,6 +5,8 @@ from sqlalchemy import create_engine, text
 
 # postgresql+psycopg2://postgres:bakalarka@localhost:5432/beeary
 connection_string = os.getenv('DATABASE_URL', default="postgresql+psycopg2://postgres:bakalarka@localhost:5432/beeary")
+if connection_string.startswith("postgres://"):
+    connection_string = connection_string.replace("postgres://", "postgresql://", 1)
 engine = create_engine(connection_string)
 
 #
