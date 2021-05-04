@@ -170,6 +170,7 @@ def get_hive_graph():
 
 if __name__ == '__main__':
     try:
+        print("I AM RUNNING")
         port = int(os.environ.get("PORT", 5000))
         app.run(port=port)
     except Exception as e:
