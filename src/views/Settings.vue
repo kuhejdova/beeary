@@ -70,6 +70,7 @@
 
 <script>
 import axios from "axios";
+import { baseUrl } from "../variables.js";
 
 
 export default {
@@ -103,7 +104,7 @@ export default {
       this.onSubmitSite(payload);
     },
     getSites() {
-      const path = "http://localhost:5000/sites";
+      const path = baseUrl + "/sites";
       axios
         .get(path)
         .then((res) => {
@@ -116,7 +117,7 @@ export default {
         });
     },
     postSid(payload) {
-      const path = "http://localhost:5000/add_site";
+      const path = baseUrl + "/add_site";
       axios
         .post(path, payload)
         .catch((error) => {
@@ -125,7 +126,7 @@ export default {
       this.getSites();
     },
     postHid(payload) {
-      const path = "http://localhost:5000/add_hive";
+      const path = baseUrl + "/add_hive";
       axios
         .post(path, payload)
         .catch((error) => {
