@@ -4,6 +4,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 from . import database
+# import database
 
 # SITES = [
 #     {
@@ -34,7 +35,7 @@ from . import database
 DEBUG = True
 
 # instantiate the app
-app = Flask(__name__, static_folder='../dist', static_url_path='/')
+app = Flask(__name__)
 app.config.from_object(__name__)
 
 # enable CORS

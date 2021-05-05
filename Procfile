@@ -1,1 +1,1 @@
-backend: npm start
+backend: gunicorn app:app
