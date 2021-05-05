@@ -63,41 +63,42 @@
             </li>
           </div>
           <br />
-          <button @click="showForm" class="button" v-show="!show">
-            Přidat
-          </button>
-          <form @submit="selectNotes" v-show="show">
-            <input
-              v-model="noteDateToSave"
-              id="form-title-input"
-              type="text"
-              required
-              placeholder="D.M.YYYY"
-            />
-            <input
-              v-model="noteToSave"
-              id="form-date-input"
-              type="text"
-              required
-              placeholder="Přitejte poznámku"
-            />
-            <br /><br />
-            <button @click="onSubmitNote" class="button">Uložit</button>
-            <button @click="showForm" class="button" type="button">
-              Zrušit
-            </button>
-          </form>
         </div>
+
         <div class="right">
           <p>Upozornění ze senzorů</p>
           <br />
-          <div v-for="(note, index) in notes" :key="index">
-            <li v-if="displayNoteDate(note.note_date)">
-              <span>{{ note.note_date }} - {{ note.note_text }}</span>
+          <div v-for="(warning, index) in warnings" :key="index">
+            <li>
+              <span>{{ formatDate(warning.date) }} - {{ warning.value }}</span>
             </li>
           </div>
         </div>
       </div>
+      <button @click="showForm" class="button" v-show="!show">
+        Přidat
+      </button>
+      <form @submit="selectNotes" v-show="show">
+        <input
+          v-model="noteDateToSave"
+          id="form-title-input"
+          type="text"
+          required
+          placeholder="D.M.YYYY"
+        />
+        <input
+          v-model="noteToSave"
+          id="form-date-input"
+          type="text"
+          required
+          placeholder="Přitejte poznámku"
+        />
+        <br /><br />
+        <button @click="onSubmitNote" class="button">Uložit</button>
+        <button @click="showForm" class="button" type="button">
+          Zrušit
+        </button>
+      </form>
     </div>
   </div>
 </template>
@@ -105,7 +106,7 @@
 <script>
 import moment from "moment";
 import axios from "axios";
-import { baseUrl } from "../variables.js"
+import { baseUrl } from "../variables.js";
 
 export default {
   props: { selectedDate: String },
@@ -116,19 +117,36 @@ export default {
       notes: [],
       show: false,
       urlDate: moment(new Date()).format("M/YYYY"),
-      loaded: false,
-      loadedNotes: false,
       activities: [],
       selected: 1,
       selectedHive: 1,
       hives: [],
       sites: [],
       displayDetail: false,
+      warnings: [],
+      dateFrom: moment()
+        .clone()
+        .startOf("month")
+        .format("D.M.YYYY"),
+      dateTo: moment()
+        .clone()
+        .endOf("month")
+        .format("D.M.YYYY"),
     };
   },
   watch: {
     selectedDate: function() {
       this.showActivities();
+      this.warnings = [];
+      this.dateFrom = moment(this.selectedDate, "MM-YYYY")
+        .clone()
+        .startOf("month")
+        .format("D.M.YYYY");
+      this.dateTo = moment(this.selectedDate, "MM-YYYY")
+        .clone()
+        .endOf("month")
+        .format("D.M.YYYY");
+      this.showWarnings();
       this.displayDetail = true;
     },
   },
@@ -153,6 +171,10 @@ export default {
       return dateToFormat === this.selectedDate;
     },
 
+    formatDate(inputDate) {
+      return moment(inputDate).format("D.M.YYYY");
+    },
+
     postNote(payload) {
       const path = baseUrl + "/add_note";
       axios.post(path, payload).catch((error) => {
@@ -171,7 +193,7 @@ export default {
         .then((res) => {
           this.notes = res.data.notes;
 
-          this.loadedNotes = true;
+          // this.loadedNotes = true;
         })
         .catch((error) => {
           console.error(error);
@@ -188,7 +210,6 @@ export default {
         note_date: this.noteDateToSave,
       };
       // console.log(this.selected)
-      console.log(payload.note_date);
       this.postNote(payload);
 
       this.note_text = "";
@@ -201,13 +222,60 @@ export default {
     showForm() {
       this.show = !this.show;
     },
+
+    showWarnings() {
+      const payload = {
+        hid: this.selectedHive,
+        dateFrom: this.dateFrom,
+        dateTo: this.dateTo,
+      };
+      // console.log(this.dateFrom);
+      // console.log(this.dateTo);
+      const path = baseUrl + "/hive_graph";
+      axios
+        .post(path, payload)
+        .then((res) => {
+          this.warnings.push.apply(
+            this.warnings,
+            res.data.graphData[0].warnings
+          );
+          this.warnings.push.apply(
+            this.warnings,
+            res.data.graphData[0].warnings_temperature
+          );
+          this.warnings.push.apply(
+            this.warnings,
+            res.data.graphData[0].warnings_weight
+          );
+          // this.loaded = true;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    // show(payload) {
+    //   const path = baseUrl + "/hive_graph";
+    //   axios
+    //     .post(path, payload)
+    //     .then((res) => {
+    //       this.hiveName = res.data.graphData[0].name;
+    //       this.chartData = res.data.graphData[0];
+    //       // this.graphData = res.data.graphData[0];
+    //       this.loaded = true;
+    //     })
+    //     .catch((error) => {
+    //       // eslint-disable-next-line
+    //       console.error(error);
+    //     });
+    // },
+
     postMonth(payload) {
       const path = baseUrl + "/activities";
       axios
         .post(path, payload)
         .then((res) => {
           this.activities = res.data.activities;
-          this.loaded = true;
+          // this.loaded = true;
         })
         .catch((error) => {
           console.error(error);
@@ -261,8 +329,7 @@ export default {
         .then((res) => {
           this.hives = res.data.hives;
           this.chartdata = res.data.hives;
-
-          this.loaded = true;
+          // console.log(this.hives)
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -298,8 +365,18 @@ export default {
     if (this.$route.query.date) {
       this.urlDate = this.$route.query.date.replace("-", "/");
     }
+    this.warnings = [];
+    this.dateFrom = moment(this.selectedDate, "MM-YYYY")
+      .clone()
+      .startOf("month")
+      .format("D.M.YYYY");
+    this.dateTo = moment(this.selectedDate, "MM-YYYY")
+      .clone()
+      .endOf("month")
+      .format("D.M.YYYY");
     this.showActivities();
-    console.log(this.selectedDate);
+    this.showWarnings();
+    // console.log(this.selectedDate);
 
     this.displayDetail = window.screen.width > 1000;
   },
@@ -386,16 +463,16 @@ li {
   /* margin-right: auto; */
 }
 
-.left{
-/* flex: 1 1 auto; */
+.left {
+  /* flex: 1 1 auto; */
   display: flex;
   flex-direction: column;
   margin-right: auto;
   /* justify-content: center; */
 }
 
-.right{
-/* flex: 1 1; */
+.right {
+  /* flex: 1 1; */
   display: flex;
   flex-direction: column;
   margin-right: auto;

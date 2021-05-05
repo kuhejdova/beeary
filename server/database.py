@@ -47,6 +47,11 @@ def select_sites(uid):
     return data.fetchall()
 
 
+def delete_site(sid):
+    sql = text('''DELETE FROM sites WHERE site_id = :s''')
+    res = conn.execute(sql, s=sid)
+
+
 def sites_to_jsonify(sites):
     res_list = []
     for site in sites:
@@ -64,6 +69,11 @@ def select_hives(sid):
     sql = text('''SELECT hive_id, hive_name FROM hives WHERE sid = :s''')
     res = conn.execute(sql, s=sid)
     return res.fetchall()
+
+
+def delete_hive(hid):
+    sql = text('''DELETE FROM hives WHERE hive_id = :h''')
+    res = conn.execute(sql, h=hid)
 
 
 def select_humidity_graph():
@@ -157,6 +167,18 @@ def warnings_to_jsonify(table_name, date_from, date_to):
             line_dict = {'date': row[0], 'value': row[1]}
             data_list.append(line_dict)
     return data_list
+
+
+# def warnings_by_months_to_jsonify(table_name, month):
+#     sql = text('''SELECT warning_date, warning_text FROM ''' + table_name + ''' WHERE month = :m''')
+#     data = conn.execute(sql, t=table_name, m=month)
+#     res = data.fetchall()
+#
+#     data_list = []
+#     for row in res:
+#         line_dict = {'date': row[0], 'value': row[1]}
+#         data_list.append(line_dict)
+#     return data_list
 
 
 def hive_with_graphs(hid, date_from, date_to):

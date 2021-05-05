@@ -101,6 +101,23 @@ def all_hives():
     })
 
 
+# @app.route('/warnings', methods=['POST'])
+# def get_warnings_month():
+#     month = request.get_json()['month']
+#     if month is not None:
+#         warnings_dict = {
+#             'warnings': database.warnings_by_months_to_jsonify('warnings', month),
+#             'warnings_temperature': database.warnings_by_months_to_jsonify('warnings_temperature', month),
+#             'warnings_weight': database.warnings_by_months_to_jsonify('warnings_weight', month)
+#         }
+#     else:
+#         warnings_dict = {}
+#     return jsonify({
+#         'status': 'success',
+#         'warnings': warnings_dict
+#     })
+
+
 @app.route('/activities', methods=['POST'])
 def get_month_activities():
     month = request.get_json()
