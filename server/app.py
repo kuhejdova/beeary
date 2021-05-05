@@ -35,7 +35,7 @@ from . import database
 DEBUG = True
 
 # instantiate the app
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../dist', static_url_path='/')
 app.config.from_object(__name__)
 
 # enable CORS
