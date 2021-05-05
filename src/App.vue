@@ -1,15 +1,20 @@
 <template>
   <div id="app">
     <MenuTop v-show="isVisible()" />
+    <main class="app-content">
     <router-view />
+    </main>
   </div>
 </template>
 
 <script>
 import MenuTop from "./components/MenuTop.vue";
 
+
+
 export default {
   name: "App",
+  baseUrl: "aaa",
   components: {
     MenuTop,
   },
@@ -21,8 +26,6 @@ export default {
         [127, 217, 126], // #7fd97e
         [255, 199, 0], // #ffc700
         [255, 174, 99], // #ffae63
-        // [129, 172, 255], // #81acff
-        // [127, 217, 126], // #7fd97e
       ],
       gradientLight: [
         // [255, 202, 173], // #ffd4ad
@@ -30,8 +33,6 @@ export default {
         [193, 236, 191], // #c0ecbf
         [255, 237, 173], // #ffedad
         [255, 202, 173], // #ffd4ad
-        // [173, 201, 255], // #adc9ff
-        // [193, 236, 191], // #c0ecbf
       ],
     };
   },
@@ -211,4 +212,9 @@ button:hover {
   ); /* #fadb6a nice light yellow, #FFCACA nice pink */
   cursor: pointer;
 }
+
+.app-content{
+  height: calc(100% - 60px);
+}
+
 </style>

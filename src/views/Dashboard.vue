@@ -1,35 +1,28 @@
 <template>
-  <div>
-
-    <main>
-      <section>
-        <div class="wrapper">
-          <div class="left">
-            <div class="col1">
-              <h1>Vítejte zpět</h1>
-              <br />
-              <h3>Dnes je: {{ getDate() }}</h3>
-            </div>
-
-            <br /><br />
-            <div class="col2">
-              <Sites />
-            </div>
-          </div>
-          <div class="right">
-            <Timeline/>
-          </div>
+    <div class="wrapper">
+      <div class="left">
+        <div class="col1">
+          <h1>Vítejte zpět</h1>
+          <br />
+          <h3>Dnes je: {{ getDate() }}</h3>
         </div>
-      </section>
-    </main>
-  </div>
+
+        <br /><br />
+        <div class="col2">
+          <Sites />
+        </div>
+      </div>
+      <div class="right">
+        <Timeline />
+      </div>
+    </div>
 </template>
 
 <script>
 import moment from "moment";
 
 import Sites from "../components/Sites.vue";
-import Timeline from "../components/Timeline.vue"
+import Timeline from "../components/Timeline.vue";
 
 export default {
   methods: {
@@ -38,7 +31,6 @@ export default {
     },
   },
   components: {
-
     Sites,
     Timeline,
   },
@@ -52,11 +44,11 @@ export default {
   padding: 0;
 }
 
-.wrapper{
-  display: grid;
-  grid-template-columns: 59% 39%;
-  column-gap: 40px;
-  row-gap: 10px;
+.wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+
 
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -70,11 +62,23 @@ div {
   text-align: left;
 }
 
-.right {
+
+.left, .right {
+  height: 100%;
+  overflow: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; 
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.left::-webkit-scrollbar, .right::-webkit-scrollbar {
+  display: none;
+}
+
+/* .right {
   margin-left: auto;
   margin-right: auto;
   /* padding: 10px;  */
-}
 
 /* .left {
   padding-left: 20px;
@@ -88,5 +92,17 @@ div {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+}
+
+.right {
+  max-width: 500px;
+  flex: 1 0 auto;
+  display: flex;
+  justify-content: center;
+  /* padding: 10px;  */
+}
+
+.left {
+  flex: 1 1 auto;
 }
 </style>

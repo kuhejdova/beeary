@@ -1,7 +1,6 @@
 <template>
-  <div class="main-wrapper">
-    <br />
-    <form @submit="onSubmit" class="w-100">
+  <div class="main-wrapper" v-if="displayDetail">
+    <form class="form-sites" @submit="onSubmit">
       <div id="dynamicSelect" class="demo">
         <span
           >Stanoviště
@@ -32,6 +31,14 @@
     </form>
     <div class="col1">
       <h2>{{ getDate() }}</h2>
+      <button
+        class="close"
+        type="button"
+        v-if="displayDetail"
+        @click="displayClose"
+      >
+        x
+      </button>
       <br />
       <div v-for="(activity, index) in activities" :key="index" class="wrapper">
         <object
@@ -46,34 +53,51 @@
         <br />
       </div>
       <br />
-      <p>Poznámky</p>
-      <br />
-      <div v-for="(note, index) in notes" :key="index">
-        <li v-if="displayNoteDate(note.note_date)">
-          <span>{{ note.note_date }} - {{ note.note_text }}</span>
-        </li>
+      <div class="wrap-texts">
+        <div class="left">
+          <p>Poznámky</p>
+          <br />
+          <div v-for="(note, index) in notes" :key="index">
+            <li v-if="displayNoteDate(note.note_date)">
+              <span>{{ note.note_date }} - {{ note.note_text }}</span>
+            </li>
+          </div>
+          <br />
+          <button @click="showForm" class="button" v-show="!show">
+            Přidat
+          </button>
+          <form @submit="selectNotes" v-show="show">
+            <input
+              v-model="noteDateToSave"
+              id="form-title-input"
+              type="text"
+              required
+              placeholder="D.M.YYYY"
+            />
+            <input
+              v-model="noteToSave"
+              id="form-date-input"
+              type="text"
+              required
+              placeholder="Přitejte poznámku"
+            />
+            <br /><br />
+            <button @click="onSubmitNote" class="button">Uložit</button>
+            <button @click="showForm" class="button" type="button">
+              Zrušit
+            </button>
+          </form>
+        </div>
+        <div class="right">
+          <p>Upozornění ze senzorů</p>
+          <br />
+          <div v-for="(note, index) in notes" :key="index">
+            <li v-if="displayNoteDate(note.note_date)">
+              <span>{{ note.note_date }} - {{ note.note_text }}</span>
+            </li>
+          </div>
+        </div>
       </div>
-      <br />
-      <button @click="showForm" class="button" v-show="!show">Přidat</button>
-      <form @submit="selectNotes" v-show="show">
-        <input
-          v-model="noteDateToSave"
-          id="form-title-input"
-          type="text"
-          required
-          placeholder="D.M.YYYY"
-        />
-        <input
-          v-model="noteToSave"
-          id="form-date-input"
-          type="text"
-          required
-          placeholder="Přitejte poznámku"
-        />
-        <br /><br />
-        <button @click="onSubmitNote" class="button">Uložit</button>
-        <button @click="showForm" class="button" type="button">Zrušit</button>
-      </form>
     </div>
   </div>
 </template>
@@ -81,6 +105,7 @@
 <script>
 import moment from "moment";
 import axios from "axios";
+import { baseUrl } from "../variables.js"
 
 export default {
   props: { selectedDate: String },
@@ -98,14 +123,19 @@ export default {
       selectedHive: 1,
       hives: [],
       sites: [],
+      displayDetail: false,
     };
   },
   watch: {
     selectedDate: function() {
       this.showActivities();
+      this.displayDetail = true;
     },
   },
   methods: {
+    displayClose() {
+      this.displayDetail = false;
+    },
     getDate() {
       // this.showActivities();
       moment.locale("cs");
@@ -124,7 +154,7 @@ export default {
     },
 
     postNote(payload) {
-      const path = "http://localhost:5000/add_note";
+      const path = baseUrl + "/add_note";
       axios.post(path, payload).catch((error) => {
         console.error(error);
       });
@@ -135,7 +165,7 @@ export default {
       const payload = {
         hid: this.selectedHive,
       };
-      const path = "http://localhost:5000/notes";
+      const path = baseUrl + "/notes";
       axios
         .post(path, payload)
         .then((res) => {
@@ -172,7 +202,7 @@ export default {
       this.show = !this.show;
     },
     postMonth(payload) {
-      const path = "http://localhost:5000/activities";
+      const path = baseUrl + "/activities";
       axios
         .post(path, payload)
         .then((res) => {
@@ -225,7 +255,7 @@ export default {
     },
 
     postSid(payload) {
-      const path = "http://localhost:5000/hives";
+      const path = baseUrl + "/hives";
       axios
         .post(path, payload)
         .then((res) => {
@@ -250,7 +280,7 @@ export default {
       this.selectNotes();
     },
     getSites() {
-      const path = "http://localhost:5000/sites";
+      const path = baseUrl + "/sites";
       axios
         .get(path)
         .then((res) => {
@@ -270,6 +300,8 @@ export default {
     }
     this.showActivities();
     console.log(this.selectedDate);
+
+    this.displayDetail = window.screen.width > 1000;
   },
   created() {
     this.postSid();
@@ -294,7 +326,6 @@ export default {
 
 .col1 {
   background: #f4f4f4;
-  margin-top: 10px;
   padding: 20px;
   /* width: 50%; */
   -moz-box-sizing: border-box;
@@ -314,6 +345,7 @@ export default {
 
 object {
   height: 50px;
+  width: 50px;
   /* vertical-align: middle; */
 }
 
@@ -328,6 +360,45 @@ span {
 }
 
 li {
-  margin-left: 10px;
+  margin-left: 20px;
+}
+
+.close {
+  display: none;
+}
+
+@media (max-width: 1000px) {
+  .close {
+    display: unset;
+  }
+}
+
+.form-sites {
+  background: rgb(255, 255, 255);
+  padding: 20px;
+}
+
+.wrap-texts {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: space-evenly;
+  /* margin-right: auto; */
+}
+
+.left{
+/* flex: 1 1 auto; */
+  display: flex;
+  flex-direction: column;
+  margin-right: auto;
+  /* justify-content: center; */
+}
+
+.right{
+/* flex: 1 1; */
+  display: flex;
+  flex-direction: column;
+  margin-right: auto;
+  /* justify-content: center; */
 }
 </style>

@@ -17,6 +17,7 @@
 <script>
 import axios from "axios";
 import moment from "moment";
+import { baseUrl } from "../variables.js"
 
 export default {
   data() {
@@ -36,7 +37,7 @@ export default {
           dateFrom: this.dateFrom,
           dateTo: this.dateTo,
         };
-      const path = "http://localhost:5000/hive_graph";
+      const path = baseUrl + "/hive_graph";
       axios
         .post(path, payload)
         .then((res) => {
@@ -52,7 +53,7 @@ export default {
 
 
     getSites() {
-      const path = "http://localhost:5000/sites";
+      const path = baseUrl + "/sites";
       axios
         .get(path)
         .then((res) => {

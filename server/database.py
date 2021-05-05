@@ -8,6 +8,7 @@ connection_string = os.getenv('DATABASE_URL', default="postgresql+psycopg2://pos
 if connection_string.startswith("postgres://"):
     connection_string = connection_string.replace("postgres://", "postgresql://", 1)
 engine = create_engine(connection_string)
+conn = engine.connect()
 
 #
 # def create_connection():
@@ -36,20 +37,14 @@ def create_tables():
 
 
 def insert_sites(name, uid, location):
-    con = sqlite3.connect('beeary.db')
-    cur = con.cursor()
-    sql = '''INSERT INTO sites(site_name, uid, location) VALUES (?, ?, ?)'''
-    cur.execute(sql, (name, uid, location))
-    con.commit()
-    con.close()
+    sql = text('''INSERT INTO sites(site_name, uid, location) VALUES (:n, :u, :l)''')
+    conn.execute(sql, n=name, u=uid, l=location)
 
 
 def select_sites(uid):
-    conn = engine.connect()
     sql = text('''SELECT site_id, site_name, location FROM sites WHERE uid = :u''')
     data = conn.execute(sql, u=uid)
-    res = data.fetchall()
-    return res
+    return data.fetchall()
 
 
 def sites_to_jsonify(sites):
@@ -61,59 +56,33 @@ def sites_to_jsonify(sites):
 
 
 def insert_hive(name, sid):
-    con = sqlite3.connect('beeary.db')
-    cur = con.cursor()
-    sql = '''INSERT INTO hives(hive_name, sid) VALUES (?, ?)'''
-    cur.execute(sql, (name, sid))
-    con.commit()
-    con.close()
+    sql = text('''INSERT INTO hives(hive_name, sid) VALUES (:h, :s)''')
+    conn.execute(sql, h=name, s=sid)
 
 
 def select_hives(sid):
-    con = sqlite3.connect('beeary.db')
-    cur = con.cursor()
-
-    sql = '''SELECT hive_id, hive_name FROM hives WHERE sid = ?'''
-    cur.execute(sql, (sid,))
-    res = cur.fetchall()
-    con.close()
-    return res
+    sql = text('''SELECT hive_id, hive_name FROM hives WHERE sid = :s''')
+    res = conn.execute(sql, s=sid)
+    return res.fetchall()
 
 
 def select_humidity_graph():
-    # curr_month = datetime.today().month
-    con = sqlite3.connect('beeary.db')
-    cur = con.cursor()
-
-    sql = '''SELECT date, value FROM humidity'''
-    cur.execute(sql)
-    res = cur.fetchall()
-    con.close()
-    return res
+    sql = text('''SELECT date, value FROM humidity''')
+    res = conn.execute(sql)
+    return res.fetchall()
 
 
 def select_temperature_graph():
-    # curr_month = datetime.today().month
-    con = sqlite3.connect('beeary.db')
-    cur = con.cursor()
-
-    sql = '''SELECT date, value FROM temperature'''
-    cur.execute(sql)
-    res = cur.fetchall()
-    con.close()
-    return res
+    sql = text('''SELECT date, value FROM temperature''')
+    res = conn.execute(sql)
+    return res.fetchall()
 
 
 def select_weight_graph():
-    # curr_month = datetime.today().month
-    con = sqlite3.connect('beeary.db')
-    cur = con.cursor()
-
+    conn = engine.connect()
     sql = '''SELECT date, value FROM weight'''
-    cur.execute(sql)
-    res = cur.fetchall()
-    con.close()
-    return res
+    res = conn.execute(sql)
+    return res.fetchall()
 
 
 def graph_data_to_jsonify(graphdata):
@@ -145,8 +114,6 @@ def graph_data_by_date_to_jsonify(graphdata, date_from, date_to):
 
 
 def generate_warnings_humidity(graphdata):
-    con = sqlite3.connect('beeary.db')
-    cur = con.cursor()
     dates_list = []
     for row in graphdata:
         if 0 <= row[1] < 95:
@@ -156,15 +123,12 @@ def generate_warnings_humidity(graphdata):
         if only_date in dates_list:
             continue
         dates_list.append(only_date)
-        sql = '''INSERT INTO warnings(hid, sid, warning_text, warning_date) VALUES (?, ?, ?, ?)'''
-        cur.execute(sql, (1, 1, "Příliš vysoká vlhkost (nad 95%)" if row[1] >= 95 else "Problém se senzorem, zkontroluje baterie", only_date))
-        con.commit()
-    con.close()
+        sql = text('''INSERT INTO warnings(hid, sid, warning_text, warning_date) VALUES (1, 1, :t, :d)''')
+        text_warning = "Příliš vysoká vlhkost (nad 95%)" if row[1] >= 95 else "Problém se senzorem, zkontroluje baterie"
+        conn.execute(sql, t=text_warning, d=only_date)
 
 
 def generate_warnings_temperature(graphdata):
-    con = sqlite3.connect('beeary.db')
-    cur = con.cursor()
     dates_list = []
     for row in graphdata:
         if 10 <= row[1]:
@@ -174,19 +138,15 @@ def generate_warnings_temperature(graphdata):
         if only_date in dates_list:
             continue
         dates_list.append(only_date)
-        sql = '''INSERT INTO warnings_temperature(hid, sid, warning_text, warning_date) VALUES (?, ?, ?, ?)'''
-        cur.execute(sql, (1, 1, "Příliš nízká teplota (pod 10°C), hrozí promrznutí včel", only_date))
-        con.commit()
-    con.close()
+        sql = '''INSERT INTO warnings_temperature(hid, sid, warning_text, warning_date) VALUES (1, 1, :t, :d)'''
+        text_warning = "Příliš nízká teplota (pod 10°C), hrozí promrznutí včel"
+        conn.execute(sql, t=text_warning, d=only_date)
 
 
-def warnings_to_jsonify(date_from, date_to):
-    con = sqlite3.connect('beeary.db')
-    cur = con.cursor()
-    sql = '''SELECT warning_date, warning_text FROM warnings'''
-    cur.execute(sql)
-    res = cur.fetchall()
-    con.close()
+def warnings_to_jsonify(table_name, date_from, date_to):
+    sql = text('''SELECT warning_date, warning_text FROM ''' + table_name)
+    data = conn.execute(sql, t=table_name)
+    res = data.fetchall()
 
     data_list = []
     date_from_date = datetime.strptime(date_from, '%d.%m.%Y')
@@ -200,13 +160,9 @@ def warnings_to_jsonify(date_from, date_to):
 
 
 def hive_with_graphs(hid, date_from, date_to):
-    con = sqlite3.connect('beeary.db')
-    cur = con.cursor()
-
-    sql = '''SELECT hive_name FROM hives WHERE hive_id = ?'''
-    cur.execute(sql, (hid,))
-    hive = cur.fetchone()
-    con.close()
+    sql = text('''SELECT hive_name FROM hives WHERE hive_id = :h''')
+    data = conn.execute(sql, h=hid)
+    hive = data.fetchone()
 
     res_list = []
     data_humidity = select_humidity_graph()
@@ -217,7 +173,8 @@ def hive_with_graphs(hid, date_from, date_to):
                  'humidity': graph_data_by_date_to_jsonify(data_humidity, date_from, date_to),
                  'temperature': graph_data_by_date_to_jsonify(data_temperature, date_from, date_to),
                  'weight': graph_data_by_date_to_jsonify(data_weight, date_from, date_to),
-                 'warnings': warnings_to_jsonify(date_from, date_to)}
+                 'warnings': warnings_to_jsonify("warnings", date_from, date_to),
+                 'warnings_temperature': warnings_to_jsonify("warnings_temperature", date_from, date_to)}
     res_list.append(hive_dict)
     return res_list
 
@@ -237,14 +194,9 @@ def hives_to_jsonify(hives):
 
 
 def select_month(month):
-    con = sqlite3.connect('beeary.db')
-    cur = con.cursor()
-    sql = '''SELECT description, pictogram  FROM months WHERE month_id = ?'''
-    cur.execute(sql, (month, ))
-    # con.commit()
-    res = cur.fetchall()
-    con.close()
-    return res
+    sql = text('''SELECT description, pictogram  FROM months WHERE month_id = :m''')
+    res = conn.execute(sql, m=month)
+    return res.fetchall()
 
 
 def months_to_jsonify(activities):
@@ -256,23 +208,14 @@ def months_to_jsonify(activities):
 
 
 def insert_notes(note_text, hid, note_date):
-    con = sqlite3.connect('beeary.db')
-    cur = con.cursor()
-    sql = '''INSERT INTO notes(note_text, hid, note_date) VALUES (?, ?, ?)'''
-    cur.execute(sql, (note_text, hid, note_date))
-    con.commit()
-    con.close()
+    sql = text('''INSERT INTO notes(note_text, hid, note_date) VALUES (:t, :h, :d)''')
+    conn.execute(sql, t=note_text, h=hid, d=note_date)
 
 
 def select_notes(hid):
-    con = sqlite3.connect('beeary.db')
-    cur = con.cursor()
-
-    sql = '''SELECT note_text, note_date FROM notes WHERE hid = ?'''
-    cur.execute(sql, (hid,))
-    res = cur.fetchall()
-    con.close()
-    return res
+    sql = text('''SELECT note_text, note_date FROM notes WHERE hid = :h''')
+    res = conn.execute(sql, h=hid)
+    return res.fetchall()
 
 
 def notes_to_jsonify(notes):

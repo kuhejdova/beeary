@@ -90,6 +90,7 @@ nav {
   border-radius: 2px;
   display: flex;
   justify-content: flex-end;
+  height: 60px;
 }
 
 nav a {

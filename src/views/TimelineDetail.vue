@@ -1,12 +1,12 @@
 <template>
-  <main class="wrapper">
+  <div class="wrapper">
       <div class="left">
         <Timeline :selectedDate="date" v-on:event_child="onChange" />
       </div>
       <div class="right">
         <Month :selectedDate="date" />
       </div>
-  </main>
+  </div>
 </template>
 
 <script>
@@ -54,6 +54,7 @@ export default {
 
 .wrapper {
   width: 100%;
+  height: 100%;
   display: flex;
 
   -moz-box-sizing: border-box;
@@ -67,6 +68,19 @@ div {
   color: #5e5b64;
   text-align: left;
 }
+
+.left, .right {
+  height: 100%;
+  overflow: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; 
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.left::-webkit-scrollbar, .right::-webkit-scrollbar {
+  display: none;
+}
+ 
 
 .left {
   max-width: 500px;

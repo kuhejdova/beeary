@@ -78,6 +78,7 @@
 import axios from "axios";
 import moment from "moment";
 import LineChart from "./OnelineChart.vue";
+import { baseUrl } from "../variables.js"
 
 export default {
   props: { currentHive: Number },
@@ -123,7 +124,7 @@ export default {
   },
   methods: {
     postHid(payload) {
-      const path = "http://localhost:5000/hive_graph";
+      const path = baseUrl + "/hive_graph";
       axios
         .post(path, payload)
         .then((res) => {

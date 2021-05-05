@@ -8,6 +8,7 @@
 
 <script>
 import axios from "axios";
+import { baseUrl } from "../variables.js"
 
 export default {
   props: { selectedDate: String },
@@ -27,7 +28,7 @@ export default {
   },
   methods: {
     postSid(payload) {
-      const path = "http://localhost:5000/hives";
+      const path = baseUrl + "/hives";
       axios
         .post(path, payload)
         .then((res) => {

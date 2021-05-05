@@ -102,8 +102,6 @@ export default {
 .container {
   width: 400px;
   margin-top: 10px;
-  height: 88vh;
-  overflow: auto;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

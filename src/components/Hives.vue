@@ -40,6 +40,7 @@
 <script>
 import axios from "axios";
 import LineChart from './MultilineChart.vue'
+import { baseUrl } from "../variables.js"
 
 export default {
   components: { LineChart },
@@ -67,7 +68,7 @@ changeUrl(selectedHid) {
 
 
     postSid(payload) {
-      const path = "http://localhost:5000/hives";
+      const path = baseUrl + "/hives";
       axios
         .post(path, payload)
         .then((res) => {
@@ -93,7 +94,7 @@ changeUrl(selectedHid) {
       
     },
     getSites() {
-      const path = "http://localhost:5000/sites";
+      const path = baseUrl + "/sites";
       axios
         .get(path)
         .then((res) => {
