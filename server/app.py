@@ -3,8 +3,8 @@ import os
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-# from . import database
-import database
+from . import database
+# import database
 
 # SITES = [
 #     {
