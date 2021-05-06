@@ -59,6 +59,11 @@ def add_header(response):
 def index():
     return app.send_static_file('index.html')
 
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return app.send_static_file('index.html')
+
 # @app.route('/', defaults={'path': ''})
 # def index():
 #     return app.send_static_file('index.html')
