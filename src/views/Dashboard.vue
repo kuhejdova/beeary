@@ -105,4 +105,10 @@ div {
 .left {
   flex: 1 1 auto;
 }
+
+@media (max-width: 800px){
+  .right{
+    display: none;
+  }
+}
 </style>

@@ -84,6 +84,7 @@ div {
 
 .left {
   max-width: 500px;
+  min-width: 400px;
   flex: 1 1 auto;
   display: flex;
   justify-content: center;
@@ -92,19 +93,28 @@ div {
 
 .right {
   flex: 1 0 auto;
+  
 }
 
 @media (max-width: 1000px) {
+  template {
+    display: flex;
+  }
+
   .wrapper {
     position: relative;
+    justify-content: center;
   }
+  
   .left {
     left: 0px;
     top: 0px;
+    min-width: 0px;
   }
   .right {
     position: absolute;
   }
+
 }
 
 /* .left {

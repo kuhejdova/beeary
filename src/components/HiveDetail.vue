@@ -32,6 +32,8 @@
     <br />
     <span id="displayError" ref="displayError"></span>
     <br />
+
+
     <div class="chart">
       <line-chart
         v-if="loaded"
@@ -41,8 +43,16 @@
         :onChange="onSubmit"
         :options="options"
       />
+      <h3>Upozornění</h3>
+      <div class="chart-warnings">
+    <div class="warnings" v-for="(warning, index) in chartData.warnings_temperature" :key="index">
+        {{ formatDate(warning.date) }} {{'– '}}{{ warning.value }}
+    </div>
+      </div>
     </div>
     <br />
+
+
     <div class="chart">
       <line-chart
         v-if="loaded"
@@ -52,8 +62,16 @@
         :onChange="onSubmit"
         :options="options"
       />
+      <h3>Upozornění</h3>
+      <div class="chart-warnings">
+    <div class="warnings" v-for="(warning, index) in chartData.warnings_weight" :key="index">
+        {{ formatDate(warning.date) }} {{'– '}}{{ warning.value }}
+    </div>
+      </div>
     </div>
     <br />
+
+
     <div class="chart">
       <line-chart
         v-if="loaded"
@@ -63,13 +81,15 @@
         :onChange="onSubmit"
         :options="options"
       />
-      
-    </div>
-    <br />
-    <h3>Upozornění</h3>
-    <div class="chart" v-for="(warning, index) in chartData.warnings" :key="index">
+      <h3>Upozornění</h3>
+      <div class="chart-warnings">
+    <div class="warnings" v-for="(warning, index) in chartData.warnings" :key="index">
         {{ formatDate(warning.date) }} {{'– '}}{{ warning.value }}
     </div>
+      </div>
+    </div>
+    <br />
+    
 
   </div>
 </template>
@@ -148,14 +168,10 @@ export default {
       var checkFrom = moment(this.dateFrom, "D.M.YYYY", true);
       var checkTo = moment(this.dateTo, "D.M.YYYY", true);
       if (!checkFrom.isValid() || !checkTo.isValid()) {
-        // console.error("wrong format");
-        // alert("Zadané datum je ve špatném formátu. Datum zadejte ve formátu D.M.YYYY")
         this.$refs.displayError.innerHTML =
           "Zadané datum je ve špatném formátu. Datum zadejte ve formátu D.M.YYYY";
         return;
       }
-      // console.log(checkFrom)
-      // console.log(checkTo)
       if (checkTo.isSameOrBefore(checkFrom)) {
         this.$refs.displayError.innerHTML =
           "Neplatný rozsah dat, datum OD musí být před datum DO";
@@ -218,10 +234,15 @@ export default {
   box-sizing: border-box;
 }
 
-.chart {
+.chart, .warnings {
   background: #f4f4f4;
   padding: 10px;
   height: auto;
+}
+
+.chart-warnings {
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .formWrapper {
@@ -229,6 +250,12 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+
+@media (max-width: 570px) {
+  .formWrapper{
+    flex-direction: column;
+  }
 }
 
 #displayError {

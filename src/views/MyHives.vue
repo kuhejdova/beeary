@@ -1,11 +1,6 @@
 <template>
-  <div>
-
-    <main>
-      <section>
         <div class="wrapper">
           <div class="left"> 
-            <!-- Nejaky vif aby tu mohly byt dve komponenty, jedna pro detail a jedna pro vsechny -->
             <Hives v-on:event_child="onChange" v-if="show"/>
             <HiveDetail :currentHive="currentHive" v-if="!show"/>
           </div>
@@ -13,9 +8,6 @@
             <Hexagons />
           </div>
         </div>
-      </section>
-    </main>
-  </div>
 </template>
 
 <script>
@@ -53,7 +45,6 @@ export default {
 
       if (parseInt(this.$route.query.hid) == 0){
         this.show = true
-        // console.log('here', parseInt(this.$route.query.hid))
       }
       else {
         this.show = false
@@ -61,19 +52,12 @@ export default {
 
 
     },
-    // onSubmit() {
-    //   const payload = {
-    //     noteToSave: this.noteToSave,
-    //   };
-    //   return payload;
-    // },
   },
   mounted() {
     if (this.$route.query.hid) {
       this.currentHive = parseInt(this.$route.query.hid);
       if (this.currentHive == 0){
         this.show = true
-        // console.log('here', parseInt(this.$route.query.hid))
       }
       else {
         this.show = false
@@ -91,9 +75,6 @@ export default {
   padding: 0;
 }
 
-section {
-  margin-left: 20px;
-}
 
 div {
   /* font:15px/1.3 'Open Sans', sans-serif; */
@@ -103,23 +84,43 @@ div {
 }
 
 .wrapper{
-  display: grid;
-  grid-template-columns: 70% 27%;
-  column-gap: 40px;
-  row-gap: 10px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
 
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+.left, .right {
+  height: 100%;
+  overflow: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; 
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.left::-webkit-scrollbar, .right::-webkit-scrollbar {
+  display: none;
 }
 
 .right {
-  width: 26vw;
-  overflow-x: hidden;
+  max-width: 300px;
+  flex: 1 0 auto;
+  display: flex;
+  justify-content: left;
+  /* padding: 10px;  */
 }
 
 .left {
-  padding-left: 20px;
+  flex: 1 1 auto;
+}
+
+@media (max-width: 1000px){
+  .right{
+    display: none;
+  }
+  .left {
+    padding: 0px;
+    widows: 100%;
+  }
 }
 
 </style>

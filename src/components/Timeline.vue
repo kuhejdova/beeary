@@ -3,13 +3,13 @@
     <div class="container">
       <div class="grid" v-for="(hex, index) in hexagons" :key="index">
         <div
-          class="block"
+          class="block-edge"
           :style="{ visibility: randomShow() ? 'visible' : 'hidden' }"
         ></div>
         <div class="block"></div>
         <div class="block"></div>
         <div
-          class="block"
+          class="block-edge"
           :style="{ visibility: randomShow() ? 'visible' : 'hidden' }"
         ></div>
         <div class="block"></div>
@@ -52,6 +52,9 @@ export default {
     },
 
     randomShow() {
+      if (window.screen.width < 400){
+        return false;
+      }
       var min = 2;
       var max = 4;
       var rand = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -133,7 +136,7 @@ body {
   -webkit-clip-path: polygon(50% 0, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
   clip-path: polygon(50% 0, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
 }
-.block {
+.block, .block-edge {
   position: relative;
   height: 95px;
   background-color: var(--light_color);
@@ -186,5 +189,23 @@ body {
   .block:nth-child(7n + 12) {
     grid-column: 2 / span 2;
   }
+}
+
+@media (max-width: 400px) {
+  .block-edge{
+    visibility: hidden;
+  }
+  .container{
+    overflow-x: hidden;
+  }
+
+  /* .block:nth-child(3), 
+  .block:nth-child(4n + 7) {
+  grid-column: 2 / span 2;
+	} */
+  /* .block:nth-child(4), 
+  .block:nth-child(5n + 9) {
+ grid-column: 2 / span 2;
+	} */
 }
 </style>

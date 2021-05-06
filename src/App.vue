@@ -191,7 +191,8 @@ button {
   padding: 0px;
   color: rgb(0, 0, 0);
   font-weight: bold;
-  font-size: calc(8px + 0.5vw);
+  /* font-size: calc(8px + 0.5vw); */
+  
   text-decoration: none;
   line-height: 1;
   text-transform: uppercase;

@@ -30,15 +30,17 @@
       </div>
     </form>
     <div class="col1">
-      <h2>{{ getDate() }}</h2>
-      <button
-        class="close"
-        type="button"
-        v-if="displayDetail"
-        @click="displayClose"
-      >
-        x
-      </button>
+      <div class="header-wrapper">
+        <h2>{{ getDate() }}</h2>
+        <button
+          class="close"
+          type="button"
+          v-if="displayDetail"
+          @click="displayClose"
+        >
+          x
+        </button>
+      </div>
       <br />
       <div v-for="(activity, index) in activities" :key="index" class="wrapper">
         <object
@@ -55,50 +57,65 @@
       <br />
       <div class="wrap-texts">
         <div class="left">
-          <p>Poznámky</p>
-          <br />
-          <div v-for="(note, index) in notes" :key="index">
-            <li v-if="displayNoteDate(note.note_date)">
-              <span>{{ note.note_date }} - {{ note.note_text }}</span>
-            </li>
+          <h3>Poznámky</h3>
+
+          <div>
+            <br />
+            <div v-for="(note, index) in notes" :key="index">
+              <li v-if="displayNoteDate(note.note_date)">
+                <div>{{ note.note_date }} - {{ note.note_text }}</div>
+              </li>
+            </div>
           </div>
-          <br />
+          <button @click="showForm" class="button" v-show="!show">
+            Přidat
+          </button>
+          <form @submit="selectNotes" v-show="show">
+            <label
+              >Datum
+              <input
+                v-model="noteDateToSave"
+                id="form-title-input"
+                type="text"
+                required
+                placeholder="D.M.YYYY"
+              />
+            </label>
+            <br />
+            <label
+              >Poznámka
+              <input
+                v-model="noteToSave"
+                id="form-date-input"
+                type="text"
+                required
+                placeholder="Přitejte poznámku"
+              />
+            </label>
+            <br /><br />
+            <button @click="onSubmitNote" class="button">Uložit</button>
+            <button @click="showForm" class="button" type="button">
+              Zrušit
+            </button>
+          </form>
         </div>
 
         <div class="right">
-          <p>Upozornění ze senzorů</p>
-          <br />
-          <div v-for="(warning, index) in warnings" :key="index">
-            <li>
-              <span>{{ formatDate(warning.date) }} - {{ warning.value }}</span>
-            </li>
+          <h3>Upozornění ze senzorů</h3>
+          <div class="warnings">
+            <br />
+            <div
+              v-for="(warning, index) in warnings"
+              :key="index"
+              class="warning"
+            >
+              <li>
+                <div>{{ formatDate(warning.date) }} - {{ warning.value }}</div>
+              </li>
+            </div>
           </div>
         </div>
       </div>
-      <button @click="showForm" class="button" v-show="!show">
-        Přidat
-      </button>
-      <form @submit="selectNotes" v-show="show">
-        <input
-          v-model="noteDateToSave"
-          id="form-title-input"
-          type="text"
-          required
-          placeholder="D.M.YYYY"
-        />
-        <input
-          v-model="noteToSave"
-          id="form-date-input"
-          type="text"
-          required
-          placeholder="Přitejte poznámku"
-        />
-        <br /><br />
-        <button @click="onSubmitNote" class="button">Uložit</button>
-        <button @click="showForm" class="button" type="button">
-          Zrušit
-        </button>
-      </form>
     </div>
   </div>
 </template>
@@ -253,21 +270,6 @@ export default {
           console.error(error);
         });
     },
-    // show(payload) {
-    //   const path = baseUrl + "/hive_graph";
-    //   axios
-    //     .post(path, payload)
-    //     .then((res) => {
-    //       this.hiveName = res.data.graphData[0].name;
-    //       this.chartData = res.data.graphData[0];
-    //       // this.graphData = res.data.graphData[0];
-    //       this.loaded = true;
-    //     })
-    //     .catch((error) => {
-    //       // eslint-disable-next-line
-    //       console.error(error);
-    //     });
-    // },
 
     postMonth(payload) {
       const path = baseUrl + "/activities";
@@ -440,14 +442,9 @@ li {
   margin-left: 20px;
 }
 
-.close {
-  display: none;
-}
 
-@media (max-width: 1000px) {
-  .close {
-    display: unset;
-  }
+div {
+  overflow-wrap: break-word;
 }
 
 .form-sites {
@@ -459,7 +456,9 @@ li {
   display: flex;
   width: 100%;
   height: 100%;
+  flex-wrap: wrap;
   justify-content: space-evenly;
+
   /* margin-right: auto; */
 }
 
@@ -468,6 +467,10 @@ li {
   display: flex;
   flex-direction: column;
   margin-right: auto;
+  flex-grow: 1;
+  flex-basis: 0;
+  max-width: 400px;
+  margin-bottom: 10px;
   /* justify-content: center; */
 }
 
@@ -476,6 +479,39 @@ li {
   display: flex;
   flex-direction: column;
   margin-right: auto;
+  flex-grow: 1;
+  flex-basis: 0;
+  min-width: 300px;
+
   /* justify-content: center; */
+}
+
+.warnings {
+  max-height: 200px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.header-wrapper {
+  display: flex;
+}
+
+.close {
+  display: none;
+  margin-left: auto;
+}
+
+.warning {
+  width: 100%;
+}
+
+.button {
+  max-height: 50px;
+}
+
+@media (max-width: 1000px) {
+  .close {
+    display: unset;
+  }
 }
 </style>

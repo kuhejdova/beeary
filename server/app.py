@@ -5,7 +5,8 @@ from flask_cors import CORS
 
 from . import database
 # import database
-
+import mimetypes
+mimetypes.add_type('text/css', '.css')
 # SITES = [
 #     {
 #         'id': 1,
@@ -52,12 +53,19 @@ def add_header(response):
 
 
 @app.route('/')
+# '/*'
+# @app.route('/', defaults={'path': ''})
+# @app.route('/<path:path>')
 def index():
     return app.send_static_file('index.html')
 
+# @app.route('/', defaults={'path': ''})
+# def index():
+#     return app.send_static_file('index.html')
+
 
 # sanity check route
-@app.route('/ping', methods=['GET']) # prepsat na post
+@app.route('/ping', methods=['GET']) 
 def ping_pong():
     return jsonify('pong!')
 
@@ -193,11 +201,6 @@ def get_hive_graph():
 
 
 if __name__ == '__main__':
-    try:
-        print("I AM RUNNING")
-        port = int(os.environ.get("PORT", 5000))
-        app.run(port=port)
-    except Exception as e:
-        print(e)
-    finally:
-        print("I AM NO LONGER RUNNING")
+    port = int(os.environ.get("PORT", 5000))
+    app.run(port=port)
+

@@ -1,5 +1,8 @@
 <template>
-  <nav v-bind:class="active" v-on:click.prevent>
+<div class="wrap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <nav v-bind:class="active" v-on:click.prevent id="myTopnav" class="topnav">
+    
     <router-link to="/" class="logo"
       ><img src="../../public/images/logo_text.svg" alt="Beeary"
     /></router-link>
@@ -22,10 +25,17 @@
       class="profile"
       >Profil</router-link
     >
+    
     <a @click="logout()">Odhlásit se</a>
+
+    <a href="javascript:void(0);" class="icon" @click="burgerMenu()">
+    <i class="fa fa-bars"></i>
+  </a>
     <!-- <li><a @click="logout()">Odhlásit se</a></li> -->
+   
   </nav>
   <!-- <p> Toto bude stránka <b>{{ active }}</b></p> -->
+   </div>
 </template>
 
 <script>
@@ -45,6 +55,15 @@ export default {
     logout() {
       this.$store.dispatch("logout");
     },
+
+    burgerMenu(){
+      var x = document.getElementById("myTopnav");
+  if (x.className != "topnav responsive") {
+    x.className = "topnav responsive";
+  } else {
+    x.className = "topnav";
+  }
+    }
   },
   watch:{
     $route (to){
@@ -81,8 +100,11 @@ nav {
 /*-------------------------
   The menu
 --------------------------*/
+.wrap {
+background-color: var(--main_color);
+}
 
-nav {
+.topnav {
   /* display:inline-block; */
   /* margin:60px auto 45px; */
   background-color: var(--main_color);
@@ -93,7 +115,7 @@ nav {
   height: 60px;
 }
 
-nav a {
+.topnav a {
   display: inline-block;
   padding: 18px 30px;
   color: rgb(0, 0, 0) !important;
@@ -109,26 +131,73 @@ nav a {
   transition: background-color 0.25s;
 }
 
-nav a:hover {
+.topnav a:hover {
   background-color: var(--light_color); /* #fadb6a nice light yellow */
   cursor: pointer;
 }
 
-nav a:first-child {
+.topnav a:first-child {
   border-radius: 2px 0 0 2px;
 }
 
-nav a:last-child {
+.topnav a:last-child {
   border-radius: 0 2px 2px 0;
 }
 
-nav.home .home,
-nav.timeline .timeline,
-nav.my_hives .my_hives,
-nav.profile .profile {
+.topnav.home .home,
+.topnav.timeline .timeline,
+.topnav.my_hives .my_hives,
+.topnav.profile .profile {
   background-color: var(--light_color);
   /* margin-left: auto; */
 }
+
+.topnav .icon {
+  display: none;
+}
+
+
+@media screen and (max-width: 700px) {
+  .topnav a:not(:first-child) {display: none;}
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+/* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
+@media screen and (max-width: 700px) {
+  .topnav.responsive {position: relative;}
+  .topnav.responsive a.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    /* flex-wrap: wrap;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: left;
+    display: flex; */
+    float: none; 
+    display: block;
+    text-align: left;
+  }
+
+  .topnav {
+    display: block;
+    height: unset;
+    background-color: var(--main_color);
+  }
+
+  .logo {
+    float: left;
+  }
+}
+
+
+
 
 .logo:hover {
   background-color: var(--main_color);
