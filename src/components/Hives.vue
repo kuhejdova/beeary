@@ -1,8 +1,7 @@
 <template>
   <div class="container">
     <br /><br />
-    <form @submit="onSubmit" class="w-100">
-      <div id="v-model-select-dynamic" class="demo">
+    <!-- <form @submit="onSubmit" class="select-sites">
         <select v-model="selected" @change="onSubmit">
           <option
             v-for="(site, index) in sites"
@@ -12,9 +11,8 @@
             {{ site.name }}
           </option>
         </select>
-        <!-- <div>{{ selected }}</div> -->
-      </div>
-    </form>
+    </form> -->
+  <SelectSite v-on:event_child="onChangeSite" />
     <br /><br />
     <div class="wrapper">
       <div class="outter" v-for="(hive, index) in hives" :key="index">
@@ -26,7 +24,7 @@
             :chartdata="hive.humidity"
             :chartdata2="hive.temperature"
             :chartdata3="hive.weight"
-            :onChange="onSubmit"
+            :onChange="onChangeSite"
             :options="options"/>
           </div>
           <br>
@@ -39,12 +37,14 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 import LineChart from './MultilineChart.vue'
-import { baseUrl } from "../variables.js"
+// import { baseUrl } from "../variables.js"
+// import SelectSite from "../selectSite.vue"
+import SelectSite from './selectSite.vue';
 
 export default {
-  components: { LineChart },
+  components: { LineChart, SelectSite },
   data() {
     return {
        hid: 1,
@@ -56,6 +56,11 @@ export default {
       options: null,
     };
   },
+  watch: {
+    onChangeSite: function(){
+      console.log('magic')
+    }
+  },
   methods: {
 changeUrl(selectedHid) {
       this.hid = selectedHid;
@@ -66,52 +71,63 @@ changeUrl(selectedHid) {
       });
       this.$emit('event_child', selectedHid);
     },
+    onChangeSite(childSite){
+      this.selected = childSite[0];
+      this.hives = childSite[1];
+      this.chartdata = childSite[1];
+      this.loaded = true;
+      console.log("childsite", childSite);
+      console.log("chartdata in parent", this.chartdata);
+    },
 
 
-    postSid(payload) {
-      const path = baseUrl + "/hives";
-      axios
-        .post(path, payload)
-        .then((res) => {
-          this.hives = res.data.hives;
-          this.chartdata = res.data.hives
+    // postSid(payload) {
+    //   const path = baseUrl + "/hives";
+    //   axios
+    //     .post(path, payload)
+    //     .then((res) => {
+    //       this.hives = res.data.hives;
+    //       this.chartdata = res.data.hives
       
-          this.loaded = true
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.error(error);
+    //       this.loaded = true
+    //     })
+    //     .catch((error) => {
+    //       // eslint-disable-next-line
+    //       console.error(error);
          
-        });
-    },
-    onSubmit(evt) {
-      evt.preventDefault();
-      const payload = {
-        sid: this.selected,
-      };
-      // console.log(this.selected)
-      // console.log(payload)
-      this.postSid(payload);
+    //     });
+    // },
+    // onSubmit(evt) {
+    //   evt.preventDefault();
+    //   const payload = {
+    //     sid: this.selected,
+    //   };
+    //   // console.log(this.selected)
+    //   // console.log(payload)
+    //   this.postSid(payload);
       
-    },
-    getSites() {
-      const path = baseUrl + "/sites";
-      axios
-        .get(path)
-        .then((res) => {
-          this.sites = res.data.sites;
-          this.selected = res.data.sites[0].id;
-          //   console.log(res.data.sites[0])
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.error(error);
-        });
-    },
+    // },
+    // getSites() {
+    //   const path = baseUrl + "/sites";
+    //   const payload = {
+    //     "email": localStorage.userEmail,
+    //   }
+    //   axios
+    //     .post(path, payload)
+    //     .then((res) => {
+    //       this.sites = res.data.sites;
+    //       console.log(res.data.sites)
+    //     })
+    //     .catch((error) => {
+    //       // eslint-disable-next-line
+    //       console.error(error);
+    //     });
+    // },
   },
   mounted() {
-    this.postSid();
-    this.getSites();
+    // this.onChangeSite;
+    // this.postSid();
+    // this.getSites();
   },
 };
 </script>
@@ -154,7 +170,9 @@ changeUrl(selectedHid) {
 }
 }
 
-
+.select-sites {
+  margin: auto 10px;
+}
 
 .chart-wrapper {
   width: 100%;

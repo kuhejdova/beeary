@@ -1,9 +1,7 @@
 <template>
   <div class="container">
-    <br /><br />
-    <button class="button" v-on:click="changeUrl()">Zpět</button>
-    <br /><br />
-    <h1>{{ hiveName }}</h1>
+    
+    <div class="header-wrapper"><h1>{{ hiveName }}</h1><button class="button" id="back-button" v-on:click="changeUrl()">Zpět</button></div>
     
     <div class="formWrapper">
       <label
@@ -29,9 +27,7 @@
       <br />
       <button @click="onSubmit" class="button">Zobrazit</button>
     </div>
-    <br />
     <span id="displayError" ref="displayError"></span>
-    <br />
 
 
     <div class="chart">
@@ -209,11 +205,9 @@ export default {
         dateFrom: this.dateFrom,
         dateTo: this.dateTo,
       };
-      // console.log(payload);
       this.postHid(payload);
     }
   },
-  created() {},
 };
 </script>
 
@@ -236,13 +230,18 @@ export default {
 
 .chart, .warnings {
   background: #f4f4f4;
-  padding: 10px;
+  padding: 10px auto;
   height: auto;
+  margin-bottom: 10px;
+}
+h3 {
+  margin-left: 10px;
 }
 
 .chart-warnings {
   max-height: 200px;
   overflow-y: auto;
+  margin-left: 10px;
 }
 
 .formWrapper {
@@ -250,6 +249,7 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding: 10px;
 }
 
 @media (max-width: 570px) {
@@ -262,9 +262,16 @@ export default {
   color: red;
 }
 
-h1 {
+.header-wrapper {
+  margin: 10px auto;
   background: #f4f4f4;
   padding: 10px;
-  height: auto;
+  /* height: auto; */
+  display: flex;
+  justify-content: space-between ;
+}
+
+#back-button {
+  margin: auto 0px auto 0px;
 }
 </style>

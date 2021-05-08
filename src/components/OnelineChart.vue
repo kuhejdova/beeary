@@ -56,6 +56,15 @@ export default {
         res = value < 10 ? "#ff0000" : "#0000ff";
       }
       // console.log(res)
+      if (this.title == "Hmotnost") {
+        if (index == 0){
+          res = "#0000ff"
+        }
+        else {
+          let value2 = context.dataset.data[index-1]
+          res = Math.abs(value - value2) > 5 ? "#ff0000" : "#0000ff";
+        }
+      }
       return res;
     },
 
@@ -70,6 +79,16 @@ export default {
 
       if (this.title == "Teplota") {
         res = value < 10 ? 7 : 3;
+      }
+
+      if (this.title == "Hmotnost") {
+        if (index == 0){
+          res = 3
+        }
+        else {
+          let value2 = context.dataset.data[index-1]
+          res = Math.abs(value - value2) > 5 ? 7 : 3;
+        }
       }
       // console.log(res)
       return res;

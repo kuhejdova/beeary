@@ -1,5 +1,9 @@
 <template>
   <div class="main-wrapper" v-if="displayDetail">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <form class="form-sites" @submit="onSubmit">
       <div id="dynamicSelect" class="demo">
         <span
@@ -32,14 +36,18 @@
     <div class="col1">
       <div class="header-wrapper">
         <h2>{{ getDate() }}</h2>
-        <button
+        <!-- <button
           class="close"
           type="button"
           v-if="displayDetail"
           @click="displayClose"
         >
           x
-        </button>
+        </button> -->
+        <i class="fa fa-times" id="close"
+          type="button"
+          v-if="displayDetail"
+          @click="displayClose"></i>
       </div>
       <br />
       <div v-for="(activity, index) in activities" :key="index" class="wrapper">
@@ -63,7 +71,10 @@
             <br />
             <div v-for="(note, index) in notes" :key="index">
               <li v-if="displayNoteDate(note.note_date)">
-                <div>{{ note.note_date }} - {{ note.note_text }}</div>
+                <div class="wrap-note">
+                  <div>{{ note.note_date }} - {{ note.note_text }}</div>
+                  <i class="fa fa-times" @click="deleteNote(note.note_id)"></i>
+                </div>
               </li>
             </div>
           </div>
@@ -209,14 +220,10 @@ export default {
         .post(path, payload)
         .then((res) => {
           this.notes = res.data.notes;
-
-          // this.loadedNotes = true;
         })
         .catch((error) => {
           console.error(error);
         });
-
-      // console.log(this.notes);
     },
 
     onSubmitNote(evt) {
@@ -226,14 +233,24 @@ export default {
         hid: this.selectedHive,
         note_date: this.noteDateToSave,
       };
-      // console.log(this.selected)
       this.postNote(payload);
 
-      this.note_text = "";
+      this.noteToSave = "";
       this.note_date = this.todayDate();
       this.selectNotes();
-      // this.show = !this.show;
-      // this.selected = 0;
+    },
+
+    deleteNote(nid) {
+      const payload = {
+        note_id: nid,
+      };
+      const path = baseUrl + "/delete_note";
+      axios
+        .post(path, payload)
+        .catch((error) => {
+          console.error(error);
+        });
+        this.selectNotes();
     },
 
     showForm() {
@@ -246,8 +263,6 @@ export default {
         dateFrom: this.dateFrom,
         dateTo: this.dateTo,
       };
-      // console.log(this.dateFrom);
-      // console.log(this.dateTo);
       const path = baseUrl + "/hive_graph";
       axios
         .post(path, payload)
@@ -264,7 +279,6 @@ export default {
             this.warnings,
             res.data.graphData[0].warnings_weight
           );
-          // this.loaded = true;
         })
         .catch((error) => {
           console.error(error);
@@ -312,7 +326,7 @@ export default {
         case 10:
           return require("../../public/images/blooming.svg");
         default:
-          alert("something is wrong");
+          // alert("something is wrong");
           return require("../../public/images/logo.svg");
       }
     },
@@ -331,10 +345,8 @@ export default {
         .then((res) => {
           this.hives = res.data.hives;
           this.chartdata = res.data.hives;
-          // console.log(this.hives)
         })
         .catch((error) => {
-          // eslint-disable-next-line
           console.error(error);
         });
     },
@@ -343,22 +355,20 @@ export default {
       const payload = {
         sid: this.selected,
       };
-      // console.log(this.selected)
-      // console.log(payload)
       this.postSid(payload);
       this.selectNotes();
     },
     getSites() {
       const path = baseUrl + "/sites";
+      const payload = {
+        email: localStorage.userEmail,
+      };
       axios
-        .get(path)
+        .post(path, payload)
         .then((res) => {
           this.sites = res.data.sites;
-          this.selected = res.data.sites[0].id;
-          //   console.log(res.data.sites[0])
         })
         .catch((error) => {
-          // eslint-disable-next-line
           console.error(error);
         });
     },
@@ -378,8 +388,6 @@ export default {
       .format("D.M.YYYY");
     this.showActivities();
     this.showWarnings();
-    // console.log(this.selectedDate);
-
     this.displayDetail = window.screen.width > 1000;
   },
   created() {
@@ -397,7 +405,6 @@ export default {
 }
 
 .main-wrapper {
-  /* font:15px/1.3 'Open Sans', sans-serif; */
   font-weight: bold;
   color: #5e5b64;
   text-align: left;
@@ -406,7 +413,6 @@ export default {
 .col1 {
   background: #f4f4f4;
   padding: 20px;
-  /* width: 50%; */
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -441,7 +447,6 @@ span {
 li {
   margin-left: 20px;
 }
-
 
 div {
   overflow-wrap: break-word;
@@ -496,9 +501,10 @@ div {
   display: flex;
 }
 
-.close {
+#close {
   display: none;
   margin-left: auto;
+  font-size: 25px;
 }
 
 .warning {
@@ -509,8 +515,22 @@ div {
   max-height: 50px;
 }
 
+.wrap-note {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 20px;
+}
+
+i {
+  font-family: 'FontAwesome';
+}
+
+i:hover {
+  cursor: pointer;
+}
+
 @media (max-width: 1000px) {
-  .close {
+  #close {
     display: unset;
   }
 }

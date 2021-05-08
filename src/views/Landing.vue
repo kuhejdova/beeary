@@ -127,7 +127,7 @@ export default {
 .container{
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  /* justify-content: space-evenly; */
   width: 100%;
   /* margin-bottom: 10px; */
 }
@@ -205,7 +205,7 @@ nav {
 }
 
 p {
-  font-size: max(12px, min(3vh, 4vw));
+  font-size: 20px;
   font-weight: bold;
   color: #7d9098;
 }

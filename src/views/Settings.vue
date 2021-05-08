@@ -3,14 +3,11 @@
 
     <section>
       <div class="col1">
-        <h1>Profil</h1>
+        <h1>Nastavení</h1>
       </div>
       <div class="col1">
-        <br />
-        <button @click="showFormSite" class="button" v-show="!showSite">
-          Přidat stanoviště
-        </button>
-        <form @submit="onSubmitSite" v-show="showSite">
+        <h2>Přidat stanoviště</h2>
+        <form @submit="onSubmitSite">
           Název stanoviště
           <input
             v-model="site_name"
@@ -29,16 +26,12 @@
           />
           <br /><br />
           <button @click="onSubmitSite" class="button">Uložit</button>
-          <button @click="showFormSite" class="button">Zrušit</button>
         </form>
-        <br /><br />
       </div>
 
       <div class="col1">
-        <button @click="showFormHive" class="button" v-show="!showHive">
-          Přidat úl
-        </button>
-        <form @submit="onSubmitHive" v-show="showHive">
+        <h2>Přidat úl</h2>
+        <form @submit="onSubmitHive">
           Stanoviště
           <select v-model="selected" @change="onChange">
             <option
@@ -50,7 +43,6 @@
             </option>
           </select>
           <br /><br />
-          <!-- <div>{{ selected }}</div> -->
           Název úlu
           <input
             v-model="hive_name"
@@ -59,9 +51,24 @@
             required
             placeholder="Název"
           /><br /><br />
-          <br /><br />
           <button @click="onSubmitHive" class="button">Uložit</button>
-          <button @click="showFormHive" class="button">Zrušit</button>
+        </form>
+      </div>
+
+      <div class="col1">
+        <h2>Odebrat stanoviště</h2>
+        <form @submit="onSubmitDeleteSite">
+          Stanoviště
+          <select v-model="selected" @change="onChange">
+            <option
+              v-for="(site, index) in sites"
+              :key="index"
+              v-bind:value="site.id"
+            >
+              {{ site.name }}
+            </option>
+          </select>
+          <button @click="onSubmitDeleteSite" class="button">Uložit</button>
         </form>
       </div>
     </section>
@@ -76,8 +83,8 @@ import { baseUrl } from "../variables.js";
 export default {
   data() {
     return {
-      showSite: false,
-      showHive: false,
+      // showSite: false,
+      // showHive: false,
       site_name: "",
       hive_name: "",
       location: "",
@@ -89,12 +96,12 @@ export default {
 
   methods: {
 
-    showFormSite() {
-      this.showSite = !this.showSite;
-    },
-    showFormHive() {
-      this.showHive = !this.showHive;
-    },
+    // showFormSite() {
+    //   this.showSite = !this.showSite;
+    // },
+    // showFormHive() {
+    //   this.showHive = !this.showHive;
+    // },
 
     onChange() {
       // evt.preventDefault();
@@ -105,14 +112,16 @@ export default {
     },
     getSites() {
       const path = baseUrl + "/sites";
+      const payload = {
+        "email": localStorage.userEmail,
+      }
       axios
-        .get(path)
+        .post(path, payload)
         .then((res) => {
           this.sites = res.data.sites;
-          this.selected = res.data.sites[0].id;
-          // console.log(res.data.sites[0]);
         })
         .catch((error) => {
+          // eslint-disable-next-line
           console.error(error);
         });
     },
@@ -134,15 +143,24 @@ export default {
         });
       this.getSites();
     },
+    postDeleteSid(payload) {
+      const path = baseUrl + "/delete_site";
+      axios
+        .post(path, payload)
+        .catch((error) => {
+          console.error(error);
+        });
+      this.getSites();
+    },
     onSubmitSite(evt) {
       evt.preventDefault();
       const payload = {
-        uid: "gXifKfOg06XvU9NewGfqiFwasE12",
+        uid: localStorage.userEmail,
         site_name: this.site_name,
         location: this.location,
       };
       // console.log(this.selected)
-      console.log(payload)
+      // console.log(payload)
       this.postSid(payload);
 
       this.site_name = "";
@@ -161,6 +179,16 @@ export default {
       this.hive_name = "";
       this.selected = 0;
     },
+
+    onSubmitDeleteSite(evt) {
+      evt.preventDefault();
+      const payload = {
+        sid: this.selected
+      };
+      // console.log(this.selected)
+      // console.log(payload)
+      this.postDeleteSid(payload);
+    }
   },
   created() {
 

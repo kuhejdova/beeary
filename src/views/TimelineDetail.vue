@@ -18,19 +18,12 @@ import Month from "../components/Month.vue";
 export default {
   data() {
     return {
-      noteToSave: [],
       date: moment(new Date()).format("M-YYYY"),
     };
   },
   methods: {
     onChange(selectedDate) {
       this.date = selectedDate;
-    },
-    onSubmit() {
-      const payload = {
-        noteToSave: this.noteToSave,
-      };
-      return payload;
     },
   },
   components: {
@@ -121,13 +114,13 @@ div {
   padding-left: 20px;
 } */
 
-.col1 {
+/* .col1 {
   background: #f4f4f4;
   margin-top: 10px;
   padding: 20px;
   /* width: 50%; */
-  -moz-box-sizing: border-box;
+  /* -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-}
+} */ 
 </style>

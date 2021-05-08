@@ -23,7 +23,7 @@
     <router-link
       to="/settings"
       class="profile"
-      >Profil</router-link
+      >Nastavení</router-link
     >
     
     <a @click="logout()">Odhlásit se</a>
@@ -53,7 +53,9 @@ export default {
   },
   methods: {
     logout() {
-      this.$store.dispatch("logout");
+      // this.$store.dispatch("logout");
+      this.$store.dispatch('logout')
+        .then(() => this.$router.push('/login'))
     },
 
     burgerMenu(){
@@ -67,7 +69,7 @@ export default {
   },
   watch:{
     $route (to){
-      console.log(routeMap[to.path])
+      // console.log(routeMap[to.path])
       this.active = routeMap[to.path]??'home';
     }
   },

@@ -1,6 +1,8 @@
 import os
 import sqlite3
 from datetime import datetime, timedelta
+
+import werkzeug.security
 from sqlalchemy import create_engine, text
 
 # postgresql+psycopg2://postgres:bakalarka@localhost:5432/beeary
@@ -36,20 +38,20 @@ def create_tables():
     con.close()
 
 
-def insert_sites(name, uid, location):
+def insert_sites(name, email, location):
     sql = text('''INSERT INTO sites(site_name, uid, location) VALUES (:n, :u, :l)''')
-    conn.execute(sql, n=name, u=uid, l=location)
+    conn.execute(sql, n=name, u=email, l=location)
 
 
-def select_sites(uid):
+def select_sites(email):
     sql = text('''SELECT site_id, site_name, location FROM sites WHERE uid = :u''')
-    data = conn.execute(sql, u=uid)
+    data = conn.execute(sql, u=email)
     return data.fetchall()
 
 
 def delete_site(sid):
     sql = text('''DELETE FROM sites WHERE site_id = :s''')
-    res = conn.execute(sql, s=sid)
+    conn.execute(sql, s=sid)
 
 
 def sites_to_jsonify(sites):
@@ -73,7 +75,7 @@ def select_hives(sid):
 
 def delete_hive(hid):
     sql = text('''DELETE FROM hives WHERE hive_id = :h''')
-    res = conn.execute(sql, h=hid)
+    conn.execute(sql, h=hid)
 
 
 def select_humidity_graph():
@@ -153,6 +155,19 @@ def generate_warnings_temperature(graphdata):
         conn.execute(sql, t=text_warning, d=only_date)
 
 
+def generate_warnings_weight(graphdata):
+    for i in range(len(graphdata)-1):
+        if i == 0:
+            continue
+        if abs(graphdata[i][1] - graphdata[i-1][1]) < 5:
+            continue
+        dt = datetime.strptime(graphdata[i][0], '%Y-%m-%d %H:%M:%S')
+        format_date = datetime.strftime(dt, '%Y-%m-%d')
+        sql = '''INSERT INTO warnings_weight(hid, sid, warning_text, warning_date) VALUES (1, 1, %s, %s)'''
+        text_warning = "Velký rozdíl hmotnosti (více než 5 kg)"
+        conn.execute(sql, (text_warning, format_date))
+
+
 def warnings_to_jsonify(table_name, date_from, date_to):
     sql = text('''SELECT warning_date, warning_text FROM ''' + table_name)
     data = conn.execute(sql, t=table_name)
@@ -167,18 +182,6 @@ def warnings_to_jsonify(table_name, date_from, date_to):
             line_dict = {'date': row[0], 'value': row[1]}
             data_list.append(line_dict)
     return data_list
-
-
-# def warnings_by_months_to_jsonify(table_name, month):
-#     sql = text('''SELECT warning_date, warning_text FROM ''' + table_name + ''' WHERE month = :m''')
-#     data = conn.execute(sql, t=table_name, m=month)
-#     res = data.fetchall()
-#
-#     data_list = []
-#     for row in res:
-#         line_dict = {'date': row[0], 'value': row[1]}
-#         data_list.append(line_dict)
-#     return data_list
 
 
 def hive_with_graphs(hid, date_from, date_to):
@@ -196,7 +199,8 @@ def hive_with_graphs(hid, date_from, date_to):
                  'temperature': graph_data_by_date_to_jsonify(data_temperature, date_from, date_to),
                  'weight': graph_data_by_date_to_jsonify(data_weight, date_from, date_to),
                  'warnings': warnings_to_jsonify("warnings", date_from, date_to),
-                 'warnings_temperature': warnings_to_jsonify("warnings_temperature", date_from, date_to)}
+                 'warnings_temperature': warnings_to_jsonify("warnings_temperature", date_from, date_to),
+                 'warnings_weight': warnings_to_jsonify("warnings_weight", date_from, date_to)}
     res_list.append(hive_dict)
     return res_list
 
@@ -235,7 +239,7 @@ def insert_notes(note_text, hid, note_date):
 
 
 def select_notes(hid):
-    sql = text('''SELECT note_text, note_date FROM notes WHERE hid = :h''')
+    sql = text('''SELECT note_id, note_text, note_date FROM notes WHERE hid = :h''')
     res = conn.execute(sql, h=hid)
     return res.fetchall()
 
@@ -243,17 +247,36 @@ def select_notes(hid):
 def notes_to_jsonify(notes):
     res_list = []
     for note in notes:
-        act_dict = {'note_text': note[0], 'note_date': note[1]}
+        act_dict = {'note_id': note[0], 'note_text': note[1], 'note_date': note[2]}
         res_list.append(act_dict)
     return res_list
 
 
+def delete_note(note_id):
+    sql = text('''DELETE FROM notes WHERE note_id = :n''')
+    conn.execute(sql, n=note_id)
+
+
+def select_user(email):
+    sql = text('''SELECT password FROM users WHERE email = :e''')
+    res = conn.execute(sql, e=email)
+    return res.fetchone()
+
+
+def insert_user(email, password):
+    sql = text('''INSERT INTO users(email, password) VALUES (:e, :p)''')
+    conn.execute(sql, e=email, p=password)
+
+
 if __name__ == '__main__':
     # create_tables()
-    uid = "gXifKfOg06XvU9NewGfqiFwasE12"
-    res = select_sites(uid)
-    hives = select_hives(1)
-    print(res)
+    # uid = "gXifKfOg06XvU9NewGfqiFwasE12"
+    # res = select_sites(uid)
+    # hives = select_hives(1)
+    # print(res)
+
+    # my_pass = werkzeug.security.generate_password_hash("heslo123", method='sha256')
+    # print(my_pass)
     # insert_sites('Stanoviste1', uid, 'Ostrava')
     # insert_sites('Bees', uid, 'Metylovice')
     # insert_sites('Something', uid, 'Brno')
@@ -270,4 +293,6 @@ if __name__ == '__main__':
     # generate_warnings_humidity(graphdata)
     # graphdata = select_temperature_graph()
     # generate_warnings_temperature(graphdata)
+    graphdata = select_weight_graph()
+    generate_warnings_weight(graphdata)
 

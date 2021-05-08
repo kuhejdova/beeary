@@ -3,13 +3,15 @@ import VueRouter from 'vue-router'
 import Dashboard from '../views/Dashboard.vue'
 import Landing from '../views/Landing.vue'
 import Hives from '../views/MyHives.vue'
+import NotFound from '../views/NotFound.vue'
 
 import Ping from '../components/Ping.vue';
 
 import TimelineDetail from '../views/TimelineDetail.vue'
 
 // import App from '../App.vue'
-import { auth } from '../firebase'
+// import { auth } from '../firebase'
+import store from '@/store'
 
 import moment from "moment";
 
@@ -71,6 +73,11 @@ const routes = [
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: '*',
+      name: 'notFound',
+      component: NotFound
     }
   ]
 
@@ -85,7 +92,7 @@ router.beforeEach((to, from, next) => {
     if (window.location.href == 'http://0.0.0.0:8080/'){
       next()
     }
-    else if (requiresAuth && !auth.currentUser ) {
+    else if (requiresAuth && !store.getters.isAuthenticated ) {
       next('/login')
     } else {
       next()

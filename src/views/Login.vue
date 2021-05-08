@@ -72,7 +72,8 @@
 </template>
 
 <script>
-import * as fb from "../firebase";
+// import * as fb from "../firebase";
+import { EventBus } from '@/utils'
 
 // import PasswordReset from '@/components/PasswordReset'
 export default {
@@ -91,42 +92,83 @@ export default {
         password: "",
       },
       showLoginForm: true,
+      errorMsg: '',
       // showPasswordReset: false
     };
   },
   methods: {
-    toggleForm() {
+        toggleForm() {
       this.showLoginForm = !this.showLoginForm;
     },
-    // togglePasswordReset() {
-    //   this.showPasswordReset = !this.showPasswordReset
+
+    login () {
+      this.$store.dispatch('login', { email: this.loginForm.email, password: this.loginForm.password })
+        .then(() => this.$router.push('/home'))
+    },
+    signup () {
+      this.$store.dispatch('register', { email: this.signupForm.email, password: this.signupForm.password })
+        .then(() => this.$router.push('/home'))
+    },
+    // signup() {
+    //   localStorage.removeItem("userData");
+
+    //   this.$store.dispatch("signup", {
+    //     email: this.signupForm.email,
+    //     password: this.signupForm.password,
+    //     name: this.signupForm.name,
+    //   });
     // },
-    async login() {
-      const { user } = await fb.auth.signInWithEmailAndPassword(
-        this.loginForm.email,
-        this.loginForm.password
-      );
-
-      localStorage.setItem("user", user);
-
-      const userProfile = await fb.usersCollection.doc(user.uid).get();
-      localStorage.setItem("userProfile", userProfile);
-
-      this.$store.dispatch("login", {
-        email: this.loginForm.email,
-        password: this.loginForm.password,
-      });
-    },
-    signup() {
-      localStorage.removeItem("user");
-
-      this.$store.dispatch("signup", {
-        email: this.signupForm.email,
-        password: this.signupForm.password,
-        name: this.signupForm.name,
-      });
-    },
   },
+  mounted () {
+    EventBus.$on('failedRegistering', (msg) => {
+      this.errorMsg = msg
+    })
+    EventBus.$on('failedAuthentication', (msg) => {
+      this.errorMsg = msg
+    })
+  },
+  beforeDestroy () {
+    EventBus.$off('failedRegistering')
+    EventBus.$off('failedAuthentication')
+  }
+  // methods: {
+  //   toggleForm() {
+  //     this.showLoginForm = !this.showLoginForm;
+  //   },
+  //   // togglePasswordReset() {
+  //   //   this.showPasswordReset = !this.showPasswordReset
+  //   // },
+
+  //   async login() {
+
+  //   },
+
+  //   async login() {
+  //     const { user } = await fb.auth.signInWithEmailAndPassword(
+  //       this.loginForm.email,
+  //       this.loginForm.password
+  //     );
+
+  //     localStorage.setItem("user", user);
+
+  //     const userProfile = await fb.usersCollection.doc(user.uid).get();
+  //     localStorage.setItem("userProfile", userProfile);
+
+  //     this.$store.dispatch("login", {
+  //       email: this.loginForm.email,
+  //       password: this.loginForm.password,
+  //     });
+  //   },
+  //   signup() {
+  //     localStorage.removeItem("user");
+
+  //     this.$store.dispatch("signup", {
+  //       email: this.signupForm.email,
+  //       password: this.signupForm.password,
+  //       name: this.signupForm.name,
+  //     });
+  //   },
+  // },
 };
 </script>
 

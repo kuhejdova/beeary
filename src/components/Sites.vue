@@ -57,8 +57,11 @@ export default {
 
     getSites() {
       const path = baseUrl + "/sites";
+      const payload = {
+        "email": localStorage.userEmail,
+      }
       axios
-        .get(path)
+        .post(path, payload)
         .then((res) => {
           this.sites = res.data.sites;
         })

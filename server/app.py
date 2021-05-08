@@ -1,11 +1,20 @@
 import os
+from datetime import datetime, timedelta
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, current_app
 from flask_cors import CORS
 
-from . import database
-# import database
+from werkzeug.security import generate_password_hash, check_password_hash
+import jwt
+
+# from . import database
+# from . import config
+import database
+import config
 import mimetypes
+
+
+
 mimetypes.add_type('text/css', '.css')
 # SITES = [
 #     {
@@ -37,10 +46,19 @@ DEBUG = True
 
 # instantiate the app
 app = Flask(__name__, static_folder='../dist', static_url_path='/')
-app.config.from_object(__name__)
+app.config.from_object(config.BaseConfig)
 
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
+
+
+def authenticate(email, password):
+    if email is None or password is None:
+        return None
+    user = database.select_user(email)
+    if user is None or not check_password_hash(user[0], password):
+        return None
+    return user
 
 
 @app.after_request
@@ -64,9 +82,39 @@ def index():
 def page_not_found(e):
     return app.send_static_file('index.html')
 
-# @app.route('/', defaults={'path': ''})
-# def index():
-#     return app.send_static_file('index.html')
+
+@app.route('/register/', methods=['POST'])
+def register():
+    data = request.get_json()
+    hash = generate_password_hash(data['password'])
+    database.insert_user(data['email'], hash)
+    return jsonify({
+        'status': 'success',
+        'user': {'email': data['email'], 'password': hash}
+    }), 201
+
+
+@app.route('/login/', methods=['POST'])
+def login():
+    data = request.get_json()
+    user = authenticate(data['email'], data['password'])
+
+    if not user:
+        return jsonify({
+            'status': 'error',
+            'message': 'Invalid credentials',
+            'authenticated': False
+        }), 401
+
+    token = jwt.encode({
+        'sub': data['email'],
+        'iat': datetime.utcnow(),
+        'exp': datetime.utcnow() + timedelta(minutes=30)
+    }, current_app.config['SECRET_KEY'])
+    return jsonify({
+        'status': 'success',
+        'token': token.decode('UTF-8')
+    })
 
 
 # sanity check route
@@ -75,10 +123,10 @@ def ping_pong():
     return jsonify('pong!')
 
 
-@app.route('/sites', methods=['GET'])
+@app.route('/sites', methods=['POST'])
 def all_sites():
-    uid = "gXifKfOg06XvU9NewGfqiFwasE12"
-    result = database.select_sites(uid)
+    data = request.get_json()
+    result = database.select_sites(data['email'])
     sites = database.sites_to_jsonify(result)
     # print(sites)
     return jsonify({
@@ -92,6 +140,16 @@ def add_site():
     post_data = request.get_json()
     database.insert_sites(post_data['site_name'], post_data['uid'], post_data['location'])
     # print(post_data['site_name'], post_data['uid'], post_data['location'])
+    return jsonify({
+        'status': 'success',
+        'message': 'ok'
+    })
+
+
+@app.route('/delete_site', methods=['POST'])
+def delete_site():
+    post_data = request.get_json()
+    database.delete_site(post_data['sid'])
     return jsonify({
         'status': 'success',
         'message': 'ok'
@@ -112,23 +170,6 @@ def all_hives():
         'status': 'success',
         'hives': hives
     })
-
-
-# @app.route('/warnings', methods=['POST'])
-# def get_warnings_month():
-#     month = request.get_json()['month']
-#     if month is not None:
-#         warnings_dict = {
-#             'warnings': database.warnings_by_months_to_jsonify('warnings', month),
-#             'warnings_temperature': database.warnings_by_months_to_jsonify('warnings_temperature', month),
-#             'warnings_weight': database.warnings_by_months_to_jsonify('warnings_weight', month)
-#         }
-#     else:
-#         warnings_dict = {}
-#     return jsonify({
-#         'status': 'success',
-#         'warnings': warnings_dict
-#     })
 
 
 @app.route('/activities', methods=['POST'])
@@ -181,6 +222,16 @@ def add_note():
     post_data = request.get_json()
     database.insert_notes(post_data['note_text'], post_data['hid'], post_data['note_date'])
     print(post_data['note_text'], post_data['hid'], post_data['note_date'])
+    return jsonify({
+        'status': 'success',
+        'message': 'ok'
+    })
+
+
+@app.route('/delete_note', methods=['POST'])
+def delete_note():
+    data = request.get_json()
+    database.delete_note(data['note_id'])
     return jsonify({
         'status': 'success',
         'message': 'ok'
