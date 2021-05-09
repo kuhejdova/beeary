@@ -6,12 +6,16 @@ from flask_cors import CORS
 
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
-
-# from . import database
-# from . import config
-import database
-import config
 import mimetypes
+
+production = os.getenv('NODE_ENV', default="development")
+if production == "production":
+    from . import database
+    from . import config
+else:
+    import database
+    import config
+
 
 
 
