@@ -36,14 +36,6 @@
     <div class="col1">
       <div class="header-wrapper">
         <h2>{{ getDate() }}</h2>
-        <!-- <button
-          class="close"
-          type="button"
-          v-if="displayDetail"
-          @click="displayClose"
-        >
-          x
-        </button> -->
         <i class="fa fa-times" id="close"
           type="button"
           v-if="displayDetail"
@@ -475,6 +467,7 @@ div {
   flex-grow: 1;
   flex-basis: 0;
   max-width: 400px;
+  min-width: 300px;
   margin-bottom: 10px;
   /* justify-content: center; */
 }

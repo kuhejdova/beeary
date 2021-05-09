@@ -181,10 +181,6 @@ body {
 }
 
 @media screen {
-  /* .block:nth-child(4),
-  .block:nth-child(5n + 9) {
-    grid-column: 2 / span 2;
-  } */
   .block:nth-child(5),
   .block:nth-child(7n + 12) {
     grid-column: 2 / span 2;
@@ -198,14 +194,5 @@ body {
   .container{
     overflow-x: hidden;
   }
-
-  /* .block:nth-child(3), 
-  .block:nth-child(4n + 7) {
-  grid-column: 2 / span 2;
-	} */
-  /* .block:nth-child(4), 
-  .block:nth-child(5n + 9) {
- grid-column: 2 / span 2;
-	} */
 }
 </style>

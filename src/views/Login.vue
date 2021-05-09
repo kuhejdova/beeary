@@ -31,7 +31,7 @@
       </form>
       <form v-else @submit.prevent>
         <h1>Začínáme</h1>
-        <div class="input-text">
+        <!-- <div class="input-text">
           <label for="name">Jméno </label>
           <input
             v-model.trim="signupForm.name"
@@ -39,7 +39,7 @@
             placeholder="Včelka Mája"
             id="name"
           />
-        </div>
+        </div> -->
         <div class="input-text">
           <label for="email2">Email </label>
           <input
@@ -58,6 +58,15 @@
             id="password2"
           />
         </div>
+        <div class="input-text">
+          <label for="password3">Heslo znovu </label>
+          <input
+            v-model.trim="signupForm.password2"
+            type="password"
+            placeholder="******"
+            id="password3"
+          />
+        </div>
         <button @click="signup()" class="button">Zaregistrovat se</button>
         <br /><br />
         <div class="extras">
@@ -73,7 +82,7 @@
 
 <script>
 // import * as fb from "../firebase";
-import { EventBus } from '@/utils'
+import { EventBus } from "@/utils";
 
 // import PasswordReset from '@/components/PasswordReset'
 export default {
@@ -87,27 +96,39 @@ export default {
         password: "",
       },
       signupForm: {
-        name: "",
         email: "",
         password: "",
+        password2: "",
       },
       showLoginForm: true,
-      errorMsg: '',
+      errorMsg: "",
       // showPasswordReset: false
     };
   },
   methods: {
-        toggleForm() {
+    toggleForm() {
       this.showLoginForm = !this.showLoginForm;
     },
 
-    login () {
-      this.$store.dispatch('login', { email: this.loginForm.email, password: this.loginForm.password })
-        .then(() => this.$router.push('/home'))
+    login() {
+      this.$store
+        .dispatch("login", {
+          email: this.loginForm.email,
+          password: this.loginForm.password,
+        })
+        .then(() => this.$router.push("/home"));
     },
-    signup () {
-      this.$store.dispatch('register', { email: this.signupForm.email, password: this.signupForm.password })
-        .then(() => this.$router.push('/home'))
+    signup() {
+      if (this.signupForm.password != this.signupForm.password2) {
+        alert("Zadaná hesla se neshodují");
+      } else {
+        this.$store
+          .dispatch("register", {
+            email: this.signupForm.email,
+            password: this.signupForm.password,
+          })
+          .then(() => this.$router.push("/home"));
+      }
     },
     // signup() {
     //   localStorage.removeItem("userData");
@@ -119,18 +140,18 @@ export default {
     //   });
     // },
   },
-  mounted () {
-    EventBus.$on('failedRegistering', (msg) => {
-      this.errorMsg = msg
-    })
-    EventBus.$on('failedAuthentication', (msg) => {
-      this.errorMsg = msg
-    })
+  mounted() {
+    EventBus.$on("failedRegistering", (msg) => {
+      this.errorMsg = msg;
+    });
+    EventBus.$on("failedAuthentication", (msg) => {
+      this.errorMsg = msg;
+    });
   },
-  beforeDestroy () {
-    EventBus.$off('failedRegistering')
-    EventBus.$off('failedAuthentication')
-  }
+  beforeDestroy() {
+    EventBus.$off("failedRegistering");
+    EventBus.$off("failedAuthentication");
+  },
   // methods: {
   //   toggleForm() {
   //     this.showLoginForm = !this.showLoginForm;
@@ -190,7 +211,8 @@ body {
   justify-content: center;
 }
 
-label, .input-text {
+label,
+.input-text {
   display: flex;
   align-self: center;
   justify-content: space-between;
