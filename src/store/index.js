@@ -88,8 +88,9 @@ const actions = {
         axios.defaults.headers.common["Authorization"] = localStorage.token;
       })
       .catch((error) => {
-        console.log("Error Authenticating: ", error);
+        // console.log("Error Authenticating: ", error);
         EventBus.$emit("failedAuthentication", error);
+        alert("Chybně zadaný email nebo heslo");
       });
   },
   register(context, userData) {
@@ -97,8 +98,9 @@ const actions = {
     return register(userData)
       .then(context.dispatch("login", userData))
       .catch((error) => {
-        console.log("Error Registering: ", error);
+        // console.log("Error Registering: ", error);
         EventBus.$emit("failedRegistering: ", error);
+        alert("Zadaný email již existuje");
       });
   },
   logout() {

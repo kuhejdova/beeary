@@ -230,7 +230,7 @@ export default {
 
 .chart, .warnings {
   background: #f4f4f4;
-  padding: 10px auto;
+  /* padding: 10px auto; */
   height: auto;
   margin-bottom: 10px;
 }
@@ -274,4 +274,8 @@ h3 {
 #back-button {
   margin: auto 0px auto 0px;
 }
+
+/* #line-chart {
+  padding: 20px;
+} */
 </style>

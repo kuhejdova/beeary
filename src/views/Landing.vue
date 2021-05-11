@@ -51,7 +51,8 @@
 </template>
 
 <script>
-import { auth } from "../firebase";
+// import { auth } from "../firebase";
+import store from '@/store'
 
 export default {
   data() {
@@ -63,7 +64,7 @@ export default {
   },
   methods: {
     redirectHome() {
-      if (!auth.currentUser) {
+      if (!store.getters.isAuthenticated) {
         this.$router.push("/login");
       } else {
         this.$router.push("/home");
@@ -128,12 +129,18 @@ export default {
   display: flex;
   flex-direction: column;
   /* justify-content: space-evenly; */
+  justify-content: center;
   width: 100%;
+  /* height: calc(100% + 60px);
+  background-image: url(../../public/images/background_pattern_missing.svg) ;
+  background-size: cover;
+  background-repeat: space;
+  background-position: center; */
   /* margin-bottom: 10px; */
 }
 
 .container > div {
-  background-color: rgba(255, 255, 255, 0.8);
+  /* background-color: rgba(255, 255, 255, 0.8); */
   align-self: center;
   min-width: 250px;
  

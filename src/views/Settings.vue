@@ -33,7 +33,8 @@
         <h2>Přidat úl</h2>
         <form @submit="onSubmitHive">
           Stanoviště
-          <select v-model="selected" @change="onChange">
+          <SelectSite v-on:event_child="onChangeSite" />
+          <!-- <select v-model="selected" @change="onChange">
             <option
               v-for="(site, index) in sites"
               :key="index"
@@ -41,7 +42,7 @@
             >
               {{ site.name }}
             </option>
-          </select>
+          </select> -->
           <br /><br />
           Název úlu
           <input
@@ -59,7 +60,8 @@
         <h2>Odebrat stanoviště</h2>
         <form @submit="onSubmitDeleteSite">
           Stanoviště
-          <select v-model="selected" @change="onChange">
+          <SelectSite v-on:event_child="onChangeSite2" />
+          <!-- <select v-model="selected" @change="onChange">
             <option
               v-for="(site, index) in sites"
               :key="index"
@@ -67,7 +69,7 @@
             >
               {{ site.name }}
             </option>
-          </select>
+          </select> -->
           <button @click="onSubmitDeleteSite" class="button">Uložit</button>
         </form>
       </div>
@@ -78,30 +80,43 @@
 <script>
 import axios from "axios";
 import { baseUrl } from "../variables.js";
+import SelectSite from '../components/selectSite.vue';
 
 
 export default {
+  components: {
+    SelectSite
+  },
   data() {
     return {
-      // showSite: false,
-      // showHive: false,
       site_name: "",
       hive_name: "",
       location: "",
       selected: 1,
+      hives: [],
+      selected2: 1,
+      hives2: [],
       sites: [],
-      active: "profile"
     };
   },
 
   methods: {
+    onChangeSite(childSite){
+      this.selected = childSite[0];
+      this.hives = childSite[1];
 
-    // showFormSite() {
-    //   this.showSite = !this.showSite;
-    // },
-    // showFormHive() {
-    //   this.showHive = !this.showHive;
-    // },
+      this.site_name = "";
+      this.location = "";
+    },
+
+    onChangeSite2(childSite){
+      this.selected2 = childSite[0];
+      this.hives2 = childSite[1];
+
+      this.site_name = "";
+      this.location = "";
+    },
+
 
     onChange() {
       // evt.preventDefault();
@@ -110,21 +125,22 @@ export default {
       };
       this.onSubmitSite(payload);
     },
-    getSites() {
-      const path = baseUrl + "/sites";
-      const payload = {
-        "email": localStorage.userEmail,
-      }
-      axios
-        .post(path, payload)
-        .then((res) => {
-          this.sites = res.data.sites;
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.error(error);
-        });
-    },
+    // getSites() {
+    //   const path = baseUrl + "/sites";
+    //   const payload = {
+    //     "email": localStorage.userEmail,
+    //   }
+    //   axios
+    //     .post(path, payload)
+    //     .then((res) => {
+    //       this.sites = res.data.sites;
+    //       this.selected = this.sites[0].id;
+    //     })
+    //     .catch((error) => {
+    //       // eslint-disable-next-line
+    //       console.error(error);
+    //     });
+    // },
     postSid(payload) {
       const path = baseUrl + "/add_site";
       axios
@@ -132,7 +148,7 @@ export default {
         .catch((error) => {
           console.error(error);
         });
-      this.getSites();
+      // this.getSites();
     },
     postHid(payload) {
       const path = baseUrl + "/add_hive";
@@ -141,7 +157,7 @@ export default {
         .catch((error) => {
           console.error(error);
         });
-      this.getSites();
+      // this.getSites();
     },
     postDeleteSid(payload) {
       const path = baseUrl + "/delete_site";
@@ -150,7 +166,7 @@ export default {
         .catch((error) => {
           console.error(error);
         });
-      this.getSites();
+      // this.getSites();
     },
     onSubmitSite(evt) {
       evt.preventDefault();
@@ -183,17 +199,17 @@ export default {
     onSubmitDeleteSite(evt) {
       evt.preventDefault();
       const payload = {
-        sid: this.selected
+        sid: this.selected2
       };
       // console.log(this.selected)
       // console.log(payload)
       this.postDeleteSid(payload);
     }
   },
-  created() {
+  // created() {
 
-    this.getSites();
-  },
+  //   this.getSites();
+  // },
 };
 </script>
 

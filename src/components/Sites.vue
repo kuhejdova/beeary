@@ -6,7 +6,8 @@
           <h2>{{ site.name }}</h2>
           Lokalita: {{ site.location }}
           <h3>Upozornění ze senzorů</h3>
-          <div class="warnings">
+          <div class="warnings" >
+            {{ checkHives(site.id) }}
             <div v-for="(warning, index) in chartData.warnings" :key="index">
               {{ chartData.name }} {{ "– " }} {{ formatDate(warning.date) }}
               {{ "– " }}{{ warning.value }}
@@ -46,11 +47,36 @@ export default {
         .post(path, payload)
         .then((res) => {
           this.chartData = res.data.graphData[0];
+          console.log(res.data)
         })
         .catch((error) => {
           console.error(error);
         });
     },
+
+    checkHives(sidToCheck) {
+const path = baseUrl + "/hives";
+var hives = [];
+      const payload = {
+        "sid": sidToCheck,
+      }
+      axios
+        .post(path, payload)
+        .then((res) => {
+          // console.log(res.data.hives.length != 0)
+          var hives = res.data.hives;
+          // console.log(this.hives);
+          return hives.length != 0;
+          // return res.data.hives != []
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(error);
+        });
+        // console.log(hives);
+        return hives.length != 0;
+    },
+
     formatDate(dateToFormat) {
       return moment(dateToFormat, "YYYY-MM-DD").format("D. M. YYYY");
     },
@@ -74,6 +100,9 @@ export default {
   created() {
     this.getSites();
     this.getHiveData();
+
+    // console.log(this.checkHives(3));
+    
   },
 };
 </script>

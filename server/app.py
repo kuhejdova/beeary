@@ -90,6 +90,14 @@ def page_not_found(e):
 @app.route('/register/', methods=['POST'])
 def register():
     data = request.get_json()
+    u = database.select_user(data['email'])
+    if database.select_user(data['email']) is not None:
+        return jsonify({
+            'status': 'error',
+            'message': 'Tento email je už obsazený.',
+            'authenticated': False
+        }), 401
+
     hash = generate_password_hash(data['password'])
     database.insert_user(data['email'], hash)
     return jsonify({
@@ -101,12 +109,13 @@ def register():
 @app.route('/login/', methods=['POST'])
 def login():
     data = request.get_json()
+
     user = authenticate(data['email'], data['password'])
 
     if not user:
         return jsonify({
             'status': 'error',
-            'message': 'Invalid credentials',
+            'message': 'Špatné přihlašovací údaje',
             'authenticated': False
         }), 401
 

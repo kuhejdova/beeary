@@ -6,9 +6,10 @@
     />
     <form class="form-sites" @submit="onSubmit">
       <div id="dynamicSelect" class="demo">
-        <span
-          >Stanoviště
-          <select v-model="selected" @change="onSubmit">
+        <span class="site-label"
+          ><label>Stanoviště</label>
+          <SelectSite v-on:event_child="onChangeSite" />
+          <!-- <select v-model="selected" @change="onSubmit">
             <option
               v-for="(site, index) in sites"
               :key="index"
@@ -16,7 +17,7 @@
             >
               {{ site.name }}
             </option>
-          </select>
+          </select> -->
         </span>
 
         <span>
@@ -127,9 +128,13 @@
 import moment from "moment";
 import axios from "axios";
 import { baseUrl } from "../variables.js";
+import SelectSite from './selectSite.vue';
 
 export default {
   props: { selectedDate: String },
+  components: {
+    SelectSite,
+  },
   data() {
     return {
       noteToSave: "",
@@ -200,7 +205,7 @@ export default {
       axios.post(path, payload).catch((error) => {
         console.error(error);
       });
-      this.getSites();
+      // this.getSites();
     },
 
     selectNotes() {
@@ -219,6 +224,9 @@ export default {
     },
 
     onSubmitNote(evt) {
+      if (this.hives == []){
+        alert('no hive selected')
+      }
       evt.preventDefault();
       const payload = {
         note_text: this.noteToSave,
@@ -330,40 +338,52 @@ export default {
         .setAttribute("fill", documentStyle.getPropertyValue("--main_color"));
     },
 
-    postSid(payload) {
-      const path = baseUrl + "/hives";
-      axios
-        .post(path, payload)
-        .then((res) => {
-          this.hives = res.data.hives;
-          this.chartdata = res.data.hives;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+onChangeSite(childSite){
+      this.selected = childSite[0];
+      this.hives = childSite[1];
+      // this.chartdata = childSite[1];
+      // this.loaded = true;
+      // console.log("childsite", childSite);
+      // console.log("chartdata in parent", this.chartdata);
     },
+
+  //   postSid(payload) {
+  //     const path = baseUrl + "/hives";
+  //     axios
+  //       .post(path, payload)
+  //       .then((res) => {
+  //         this.hives = res.data.hives;
+  //         this.chartdata = res.data.hives;
+  //         // this.selectedHive = this.hives[0].id || 0;
+  //         // console.log(this.hives)
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //       });
+  //   },
     onSubmit(evt) {
       evt.preventDefault();
-      const payload = {
-        sid: this.selected,
-      };
-      this.postSid(payload);
+      // const payload = {
+      //   sid: this.selected,
+      // };
+      // this.postSid(payload);
       this.selectNotes();
     },
-    getSites() {
-      const path = baseUrl + "/sites";
-      const payload = {
-        email: localStorage.userEmail,
-      };
-      axios
-        .post(path, payload)
-        .then((res) => {
-          this.sites = res.data.sites;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
+  //   getSites() {
+  //     const path = baseUrl + "/sites";
+  //     const payload = {
+  //       email: localStorage.userEmail,
+  //     };
+  //     axios
+  //       .post(path, payload)
+  //       .then((res) => {
+  //         this.sites = res.data.sites;
+  //         // this.selected = this.sites[0].id;
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //       });
+  //   },
   },
   mounted() {
     if (this.$route.query.date) {
@@ -383,8 +403,8 @@ export default {
     this.displayDetail = window.screen.width > 1000;
   },
   created() {
-    this.postSid();
-    this.getSites();
+    // this.getSites();
+    // this.postSid();
     this.selectNotes();
     this.todayDate();
   },
@@ -520,6 +540,17 @@ i {
 
 i:hover {
   cursor: pointer;
+}
+
+.site-label {
+  display: flex;
+  justify-content: center;
+  /* justify-self: center; */
+}
+
+label{
+  margin-right: 10px;
+  align-self: center;
 }
 
 @media (max-width: 1000px) {

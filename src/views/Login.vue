@@ -1,7 +1,7 @@
 <template>
   <div id="login">
     <div :class="{ 'signup-form': !showLoginForm }" class="col2">
-      <form v-if="showLoginForm" @submit.prevent>
+      <form v-if="showLoginForm" @submit.prevent class="form-background">
         <h1>Vítejte zpět</h1>
         <div class="input-text">
           <label for="email1">Email </label>
@@ -29,7 +29,7 @@
           <button @click="toggleForm()" class="button">Zaregistrovat se</button>
         </div>
       </form>
-      <form v-else @submit.prevent>
+      <form v-else @submit.prevent class="form-background">
         <h1>Začínáme</h1>
         <!-- <div class="input-text">
           <label for="name">Jméno </label>
@@ -205,10 +205,19 @@ body {
 }
 
 #login {
-  margin-top: 150px;
+  padding-top: 150px;
   width: 100%;
+  height: calc(100% - 100px);
   display: flex;
   justify-content: center;
+  background-image: url(../../public/images/background_pattern_missing.svg) ;
+  background-size: cover;
+  background-position: center;
+}
+
+.form-background {
+  background: #f4f4f4;
+  padding: 30px;
 }
 
 label,

@@ -44,7 +44,7 @@ def insert_sites(name, email, location):
 
 
 def select_sites(email):
-    sql = text('''SELECT site_id, site_name, location FROM sites WHERE uid = :u''')
+    sql = text('''SELECT site_id, site_name, location FROM sites WHERE uid = :u ORDER BY site_id''')
     data = conn.execute(sql, u=email)
     return data.fetchall()
 
@@ -78,50 +78,35 @@ def delete_hive(hid):
     conn.execute(sql, h=hid)
 
 
-def select_humidity_graph():
-    sql = text('''SELECT date, value FROM humidity''')
+def select_humidity_graph(date_from, date_to):
+    sql = text("SELECT date, value FROM humidity WHERE date BETWEEN \'" + date_from + "\' AND \'" + date_to + "\'")
     res = conn.execute(sql)
     return res.fetchall()
 
 
-def select_temperature_graph():
-    sql = text('''SELECT date, value FROM temperature''')
+def select_temperature_graph(date_from, date_to):
+    sql = text("SELECT date, value FROM temperature WHERE date BETWEEN \'" + date_from + "\' AND \'" + date_to + "\'")
     res = conn.execute(sql)
     return res.fetchall()
 
 
-def select_weight_graph():
+def select_weight_graph(date_from, date_to):
     conn = engine.connect()
-    sql = '''SELECT date, value FROM weight'''
+    sql = "SELECT date, value FROM weight  WHERE date BETWEEN \'" + date_from + "\' AND \'" + date_to + "\'"
     res = conn.execute(sql)
     return res.fetchall()
 
 
 def graph_data_to_jsonify(graphdata):
     data_list = []
-    now = datetime.today()
-    fake_now = now
-    week_back = fake_now - timedelta(days=7)
-    for row in graphdata:
-        dt = datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S')
-        if week_back <= dt <= fake_now:
-            line_dict = {'date': row[0], 'value': row[1]}
-            data_list.append(line_dict)
-    return data_list
-
-
-def graph_data_by_date_to_jsonify(graphdata, date_from, date_to):
-    data_list = []
-    now = datetime.today()
-    # fake_now = now - timedelta(days=2*366-1)
-    date_from_date = datetime.strptime(date_from, '%d.%m.%Y')
-    date_to_date = datetime.strptime(date_to, '%d.%m.%Y')
+    # now = datetime.today()
+    # fake_now = now
     # week_back = fake_now - timedelta(days=7)
     for row in graphdata:
-        dt = datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S')
-        if date_from_date <= dt <= date_to_date:
-            line_dict = {'date': row[0], 'value': row[1]}
-            data_list.append(line_dict)
+        # dt = datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S')
+        # if week_back <= dt <= fake_now:
+        line_dict = {'date': row[0], 'value': row[1]}
+        data_list.append(line_dict)
     return data_list
 
 
@@ -169,18 +154,18 @@ def generate_warnings_weight(graphdata):
 
 
 def warnings_to_jsonify(table_name, date_from, date_to):
-    sql = text('''SELECT warning_date, warning_text FROM ''' + table_name)
+    sql = text("SELECT warning_date, warning_text FROM " + table_name + " WHERE warning_date BETWEEN \'" + date_from + "\' AND \'" + date_to + "\'")
     data = conn.execute(sql, t=table_name)
     res = data.fetchall()
 
     data_list = []
-    date_from_date = datetime.strptime(date_from, '%d.%m.%Y')
-    date_to_date = datetime.strptime(date_to, '%d.%m.%Y')
+    # date_from_date = datetime.strptime(date_from, '%d.%m.%Y')
+    # date_to_date = datetime.strptime(date_to, '%d.%m.%Y')
     for row in res:
-        dt = datetime.strptime(row[0], '%Y-%m-%d')
-        if date_from_date <= dt < date_to_date:
-            line_dict = {'date': row[0], 'value': row[1]}
-            data_list.append(line_dict)
+        # dt = datetime.strptime(row[0], '%Y-%m-%d')
+        # if date_from_date <= dt < date_to_date:
+        line_dict = {'date': row[0], 'value': row[1]}
+        data_list.append(line_dict)
     return data_list
 
 
@@ -190,14 +175,21 @@ def hive_with_graphs(hid, date_from, date_to):
     hive = data.fetchone()
 
     res_list = []
-    data_humidity = select_humidity_graph()
-    data_temperature = select_temperature_graph()
-    data_weight = select_weight_graph()
+
+    date_from_date = datetime.strptime(date_from, '%d.%m.%Y')
+    date_to_date = datetime.strptime(date_to, '%d.%m.%Y')
+
+    date_to = date_to_date.strftime('%Y-%m-%d %H:%M:%S')
+    date_from = date_from_date.strftime('%Y-%m-%d %H:%M:%S')
+
+    data_humidity = select_humidity_graph(date_from, date_to)
+    data_temperature = select_temperature_graph(date_from, date_to)
+    data_weight = select_weight_graph(date_from, date_to)
 
     hive_dict = {'name': hive[0],
-                 'humidity': graph_data_by_date_to_jsonify(data_humidity, date_from, date_to),
-                 'temperature': graph_data_by_date_to_jsonify(data_temperature, date_from, date_to),
-                 'weight': graph_data_by_date_to_jsonify(data_weight, date_from, date_to),
+                 'humidity': graph_data_to_jsonify(data_humidity),
+                 'temperature': graph_data_to_jsonify(data_temperature),
+                 'weight': graph_data_to_jsonify(data_weight),
                  'warnings': warnings_to_jsonify("warnings", date_from, date_to),
                  'warnings_temperature': warnings_to_jsonify("warnings_temperature", date_from, date_to),
                  'warnings_weight': warnings_to_jsonify("warnings_weight", date_from, date_to)}
@@ -207,9 +199,16 @@ def hive_with_graphs(hid, date_from, date_to):
 
 def hives_to_jsonify(hives):
     res_list = []
-    data_humidity = select_humidity_graph()
-    data_temperature = select_temperature_graph()
-    data_weight = select_weight_graph()
+
+    now = datetime.today()
+    last_week = now - timedelta(days=7)
+
+    date_to = now.strftime('%Y-%m-%d %H:%M:%S')
+    date_from = last_week.strftime('%Y-%m-%d %H:%M:%S')
+
+    data_humidity = select_humidity_graph(date_from, date_to)
+    data_temperature = select_temperature_graph(date_from, date_to)
+    data_weight = select_weight_graph(date_from, date_to)
     for hive in hives:
         hive_dict = {'id': hive[0], 'name': hive[1],
                      'humidity': graph_data_to_jsonify(data_humidity),
@@ -269,6 +268,7 @@ def insert_user(email, password):
 
 
 if __name__ == '__main__':
+    pass
     # create_tables()
     # uid = "gXifKfOg06XvU9NewGfqiFwasE12"
     # res = select_sites(uid)
@@ -293,6 +293,11 @@ if __name__ == '__main__':
     # generate_warnings_humidity(graphdata)
     # graphdata = select_temperature_graph()
     # generate_warnings_temperature(graphdata)
-    graphdata = select_weight_graph()
-    generate_warnings_weight(graphdata)
+    # graphdata = select_weight_graph()
+    # generate_warnings_weight(graphdata)
+
+
+    # h = select_hives(1)
+    # r = hives_to_jsonify(h)
+    # print(r)
 
