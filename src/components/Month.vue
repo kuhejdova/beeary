@@ -1,5 +1,5 @@
 <template>
-  <div class="main-wrapper" v-if="displayDetail">
+  <div class="main-wrapper" v-if="isOpened">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -37,10 +37,13 @@
     <div class="col1">
       <div class="header-wrapper">
         <h2>{{ getDate() }}</h2>
-        <i class="fa fa-times" id="close"
+        <i
+          class="fa fa-times"
+          id="close"
           type="button"
-          v-if="displayDetail"
-          @click="displayClose"></i>
+          v-if="isOpened"
+          @click="displayClose"
+        ></i>
       </div>
       <br />
       <div v-for="(activity, index) in activities" :key="index" class="wrapper">
@@ -65,7 +68,7 @@
             <div v-for="(note, index) in notes" :key="index">
               <li v-if="displayNoteDate(note.note_date)">
                 <div class="wrap-note">
-                  <div>{{ note.note_date }} - {{ note.note_text }}</div>
+                  <div class="wrap-note-text">{{ note.note_date }} - {{ note.note_text }}</div>
                   <i class="fa fa-times" @click="deleteNote(note.note_id)"></i>
                 </div>
               </li>
@@ -128,10 +131,10 @@
 import moment from "moment";
 import axios from "axios";
 import { baseUrl } from "../variables.js";
-import SelectSite from './selectSite.vue';
+import SelectSite from "./selectSite.vue";
 
 export default {
-  props: { selectedDate: String },
+  props: { selectedDate: String, isOpened: Boolean },
   components: {
     SelectSite,
   },
@@ -147,7 +150,7 @@ export default {
       selectedHive: 1,
       hives: [],
       sites: [],
-      displayDetail: false,
+      // displayDetail: false,
       warnings: [],
       dateFrom: moment()
         .clone()
@@ -172,13 +175,15 @@ export default {
         .endOf("month")
         .format("D.M.YYYY");
       this.showWarnings();
-      this.displayDetail = true;
+      // this.displayDetail = true;
     },
   },
   methods: {
     displayClose() {
-      this.displayDetail = false;
+      // this.displayDetail = false;
+      this.$emit("event_open");
     },
+
     getDate() {
       // this.showActivities();
       moment.locale("cs");
@@ -224,8 +229,8 @@ export default {
     },
 
     onSubmitNote(evt) {
-      if (this.hives == []){
-        alert('no hive selected')
+      if (this.hives == []) {
+        alert("no hive selected");
       }
       evt.preventDefault();
       const payload = {
@@ -245,12 +250,10 @@ export default {
         note_id: nid,
       };
       const path = baseUrl + "/delete_note";
-      axios
-        .post(path, payload)
-        .catch((error) => {
-          console.error(error);
-        });
-        this.selectNotes();
+      axios.post(path, payload).catch((error) => {
+        console.error(error);
+      });
+      this.selectNotes();
     },
 
     showForm() {
@@ -267,6 +270,7 @@ export default {
       axios
         .post(path, payload)
         .then((res) => {
+          this.warnings = [];
           this.warnings.push.apply(
             this.warnings,
             res.data.graphData[0].warnings
@@ -338,74 +342,46 @@ export default {
         .setAttribute("fill", documentStyle.getPropertyValue("--main_color"));
     },
 
-onChangeSite(childSite){
+    onChangeSite(childSite) {
       this.selected = childSite[0];
       this.hives = childSite[1];
-      // this.chartdata = childSite[1];
-      // this.loaded = true;
-      // console.log("childsite", childSite);
-      // console.log("chartdata in parent", this.chartdata);
+      this.selectedHive = childSite?.[1]?.[0]?.id ?? 0;
+      console.log(this.selectedHive);
+      this.selectNotes();
+      this.showWarnings();
     },
-
-  //   postSid(payload) {
-  //     const path = baseUrl + "/hives";
-  //     axios
-  //       .post(path, payload)
-  //       .then((res) => {
-  //         this.hives = res.data.hives;
-  //         this.chartdata = res.data.hives;
-  //         // this.selectedHive = this.hives[0].id || 0;
-  //         // console.log(this.hives)
-  //       })
-  //       .catch((error) => {
-  //         console.error(error);
-  //       });
-  //   },
     onSubmit(evt) {
       evt.preventDefault();
       // const payload = {
       //   sid: this.selected,
       // };
       // this.postSid(payload);
-      this.selectNotes();
+      if (this.hives != []) {
+        this.selectNotes();
+      }
     },
-  //   getSites() {
-  //     const path = baseUrl + "/sites";
-  //     const payload = {
-  //       email: localStorage.userEmail,
-  //     };
-  //     axios
-  //       .post(path, payload)
-  //       .then((res) => {
-  //         this.sites = res.data.sites;
-  //         // this.selected = this.sites[0].id;
-  //       })
-  //       .catch((error) => {
-  //         console.error(error);
-  //       });
-  //   },
   },
   mounted() {
     if (this.$route.query.date) {
       this.urlDate = this.$route.query.date.replace("-", "/");
     }
     this.warnings = [];
-    this.dateFrom = moment(this.selectedDate, "MM-YYYY")
-      .clone()
-      .startOf("month")
-      .format("D.M.YYYY");
-    this.dateTo = moment(this.selectedDate, "MM-YYYY")
-      .clone()
-      .endOf("month")
-      .format("D.M.YYYY");
+    // this.dateFrom = moment(this.selectedDate, "MM-YYYY")
+    //   .clone()
+    //   .startOf("month")
+    //   .format("D.M.YYYY");
+    // this.dateTo = moment(this.selectedDate, "MM-YYYY")
+    //   .clone()
+    //   .endOf("month")
+    //   .format("D.M.YYYY");
     this.showActivities();
-    this.showWarnings();
+    // this.showWarnings();
     this.displayDetail = window.screen.width > 1000;
   },
   created() {
     // this.getSites();
     // this.postSid();
-    this.selectNotes();
+    // this.selectNotes();
     this.todayDate();
   },
 };
@@ -484,21 +460,20 @@ div {
   display: flex;
   flex-direction: column;
   margin-right: auto;
-  flex-grow: 1;
-  flex-basis: 0;
-  max-width: 400px;
-  min-width: 300px;
+  width: 0px;
   margin-bottom: 10px;
+  min-width: 300px;
+  flex: 1;
   /* justify-content: center; */
 }
 
 .right {
   /* flex: 1 1; */
+  flex: 1;
   display: flex;
   flex-direction: column;
   margin-right: auto;
-  flex-grow: 1;
-  flex-basis: 0;
+  widows: 0px;
   min-width: 300px;
 
   /* justify-content: center; */
@@ -534,8 +509,13 @@ div {
   padding-right: 20px;
 }
 
+.wrap-note-text{
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 i {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
 }
 
 i:hover {
@@ -548,7 +528,7 @@ i:hover {
   /* justify-self: center; */
 }
 
-label{
+label {
   margin-right: 10px;
   align-self: center;
 }

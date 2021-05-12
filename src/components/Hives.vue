@@ -76,8 +76,8 @@ changeUrl(selectedHid) {
       this.hives = childSite[1];
       this.chartdata = childSite[1];
       this.loaded = true;
-      console.log("childsite", childSite);
-      console.log("chartdata in parent", this.chartdata);
+      // console.log("childsite", childSite);
+      // console.log("chartdata in parent", this.chartdata);
     },
 
 

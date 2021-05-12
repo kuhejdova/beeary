@@ -44,7 +44,16 @@ def insert_sites(name, email, location):
 
 
 def select_sites(email):
-    sql = text('''SELECT site_id, site_name, location FROM sites WHERE uid = :u ORDER BY site_id''')
+    sql = text('''
+    SELECT site_id, site_name, location,   CASE
+    WHEN hives_count is not null THEN 1
+    ELSE 0 
+  END 
+  AS have_hive
+    FROM sites 
+    LEFT JOIN (SELECT COUNT(*) as hives_count, sid FROM hives group by sid) as hive_count on hive_count.sid = site_id 
+    WHERE uid = :u ORDER BY site_id
+    ''')
     data = conn.execute(sql, u=email)
     return data.fetchall()
 
@@ -57,7 +66,7 @@ def delete_site(sid):
 def sites_to_jsonify(sites):
     res_list = []
     for site in sites:
-        site_dict = {'id': site[0], 'name': site[1], 'location': site[2], 'event': 'Žádná nová událost'}
+        site_dict = {'id': site[0], 'name': site[1], 'location': site[2], 'have_hive': site[3]}
         res_list.append(site_dict)
     return res_list
 
@@ -185,14 +194,16 @@ def hive_with_graphs(hid, date_from, date_to):
     data_humidity = select_humidity_graph(date_from, date_to)
     data_temperature = select_temperature_graph(date_from, date_to)
     data_weight = select_weight_graph(date_from, date_to)
+    hive_dict = {}
 
-    hive_dict = {'name': hive[0],
-                 'humidity': graph_data_to_jsonify(data_humidity),
-                 'temperature': graph_data_to_jsonify(data_temperature),
-                 'weight': graph_data_to_jsonify(data_weight),
-                 'warnings': warnings_to_jsonify("warnings", date_from, date_to),
-                 'warnings_temperature': warnings_to_jsonify("warnings_temperature", date_from, date_to),
-                 'warnings_weight': warnings_to_jsonify("warnings_weight", date_from, date_to)}
+    if hive is not None:
+        hive_dict = {'name': hive[0],
+                     'humidity': graph_data_to_jsonify(data_humidity),
+                     'temperature': graph_data_to_jsonify(data_temperature),
+                     'weight': graph_data_to_jsonify(data_weight),
+                     'warnings': warnings_to_jsonify("warnings", date_from, date_to),
+                     'warnings_temperature': warnings_to_jsonify("warnings_temperature", date_from, date_to),
+                     'warnings_weight': warnings_to_jsonify("warnings_weight", date_from, date_to)}
     res_list.append(hive_dict)
     return res_list
 
@@ -238,7 +249,7 @@ def insert_notes(note_text, hid, note_date):
 
 
 def select_notes(hid):
-    sql = text('''SELECT note_id, note_text, note_date FROM notes WHERE hid = :h''')
+    sql = text('''SELECT note_id, note_text, note_date FROM notes WHERE hid = :h order by note_date''')
     res = conn.execute(sql, h=hid)
     return res.fetchall()
 

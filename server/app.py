@@ -141,6 +141,7 @@ def all_sites():
     data = request.get_json()
     result = database.select_sites(data['email'])
     sites = database.sites_to_jsonify(result)
+
     # print(sites)
     return jsonify({
         'status': 'success',
@@ -176,9 +177,7 @@ def all_hives():
         result = database.select_hives(sid['sid'])
         hives = database.hives_to_jsonify(result)
     else:
-        sid = 1
-        result = database.select_hives(sid)
-        hives = database.hives_to_jsonify(result)
+        hives = []
     return jsonify({
         'status': 'success',
         'hives': hives

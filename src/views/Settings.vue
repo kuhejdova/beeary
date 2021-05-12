@@ -1,6 +1,5 @@
 <template>
   <header>
-
     <section>
       <div class="col1">
         <h1>Nastavení</h1>
@@ -33,7 +32,7 @@
         <h2>Přidat úl</h2>
         <form @submit="onSubmitHive">
           Stanoviště
-          <SelectSite v-on:event_child="onChangeSite" />
+          <SelectSite v-on:event_child="onChangeSite" :key="redraw" />
           <!-- <select v-model="selected" @change="onChange">
             <option
               v-for="(site, index) in sites"
@@ -60,7 +59,7 @@
         <h2>Odebrat stanoviště</h2>
         <form @submit="onSubmitDeleteSite">
           Stanoviště
-          <SelectSite v-on:event_child="onChangeSite2" />
+          <SelectSite v-on:event_child="onChangeSite2" :key="redraw" />
           <!-- <select v-model="selected" @change="onChange">
             <option
               v-for="(site, index) in sites"
@@ -80,12 +79,11 @@
 <script>
 import axios from "axios";
 import { baseUrl } from "../variables.js";
-import SelectSite from '../components/selectSite.vue';
-
+import SelectSite from "../components/selectSite.vue";
 
 export default {
   components: {
-    SelectSite
+    SelectSite,
   },
   data() {
     return {
@@ -97,11 +95,12 @@ export default {
       selected2: 1,
       hives2: [],
       sites: [],
+      redraw: 0,
     };
   },
 
   methods: {
-    onChangeSite(childSite){
+    onChangeSite(childSite) {
       this.selected = childSite[0];
       this.hives = childSite[1];
 
@@ -109,14 +108,13 @@ export default {
       this.location = "";
     },
 
-    onChangeSite2(childSite){
+    onChangeSite2(childSite) {
       this.selected2 = childSite[0];
       this.hives2 = childSite[1];
 
       this.site_name = "";
       this.location = "";
     },
-
 
     onChange() {
       // evt.preventDefault();
@@ -145,6 +143,9 @@ export default {
       const path = baseUrl + "/add_site";
       axios
         .post(path, payload)
+        .then(() => {
+          this.redraw += 1;
+        })
         .catch((error) => {
           console.error(error);
         });
@@ -152,20 +153,16 @@ export default {
     },
     postHid(payload) {
       const path = baseUrl + "/add_hive";
-      axios
-        .post(path, payload)
-        .catch((error) => {
-          console.error(error);
-        });
+      axios.post(path, payload).catch((error) => {
+        console.error(error);
+      });
       // this.getSites();
     },
     postDeleteSid(payload) {
       const path = baseUrl + "/delete_site";
-      axios
-        .post(path, payload)
-        .catch((error) => {
-          console.error(error);
-        });
+      axios.post(path, payload).catch((error) => {
+        console.error(error);
+      });
       // this.getSites();
     },
     onSubmitSite(evt) {
@@ -199,12 +196,12 @@ export default {
     onSubmitDeleteSite(evt) {
       evt.preventDefault();
       const payload = {
-        sid: this.selected2
+        sid: this.selected2,
       };
       // console.log(this.selected)
       // console.log(payload)
       this.postDeleteSid(payload);
-    }
+    },
   },
   // created() {
 

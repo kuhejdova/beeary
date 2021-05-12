@@ -4,7 +4,7 @@
         <Timeline :selectedDate="date" v-on:event_child="onChange" />
       </div>
       <div class="right">
-        <Month :selectedDate="date" />
+        <Month :selectedDate="date" :isOpened="opened" v-on:event_open="onOpen"/>
       </div>
   </div>
 </template>
@@ -19,12 +19,18 @@ export default {
   data() {
     return {
       date: moment(new Date()).format("M-YYYY"),
+      opened: true,
     };
   },
   methods: {
     onChange(selectedDate) {
       this.date = selectedDate;
+      this.opened = true;
     },
+
+    onOpen(){
+      this.opened = false;
+    }
   },
   components: {
     Timeline,
@@ -76,13 +82,15 @@ div {
  
 
 .left {
-  max-width: 500px;
-  min-width: 400px;
-  flex: 1 1 auto;
+  width: 500px;
+  flex: 1 0 auto;
   display: flex;
   justify-content: center;
+  max-width: 500px;
+  
   /* padding: 10px;  */
 }
+
 
 .right {
   flex: 1 0 auto;
@@ -100,9 +108,11 @@ div {
   }
   
   .left {
+    width: auto;
     left: 0px;
     top: 0px;
     min-width: 0px;
+    max-width: auto;
   }
   .right {
     position: absolute;
