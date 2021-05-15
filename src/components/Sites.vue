@@ -7,10 +7,16 @@
           Lokalita: {{ site.location }}
           <h3>Upozornění ze senzorů</h3>
           <div class="warnings" v-if="site.have_hive != 0">
+            <div v-if="chartData.warnings.length === 0">
+              Žádné nové upozornění.
+            </div>
             <div v-for="(warning, index) in chartData.warnings" :key="index">
               {{ chartData.name }} {{ "– " }} {{ formatDate(warning.date) }}
               {{ "– " }}{{ warning.value }}
             </div>
+          </div>
+          <div class="warnings" v-else>
+            Žádný úl se senzory.
           </div>
         </div>
       </div>
@@ -46,36 +52,11 @@ export default {
         .post(path, payload)
         .then((res) => {
           this.chartData = res.data.graphData[0];
-          // console.log(res.data)
         })
         .catch((error) => {
           console.error(error);
         });
     },
-
-//     checkHives(sidToCheck) {
-// const path = baseUrl + "/hives";
-// var hives = [];
-//       const payload = {
-//         "sid": sidToCheck,
-//       }
-//       axios
-//         .post(path, payload)
-//         .then((res) => {
-//           // console.log(res.data.hives.length != 0)
-//           var hives = res.data.hives;
-//           // console.log(this.hives);
-//           return hives.length != 0;
-//           // return res.data.hives != []
-//         })
-//         .catch((error) => {
-//           // eslint-disable-next-line
-//           console.error(error);
-//         });
-//         // console.log(hives);
-//         return hives.length != 0;
-//     },
-
     formatDate(dateToFormat) {
       return moment(dateToFormat, "YYYY-MM-DD").format("D. M. YYYY");
     },
@@ -83,15 +64,14 @@ export default {
     getSites() {
       const path = baseUrl + "/sites";
       const payload = {
-        "email": localStorage.userEmail,
-      }
+        email: localStorage.userEmail,
+      };
       axios
         .post(path, payload)
         .then((res) => {
           this.sites = res.data.sites;
         })
         .catch((error) => {
-          // eslint-disable-next-line
           console.error(error);
         });
     },
@@ -99,30 +79,15 @@ export default {
   created() {
     this.getSites();
     this.getHiveData();
-
-    // console.log(this.checkHives(3));
-    
   },
 };
 </script>
 
 <style scoped>
-
 #inner {
   background: #f4f4f4;
   padding: 10px 20px;
-  
-  /* align-content: stretch; */
 }
-
-/* .outter {
-  /* width: 50%; */
-  /* display: flex;
-  flex-direction: column;
-  flex-basis: 100%;
-  flex-wrap: wrap;
-  flex: 1;
-} */
 
 h2 {
   margin: 0px;
@@ -131,16 +96,6 @@ h2 {
 h3 {
   margin-bottom: 0px;
 }
-
-/* .wrapper{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  flex-basis: 100%;
-  /* width: 100%; */
-  /* align-content: stretch;
-  flex: 1 1 auto;
-}  */
 
 .wrapper {
   display: grid;
@@ -164,12 +119,6 @@ h3 {
     grid-template-columns: unset;
   }
 }
-
-/* .container {
-  max-width: 100%;
-} */
-
-
 
 .warnings {
   max-height: 200px;

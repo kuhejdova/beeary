@@ -1,11 +1,11 @@
 <template>
   <div class="wrapper">
-      <div class="left">
-        <Timeline :selectedDate="date" v-on:event_child="onChange" />
-      </div>
-      <div class="right">
-        <Month :selectedDate="date" :isOpened="opened" v-on:event_open="onOpen"/>
-      </div>
+    <div class="left">
+      <Timeline :selectedDate="date" v-on:event_child="onChange" />
+    </div>
+    <div class="right">
+      <Month :selectedDate="date" :isOpened="opened" v-on:event_open="onOpen" />
+    </div>
   </div>
 </template>
 
@@ -28,9 +28,9 @@ export default {
       this.opened = true;
     },
 
-    onOpen(){
+    onOpen() {
       this.opened = false;
-    }
+    },
   },
   components: {
     Timeline,
@@ -68,18 +68,19 @@ div {
   text-align: left;
 }
 
-.left, .right {
+.left,
+.right {
   height: 100%;
   overflow: auto;
   -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; 
+  scrollbar-width: none;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
-.left::-webkit-scrollbar, .right::-webkit-scrollbar {
+.left::-webkit-scrollbar,
+.right::-webkit-scrollbar {
   display: none;
 }
- 
 
 .left {
   width: 500px;
@@ -87,14 +88,12 @@ div {
   display: flex;
   justify-content: center;
   max-width: 500px;
-  
+
   /* padding: 10px;  */
 }
 
-
 .right {
   flex: 1 0 auto;
-  
 }
 
 @media (max-width: 1000px) {
@@ -106,7 +105,7 @@ div {
     position: relative;
     justify-content: center;
   }
-  
+
   .left {
     width: auto;
     left: 0px;
@@ -117,20 +116,5 @@ div {
   .right {
     position: absolute;
   }
-
 }
-
-/* .left {
-  padding-left: 20px;
-} */
-
-/* .col1 {
-  background: #f4f4f4;
-  margin-top: 10px;
-  padding: 20px;
-  /* width: 50%; */
-  /* -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-} */ 
 </style>

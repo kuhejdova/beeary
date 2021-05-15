@@ -1,13 +1,9 @@
 <script>
-// import * as chart from 'chart.js';
 import { Line } from "vue-chartjs";
-// const { reactiveProp } = mixins;
 
 export default {
   extends: Line,
-  // mixins: [reactiveProp],
   props: {
-    // onChange: function(){},
     title: {
       type: String,
       default: "",
@@ -55,13 +51,11 @@ export default {
       if (this.title == "Teplota") {
         res = value < 10 ? "#ff0000" : "#0000ff";
       }
-      // console.log(res)
       if (this.title == "Hmotnost") {
-        if (index == 0){
-          res = "#0000ff"
-        }
-        else {
-          let value2 = context.dataset.data[index-1]
+        if (index == 0) {
+          res = "#0000ff";
+        } else {
+          let value2 = context.dataset.data[index - 1];
           res = Math.abs(value - value2) > 5 ? "#ff0000" : "#0000ff";
         }
       }
@@ -82,23 +76,17 @@ export default {
       }
 
       if (this.title == "Hmotnost") {
-        if (index == 0){
-          res = 3
-        }
-        else {
-          let value2 = context.dataset.data[index-1]
+        if (index == 0) {
+          res = 3;
+        } else {
+          let value2 = context.dataset.data[index - 1];
           res = Math.abs(value - value2) > 5 ? 7 : 3;
         }
       }
-      // console.log(res)
       return res;
     },
 
     createChart() {
-      // Chart.Legend.prototype.afterFit = function() {
-      //   this.height = this.height + 10;
-      // };
-      // Chart.defaults.font: {family: "'Source Sans Pro', 'Helvetica', 'Arial', sans-serif"}
       var myLabels;
       var myValues;
 
@@ -139,13 +127,15 @@ export default {
           elements: {
             point: {
               radius: this.sizeWarning,
-              display: true
-            }
+              display: true,
+            },
           },
           scales: {
             xAxes: [
               {
-                font: {family: "'Source Sans Pro', 'Helvetica', 'Arial', sans-serif"},
+                font: {
+                  family: "'Source Sans Pro', 'Helvetica', 'Arial', sans-serif",
+                },
                 scaleLabel: {
                   display: true,
                   labelString: "Datum",
@@ -163,7 +153,9 @@ export default {
             ],
             yAxes: [
               {
-                font: {family: "'Source Sans Pro', 'Helvetica', 'Arial', sans-serif"},
+                font: {
+                  family: "'Source Sans Pro', 'Helvetica', 'Arial', sans-serif",
+                },
                 scaleLabel: {
                   display: true,
                   labelString: this.description,

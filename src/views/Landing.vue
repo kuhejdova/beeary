@@ -1,61 +1,61 @@
 <template>
-<div class="landing-wrapper">
-  <div class="container">
-    <div>
-      <div class="logo-wrapper">
-        <img
-          src="../../public/images/logo_text.svg"
-          alt="Beeary"
-          class="logo"
-        />
-      </div>
+  <div class="landing-wrapper">
+    <div class="container">
+      <div>
+        <div class="logo-wrapper">
+          <img
+            src="../../public/images/logo_text.svg"
+            alt="Beeary"
+            class="logo"
+          />
+        </div>
 
-      <div class="logo-subtitle">
-        <p>Webová aplikace pro všechny včelaře. Ovládněte včelařství.</p>
-      </div>
-      <div class="pictograms">
-        <div class="pictogram1">
-          <object
-            id="svgSetColor"
-            type="image/svg+xml"
-            :data="svgHives"
-            v-on:load="loadSetColor"
-          >
-            <img src="../../public/images/hives.svg" alt="Beeary" />
-          </object>
-          <p>Přehled všech úlů</p>
+        <div class="logo-subtitle">
+          <p>Webová aplikace pro všechny včelaře. Ovládněte včelařství.</p>
         </div>
-        <div class="pictogram2">
-          <object
-            id="svgSetColor"
-            type="image/svg+xml"
-            :data="svgTimeline"
-            v-on:load="loadSetColor"
-          >
-            <img src="../../public/images/timeline.svg" alt="Beeary" />
-          </object>
-          <p>Časová osa s poznámkami</p>
-          <!-- <img src="../../public/images/timeline.svg" alt="Beeary" /> -->
+        <div class="pictograms">
+          <div class="pictogram1">
+            <object
+              id="svgSetColor"
+              type="image/svg+xml"
+              :data="svgHives"
+              v-on:load="loadSetColor"
+            >
+              <img src="../../public/images/hives.svg" alt="Beeary" />
+            </object>
+            <p>Přehled všech úlů</p>
+          </div>
+          <div class="pictogram2">
+            <object
+              id="svgSetColor"
+              type="image/svg+xml"
+              :data="svgTimeline"
+              v-on:load="loadSetColor"
+            >
+              <img src="../../public/images/timeline.svg" alt="Beeary" />
+            </object>
+            <p>Časová osa s poznámkami</p>
+            <!-- <img src="../../public/images/timeline.svg" alt="Beeary" /> -->
+          </div>
+          <div class="pictogram3">
+            <object
+              id="svgSetColor"
+              type="image/svg+xml"
+              :data="svgMonitoring"
+              v-on:load="loadSetColor"
+            >
+              <img src="../../public/images/monitoring.svg" alt="Beeary" />
+            </object>
+            <p>Celoroční monitoring</p>
+            <!-- <img src="../../public/images/monitoring.svg" alt="Beeary" /> -->
+          </div>
         </div>
-        <div class="pictogram3">
-          <object
-            id="svgSetColor"
-            type="image/svg+xml"
-            :data="svgMonitoring"
-            v-on:load="loadSetColor"
-          >
-            <img src="../../public/images/monitoring.svg" alt="Beeary" />
-          </object>
-          <p>Celoroční monitoring</p>
-          <!-- <img src="../../public/images/monitoring.svg" alt="Beeary" /> -->
+        <div class="buttonwrapper">
+          <button @click="redirectHome" class="button">Pojď začít</button>
         </div>
-      </div>
-      <div class="buttonwrapper">
-        <button @click="redirectHome" class="button">Pojď začít</button>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -90,21 +90,18 @@ export default {
 };
 </script>
 
-
-
 <style scoped>
 /* * {
   margin: 0;
 } */
 
-.landing-wrapper{
+.landing-wrapper {
   height: calc(100% + 60px);
-  background-image: url(../../public/images/background_pattern_missing.svg) ;
+  background-image: url(../../public/images/background_pattern_missing.svg);
   background-size: cover;
   background-repeat: space;
   background-position: center;
 }
-
 
 .pictograms {
   display: flex;
@@ -191,11 +188,6 @@ object {
     width: 50vw; */
 }
 
-.pictogram1,
-.pictogram2,
-.pictogram3 {
-}
-
 body {
   font: max(8px, 10vw) "Open Sans", sans-serif;
   color: #5e5b64;
@@ -228,19 +220,6 @@ p {
   font-weight: bold;
   color: #7d9098;
 }
-
-/* p b {
-  color: #ffffff;
-  display: inline-block; */
-  /* padding: 5px 10px; */
-  /* background-color: #c4d7e0;
-  border-radius: 2px;
-  text-transform: uppercase;
-  font-size: 18px;
-} */
-/* .resource {
-  margin: 20px 0;
-} */
 
 @media (min-width: 690px) {
   .container {

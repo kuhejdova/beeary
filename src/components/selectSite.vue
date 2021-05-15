@@ -35,7 +35,6 @@ export default {
       const payload = {
         sid: this.selected,
       };
-      // console.log("toto sid hledam", this.selected)
       const path = baseUrl + "/hives";
       axios
         .post(path, payload, {
@@ -43,11 +42,7 @@ export default {
         })
         .then((res) => {
           this.hives = res.data.hives;
-          // this.chartdata = res.data.hives
-          // console.log("it happend", res.data.hives);
           this.$emit("event_child", [this.selected, this.hives]);
-
-          // this.loaded = true
         })
         .catch((error) => {
           if (axios.isCancel(error)) {
@@ -57,15 +52,6 @@ export default {
           }
         });
     },
-    // onSubmit(evt) {
-    //   evt.preventDefault();
-    //   const payload = {
-    //     sid: this.selected,
-    //   };
-    //   // console.log(this.selected)
-    //   // console.log(payload)
-    //   this.postSid(payload);
-    // },
     getSites() {
       const path = baseUrl + "/sites";
       const payload = {
@@ -77,23 +63,17 @@ export default {
           this.sites = res.data.sites;
           this.selected = this.sites[0].id;
           this.postSid();
-          // console.log(res.data.sites)
         })
         .catch((error) => {
           console.error(error);
         });
-      
     },
   },
   mounted() {
-    // this.onSubmit();
     this.getSites();
-
-    // this.postSid();
   },
   created() {
     this.getSites();
-    // this.postSid();
   },
 };
 </script>

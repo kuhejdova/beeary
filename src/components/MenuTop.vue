@@ -1,41 +1,26 @@
 <template>
-<div class="wrap">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <nav v-bind:class="active" v-on:click.prevent id="myTopnav" class="topnav">
-    
-    <router-link to="/" class="logo"
-      ><img src="../../public/images/logo_text.svg" alt="Beeary"
-    /></router-link>
+  <div class="wrap">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <nav v-bind:class="active" v-on:click.prevent id="myTopnav" class="topnav">
+      <router-link to="/" class="logo"
+        ><img src="../../public/images/logo_text.svg" alt="Beeary"
+      /></router-link>
 
-    <router-link to="/home" class="home"
-      >Hlavní stránka</router-link
-    >
-    <router-link
-      to="/timeline"
-      class="timeline"
-      >Časová osa</router-link
-    >
-    <router-link
-      to="/hives"
-      class="my_hives"
-      >Moje úly</router-link
-    >
-    <router-link
-      to="/settings"
-      class="profile"
-      >Nastavení</router-link
-    >
-    
-    <a @click="logout()">Odhlásit se</a>
+      <router-link to="/home" class="home">Hlavní stránka</router-link>
+      <router-link to="/timeline" class="timeline">Časová osa</router-link>
+      <router-link to="/hives" class="my_hives">Moje úly</router-link>
+      <router-link to="/settings" class="profile">Nastavení</router-link>
 
-    <a href="javascript:void(0);" class="icon" @click="burgerMenu()">
-    <i class="fa fa-bars"></i>
-  </a>
-    <!-- <li><a @click="logout()">Odhlásit se</a></li> -->
-   
-  </nav>
-  <!-- <p> Toto bude stránka <b>{{ active }}</b></p> -->
-   </div>
+      <a @click="logout()">Odhlásit se</a>
+
+      <a href="javascript:void(0);" class="icon" @click="burgerMenu()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </nav>
+  </div>
 </template>
 
 <script>
@@ -43,8 +28,8 @@ const routeMap = {
   "/hives": "my_hives",
   "/timeline": "timeline",
   "/settings": "profile",
-  "/home": "home"
-}
+  "/home": "home",
+};
 
 export default {
   name: "MenuTop",
@@ -53,34 +38,29 @@ export default {
   },
   methods: {
     logout() {
-      // this.$store.dispatch("logout");
-      this.$store.dispatch('logout')
-        .then(() => this.$router.push('/login'))
+      this.$store.dispatch("logout").then(() => this.$router.push("/login"));
     },
 
-    burgerMenu(){
+    burgerMenu() {
       var x = document.getElementById("myTopnav");
-  if (x.className != "topnav responsive") {
-    x.className = "topnav responsive";
-  } else {
-    x.className = "topnav";
-  }
-    }
+      if (x.className != "topnav responsive") {
+        x.className = "topnav responsive";
+      } else {
+        x.className = "topnav";
+      }
+    },
   },
-  watch:{
-    $route (to){
-      // console.log(routeMap[to.path])
-      this.active = routeMap[to.path]??'home';
-    }
+  watch: {
+    $route(to) {
+      this.active = routeMap[to.path] ?? "home";
+    },
   },
-mounted(){
-  this.active = routeMap[this.$route.path]??'home';
-  
-}
+  mounted() {
+    this.active = routeMap[this.$route.path] ?? "home";
+  },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 a,
 a:visited {
@@ -99,16 +79,12 @@ nav {
 .push {
   margin-left: auto;
 }
-/*-------------------------
-  The menu
---------------------------*/
+
 .wrap {
-background-color: var(--main_color);
+  background-color: var(--main_color);
 }
 
 .topnav {
-  /* display:inline-block; */
-  /* margin:60px auto 45px; */
   background-color: var(--main_color);
   box-shadow: 0 1px 1px #ccc;
   border-radius: 2px;
@@ -134,7 +110,7 @@ background-color: var(--main_color);
 }
 
 .topnav a:hover {
-  background-color: var(--light_color); /* #fadb6a nice light yellow */
+  background-color: var(--light_color);
   cursor: pointer;
 }
 
@@ -151,38 +127,33 @@ background-color: var(--main_color);
 .topnav.my_hives .my_hives,
 .topnav.profile .profile {
   background-color: var(--light_color);
-  /* margin-left: auto; */
 }
 
 .topnav .icon {
   display: none;
 }
 
-
 @media screen and (max-width: 700px) {
-  .topnav a:not(:first-child) {display: none;}
+  .topnav a:not(:first-child) {
+    display: none;
+  }
   .topnav a.icon {
     float: right;
     display: block;
   }
 }
 
-/* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
 @media screen and (max-width: 700px) {
-  .topnav.responsive {position: relative;}
+  .topnav.responsive {
+    position: relative;
+  }
   .topnav.responsive a.icon {
     position: absolute;
     right: 0;
     top: 0;
   }
   .topnav.responsive a {
-    /* flex-wrap: wrap;
-    flex: 1;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: left;
-    display: flex; */
-    float: none; 
+    float: none;
     display: block;
     text-align: left;
   }
@@ -197,9 +168,6 @@ background-color: var(--main_color);
     float: left;
   }
 }
-
-
-
 
 .logo:hover {
   background-color: var(--main_color);
@@ -245,7 +213,7 @@ a.logoImg {
 }
 
 a.logoImg:hover {
-  background-color: var(--main_color); /* #fadb6a nice light yellow */
+  background-color: var(--main_color);
 }
 
 img {
@@ -253,8 +221,4 @@ img {
   padding: 0px;
   margin: -15px;
 }
-
-/* .resource {
-  margin: 20px 0;
-} */
 </style>

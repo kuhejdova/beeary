@@ -24,22 +24,12 @@
         <button @click="login()" class="button">Přihlásit se</button>
         <br /><br />
         <div class="extras">
-          <!-- <a @click="togglePasswordReset()">Forgot Password</a> -->
           <label> Jsem tady nový </label>
           <button @click="toggleForm()" class="button">Zaregistrovat se</button>
         </div>
       </form>
       <form v-else @submit.prevent class="form-background">
         <h1>Začínáme</h1>
-        <!-- <div class="input-text">
-          <label for="name">Jméno </label>
-          <input
-            v-model.trim="signupForm.name"
-            type="text"
-            placeholder="Včelka Mája"
-            id="name"
-          />
-        </div> -->
         <div class="input-text">
           <label for="email2">Email </label>
           <input
@@ -81,14 +71,9 @@
 </template>
 
 <script>
-// import * as fb from "../firebase";
 import { EventBus } from "@/utils";
 
-// import PasswordReset from '@/components/PasswordReset'
 export default {
-  // components: {
-  //   PasswordReset
-  // },
   data() {
     return {
       loginForm: {
@@ -102,7 +87,6 @@ export default {
       },
       showLoginForm: true,
       errorMsg: "",
-      // showPasswordReset: false
     };
   },
   methods: {
@@ -130,15 +114,6 @@ export default {
           .then(() => this.$router.push("/home"));
       }
     },
-    // signup() {
-    //   localStorage.removeItem("userData");
-
-    //   this.$store.dispatch("signup", {
-    //     email: this.signupForm.email,
-    //     password: this.signupForm.password,
-    //     name: this.signupForm.name,
-    //   });
-    // },
   },
   mounted() {
     EventBus.$on("failedRegistering", (msg) => {
@@ -152,44 +127,6 @@ export default {
     EventBus.$off("failedRegistering");
     EventBus.$off("failedAuthentication");
   },
-  // methods: {
-  //   toggleForm() {
-  //     this.showLoginForm = !this.showLoginForm;
-  //   },
-  //   // togglePasswordReset() {
-  //   //   this.showPasswordReset = !this.showPasswordReset
-  //   // },
-
-  //   async login() {
-
-  //   },
-
-  //   async login() {
-  //     const { user } = await fb.auth.signInWithEmailAndPassword(
-  //       this.loginForm.email,
-  //       this.loginForm.password
-  //     );
-
-  //     localStorage.setItem("user", user);
-
-  //     const userProfile = await fb.usersCollection.doc(user.uid).get();
-  //     localStorage.setItem("userProfile", userProfile);
-
-  //     this.$store.dispatch("login", {
-  //       email: this.loginForm.email,
-  //       password: this.loginForm.password,
-  //     });
-  //   },
-  //   signup() {
-  //     localStorage.removeItem("user");
-
-  //     this.$store.dispatch("signup", {
-  //       email: this.signupForm.email,
-  //       password: this.signupForm.password,
-  //       name: this.signupForm.name,
-  //     });
-  //   },
-  // },
 };
 </script>
 
@@ -210,7 +147,7 @@ body {
   height: calc(100% - 100px);
   display: flex;
   justify-content: center;
-  background-image: url(../../public/images/background_pattern_missing.svg) ;
+  background-image: url(../../public/images/background_pattern_missing.svg);
   background-size: cover;
   background-position: center;
 }

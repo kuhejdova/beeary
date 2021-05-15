@@ -1,9 +1,8 @@
 <template>
   <div class="wrapper">
-      <h1>Stránka nenalezena</h1>
+    <h1>Stránka nenalezena</h1>
   </div>
 </template>
-
 
 <style scoped>
 * {
@@ -13,7 +12,7 @@
 }
 
 h1 {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .wrapper {
@@ -22,6 +21,4 @@ h1 {
   display: flex;
   justify-content: center;
 }
-
 </style>
-

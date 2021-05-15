@@ -2,14 +2,19 @@
   <section>
     <div class="container">
       <div class="grid">
-        <div v-for="(hex, index) in hexagons" :key="index" class="block"><img v-if="index%5 ==0" src="../../public/images/hives.svg" alt="Beeary" /></div>
+        <div v-for="(hex, index) in hexagons" :key="index" class="block">
+          <img
+            v-if="index % 5 == 0"
+            src="../../public/images/hives.svg"
+            alt="Beeary"
+          />
+        </div>
       </div>
     </div>
   </section>
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -37,16 +42,16 @@ export default {
   overflow: hidden;
 }
 
- /* Hide scrollbar for Chrome, Safari and Opera */
+/* Hide scrollbar for Chrome, Safari and Opera */
 .container::-webkit-scrollbar {
   display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .container {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-} 
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
 
 body {
   background-color: var(--main_color) 24;

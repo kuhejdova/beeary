@@ -1,8 +1,12 @@
 <template>
   <div class="container">
-    
-    <div class="header-wrapper"><h1>{{ hiveName }}</h1><button class="button" id="back-button" v-on:click="changeUrl()">Zpět</button></div>
-    
+    <div class="header-wrapper">
+      <h1>{{ hiveName }}</h1>
+      <button class="button" id="back-button" v-on:click="changeUrl()">
+        Zpět
+      </button>
+    </div>
+
     <div class="formWrapper">
       <label
         >Od
@@ -29,7 +33,6 @@
     </div>
     <span id="displayError" ref="displayError"></span>
 
-
     <div class="chart">
       <line-chart
         v-if="loaded"
@@ -41,13 +44,16 @@
       />
       <h3>Upozornění</h3>
       <div class="chart-warnings">
-    <div class="warnings" v-for="(warning, index) in chartData.warnings_temperature" :key="index">
-        {{ formatDate(warning.date) }} {{'– '}}{{ warning.value }}
-    </div>
+        <div
+          class="warnings"
+          v-for="(warning, index) in chartData.warnings_temperature"
+          :key="index"
+        >
+          {{ formatDate(warning.date) }} {{ "– " }}{{ warning.value }}
+        </div>
       </div>
     </div>
     <br />
-
 
     <div class="chart">
       <line-chart
@@ -60,13 +66,16 @@
       />
       <h3>Upozornění</h3>
       <div class="chart-warnings">
-    <div class="warnings" v-for="(warning, index) in chartData.warnings_weight" :key="index">
-        {{ formatDate(warning.date) }} {{'– '}}{{ warning.value }}
-    </div>
+        <div
+          class="warnings"
+          v-for="(warning, index) in chartData.warnings_weight"
+          :key="index"
+        >
+          {{ formatDate(warning.date) }} {{ "– " }}{{ warning.value }}
+        </div>
       </div>
     </div>
     <br />
-
 
     <div class="chart">
       <line-chart
@@ -79,14 +88,16 @@
       />
       <h3>Upozornění</h3>
       <div class="chart-warnings">
-    <div class="warnings" v-for="(warning, index) in chartData.warnings" :key="index">
-        {{ formatDate(warning.date) }} {{'– '}}{{ warning.value }}
-    </div>
+        <div
+          class="warnings"
+          v-for="(warning, index) in chartData.warnings"
+          :key="index"
+        >
+          {{ formatDate(warning.date) }} {{ "– " }}{{ warning.value }}
+        </div>
       </div>
     </div>
     <br />
-    
-
   </div>
 </template>
 
@@ -94,7 +105,7 @@
 import axios from "axios";
 import moment from "moment";
 import LineChart from "./OnelineChart.vue";
-import { baseUrl } from "../variables.js"
+import { baseUrl } from "../variables.js";
 
 export default {
   props: { currentHive: Number },
@@ -133,7 +144,6 @@ export default {
           dateFrom: this.dateFrom,
           dateTo: this.dateTo,
         };
-        // console.log(payload);
         this.postHid(payload);
       }
     },
@@ -146,17 +156,15 @@ export default {
         .then((res) => {
           this.hiveName = res.data.graphData[0].name;
           this.chartData = res.data.graphData[0];
-          // this.graphData = res.data.graphData[0];
           this.loaded = true;
         })
         .catch((error) => {
-          // eslint-disable-next-line
           console.error(error);
         });
     },
 
-    formatDate(dateToFormat){
-        return moment(dateToFormat, "YYYY-MM-DD").format("D. M. YYYY");
+    formatDate(dateToFormat) {
+      return moment(dateToFormat, "YYYY-MM-DD").format("D. M. YYYY");
     },
 
     onSubmit(evt) {
@@ -228,9 +236,9 @@ export default {
   box-sizing: border-box;
 }
 
-.chart, .warnings {
+.chart,
+.warnings {
   background: #f4f4f4;
-  /* padding: 10px auto; */
   height: auto;
   margin-bottom: 10px;
 }
@@ -253,7 +261,7 @@ h3 {
 }
 
 @media (max-width: 570px) {
-  .formWrapper{
+  .formWrapper {
     flex-direction: column;
   }
 }
@@ -266,16 +274,11 @@ h3 {
   margin: 10px auto;
   background: #f4f4f4;
   padding: 10px;
-  /* height: auto; */
   display: flex;
-  justify-content: space-between ;
+  justify-content: space-between;
 }
 
 #back-button {
   margin: auto 0px auto 0px;
 }
-
-/* #line-chart {
-  padding: 20px;
-} */
 </style>

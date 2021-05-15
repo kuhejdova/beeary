@@ -9,15 +9,6 @@
         <span class="site-label"
           ><label>Stanoviště</label>
           <SelectSite v-on:event_child="onChangeSite" />
-          <!-- <select v-model="selected" @change="onSubmit">
-            <option
-              v-for="(site, index) in sites"
-              :key="index"
-              v-bind:value="site.id"
-            >
-              {{ site.name }}
-            </option>
-          </select> -->
         </span>
 
         <span>
@@ -68,12 +59,15 @@
             <div v-for="(note, index) in notes" :key="index">
               <li v-if="displayNoteDate(note.note_date)">
                 <div class="wrap-note">
-                  <div class="wrap-note-text">{{ note.note_date }} - {{ note.note_text }}</div>
+                  <div class="wrap-note-text">
+                    {{ note.note_date }} - {{ note.note_text }}
+                  </div>
                   <i class="fa fa-times" @click="deleteNote(note.note_id)"></i>
                 </div>
               </li>
             </div>
           </div>
+          <div class="add-note-wrapper" v-if="hives.length !== 0">
           <button @click="showForm" class="button" v-show="!show">
             Přidat
           </button>
@@ -105,12 +99,16 @@
               Zrušit
             </button>
           </form>
+          </div>
         </div>
 
         <div class="right">
           <h3>Upozornění ze senzorů</h3>
           <div class="warnings">
             <br />
+            <div v-if="warnings.length === 0">
+              Žádné nové upozornění.
+            </div>
             <div
               v-for="(warning, index) in warnings"
               :key="index"
@@ -150,7 +148,6 @@ export default {
       selectedHive: 1,
       hives: [],
       sites: [],
-      // displayDetail: false,
       warnings: [],
       dateFrom: moment()
         .clone()
@@ -175,17 +172,14 @@ export default {
         .endOf("month")
         .format("D.M.YYYY");
       this.showWarnings();
-      // this.displayDetail = true;
     },
   },
   methods: {
     displayClose() {
-      // this.displayDetail = false;
       this.$emit("event_open");
     },
 
     getDate() {
-      // this.showActivities();
       moment.locale("cs");
       var dateCapitalized = moment(this.selectedDate, "MM-YYYY").format(
         "MMMM YYYY"
@@ -210,7 +204,6 @@ export default {
       axios.post(path, payload).catch((error) => {
         console.error(error);
       });
-      // this.getSites();
     },
 
     selectNotes() {
@@ -295,7 +288,6 @@ export default {
         .post(path, payload)
         .then((res) => {
           this.activities = res.data.activities;
-          // this.loaded = true;
         })
         .catch((error) => {
           console.error(error);
@@ -330,7 +322,6 @@ export default {
         case 10:
           return require("../../public/images/blooming.svg");
         default:
-          // alert("something is wrong");
           return require("../../public/images/logo.svg");
       }
     },
@@ -352,10 +343,6 @@ export default {
     },
     onSubmit(evt) {
       evt.preventDefault();
-      // const payload = {
-      //   sid: this.selected,
-      // };
-      // this.postSid(payload);
       if (this.hives != []) {
         this.selectNotes();
       }
@@ -366,22 +353,10 @@ export default {
       this.urlDate = this.$route.query.date.replace("-", "/");
     }
     this.warnings = [];
-    // this.dateFrom = moment(this.selectedDate, "MM-YYYY")
-    //   .clone()
-    //   .startOf("month")
-    //   .format("D.M.YYYY");
-    // this.dateTo = moment(this.selectedDate, "MM-YYYY")
-    //   .clone()
-    //   .endOf("month")
-    //   .format("D.M.YYYY");
     this.showActivities();
-    // this.showWarnings();
     this.displayDetail = window.screen.width > 1000;
   },
   created() {
-    // this.getSites();
-    // this.postSid();
-    // this.selectNotes();
     this.todayDate();
   },
 };
@@ -412,20 +387,16 @@ export default {
 }
 
 #inner {
-  /* display: inline-block; */
   margin-left: 20px;
 }
 
 object {
   height: 50px;
   width: 50px;
-  /* vertical-align: middle; */
 }
 
 #dynamicSelect {
   display: flex;
-  /* justify-content: space-evenly;
-  margin-right: auto; */
 }
 
 span {
@@ -451,12 +422,9 @@ div {
   height: 100%;
   flex-wrap: wrap;
   justify-content: space-evenly;
-
-  /* margin-right: auto; */
 }
 
 .left {
-  /* flex: 1 1 auto; */
   display: flex;
   flex-direction: column;
   margin-right: auto;
@@ -464,19 +432,15 @@ div {
   margin-bottom: 10px;
   min-width: 300px;
   flex: 1;
-  /* justify-content: center; */
 }
 
 .right {
-  /* flex: 1 1; */
   flex: 1;
   display: flex;
   flex-direction: column;
   margin-right: auto;
   widows: 0px;
   min-width: 300px;
-
-  /* justify-content: center; */
 }
 
 .warnings {
@@ -509,7 +473,7 @@ div {
   padding-right: 20px;
 }
 
-.wrap-note-text{
+.wrap-note-text {
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -525,7 +489,6 @@ i:hover {
 .site-label {
   display: flex;
   justify-content: center;
-  /* justify-self: center; */
 }
 
 label {

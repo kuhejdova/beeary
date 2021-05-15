@@ -1,11 +1,9 @@
 <script>
-// import * as chart from 'chart.js';
 import { Line } from "vue-chartjs";
 
 export default {
   extends: Line,
   props: {
-    // onChange: function(){},
     chartdata: {
       type: Array,
       default: null,
@@ -39,20 +37,15 @@ export default {
     },
   },
   mounted() {
-    // Chart.Legend.prototype.afterFit = function() {
-    //   this.height = this.height + 10;
-    // };
     var myLabels;
     var myValues;
 
-    // var myLabels2;
     var myValues2;
     var myValues3;
 
     myLabels = this.parseDataset(this.chartdata)[0];
     myValues = this.parseDataset(this.chartdata)[1];
 
-    // myLabels2 = this.parseDataset(this.chartdata2)[0];
     myValues2 = this.parseDataset(this.chartdata2)[1];
     myValues3 = this.parseDataset(this.chartdata3)[1];
 

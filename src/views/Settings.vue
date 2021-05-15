@@ -33,15 +33,6 @@
         <form @submit="onSubmitHive">
           Stanoviště
           <SelectSite v-on:event_child="onChangeSite" :key="redraw" />
-          <!-- <select v-model="selected" @change="onChange">
-            <option
-              v-for="(site, index) in sites"
-              :key="index"
-              v-bind:value="site.id"
-            >
-              {{ site.name }}
-            </option>
-          </select> -->
           <br /><br />
           Název úlu
           <input
@@ -60,15 +51,6 @@
         <form @submit="onSubmitDeleteSite">
           Stanoviště
           <SelectSite v-on:event_child="onChangeSite2" :key="redraw" />
-          <!-- <select v-model="selected" @change="onChange">
-            <option
-              v-for="(site, index) in sites"
-              :key="index"
-              v-bind:value="site.id"
-            >
-              {{ site.name }}
-            </option>
-          </select> -->
           <button @click="onSubmitDeleteSite" class="button">Uložit</button>
         </form>
       </div>
@@ -117,28 +99,11 @@ export default {
     },
 
     onChange() {
-      // evt.preventDefault();
       const payload = {
         sid: this.selected,
       };
       this.onSubmitSite(payload);
     },
-    // getSites() {
-    //   const path = baseUrl + "/sites";
-    //   const payload = {
-    //     "email": localStorage.userEmail,
-    //   }
-    //   axios
-    //     .post(path, payload)
-    //     .then((res) => {
-    //       this.sites = res.data.sites;
-    //       this.selected = this.sites[0].id;
-    //     })
-    //     .catch((error) => {
-    //       // eslint-disable-next-line
-    //       console.error(error);
-    //     });
-    // },
     postSid(payload) {
       const path = baseUrl + "/add_site";
       axios
@@ -163,7 +128,6 @@ export default {
       axios.post(path, payload).catch((error) => {
         console.error(error);
       });
-      // this.getSites();
     },
     onSubmitSite(evt) {
       evt.preventDefault();
@@ -172,8 +136,6 @@ export default {
         site_name: this.site_name,
         location: this.location,
       };
-      // console.log(this.selected)
-      // console.log(payload)
       this.postSid(payload);
 
       this.site_name = "";
@@ -185,8 +147,6 @@ export default {
         sid: this.selected,
         hive_name: this.hive_name,
       };
-      // console.log(this.selected)
-      // console.log(payload)
       this.postHid(payload);
 
       this.hive_name = "";
@@ -198,27 +158,18 @@ export default {
       const payload = {
         sid: this.selected2,
       };
-      // console.log(this.selected)
-      // console.log(payload)
       this.postDeleteSid(payload);
     },
   },
-  // created() {
-
-  //   this.getSites();
-  // },
 };
 </script>
 
 <style scoped>
 * {
   margin: 0;
-
-  /* padding: 0; */
 }
 
 div {
-  /* font:15px/1.3 'Open Sans', sans-serif; */
   color: #5e5b64;
   text-align: left;
 }

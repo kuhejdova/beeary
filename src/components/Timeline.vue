@@ -14,7 +14,7 @@
         ></div>
         <div class="block"></div>
         <div
-          v-on:click="changeUrl(hex.date);"
+          v-on:click="changeUrl(hex.date)"
           v-bind:class="
             urlDate === hex.date ? 'block-highlight' : 'block-button'
           "
@@ -29,7 +29,6 @@
 
 <script>
 import moment from "moment";
-// import MenuTop from "MenuTop.vue";
 
 export default {
   props: { selectedDate: String },
@@ -48,11 +47,11 @@ export default {
         query: { date: hexDate.replace("/", "-") },
       });
       this.scrollToElement();
-      this.$emit('event_child', hexDate.replace("/", "-"))
+      this.$emit("event_child", hexDate.replace("/", "-"));
     },
 
     randomShow() {
-      if (window.screen.width < 400){
+      if (window.screen.width < 400) {
         return false;
       }
       var min = 2;
@@ -80,8 +79,14 @@ export default {
       }
     },
     scrollToElement() {
-      var xpath = "//div[contains(text(),'" + this.urlDate +"')]";
-      var matchingElement = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+      var xpath = "//div[contains(text(),'" + this.urlDate + "')]";
+      var matchingElement = document.evaluate(
+        xpath,
+        document,
+        null,
+        XPathResult.FIRST_ORDERED_NODE_TYPE,
+        null
+      ).singleNodeValue;
 
       if (matchingElement) {
         matchingElement.scrollIntoView({ behavior: "smooth" });
@@ -91,12 +96,11 @@ export default {
   created() {
     this.fillHexagons();
   },
-  mounted() {  
+  mounted() {
     if (this.$route.query.date) {
       this.urlDate = this.$route.query.date.replace("-", "/");
     }
     this.scrollToElement();
-    
   },
 };
 </script>
@@ -130,13 +134,13 @@ body {
   grid-template-columns: repeat(auto-fit, 50px);
   grid-template-rows: repeat(auto-fit, minmax(78px, 78px));
   grid-auto-rows: 78px;
-  /* margin-bottom: 42px; */
 }
 .grid > * {
   -webkit-clip-path: polygon(50% 0, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
   clip-path: polygon(50% 0, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
 }
-.block, .block-edge {
+.block,
+.block-edge {
   position: relative;
   height: 95px;
   background-color: var(--light_color);
@@ -188,10 +192,10 @@ body {
 }
 
 @media (max-width: 400px) {
-  .block-edge{
+  .block-edge {
     visibility: hidden;
   }
-  .container{
+  .container {
     overflow-x: hidden;
   }
 }

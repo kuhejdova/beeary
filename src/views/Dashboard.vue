@@ -1,21 +1,21 @@
 <template>
-    <div class="wrapper">
-      <div class="left">
-        <div class="col1">
-          <h1>Vítejte zpět</h1>
-          <br />
-          <h3>Dnes je: {{ getDate() }}</h3>
-        </div>
-
-        <br /><br />
-        <div class="col2">
-          <Sites />
-        </div>
+  <div class="wrapper">
+    <div class="left">
+      <div class="col1">
+        <h1>Vítejte zpět</h1>
+        <br />
+        <h3>Dnes je: {{ getDate() }}</h3>
       </div>
-      <div class="right">
-        <Timeline />
+
+      <br /><br />
+      <div class="col2">
+        <Sites />
       </div>
     </div>
+    <div class="right">
+      <Timeline />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -49,7 +49,6 @@ export default {
   height: 100%;
   display: flex;
 
-
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -62,16 +61,17 @@ div {
   text-align: left;
 }
 
-
-.left, .right {
+.left,
+.right {
   height: 100%;
   overflow: auto;
   -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; 
+  scrollbar-width: none;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
-.left::-webkit-scrollbar, .right::-webkit-scrollbar {
+.left::-webkit-scrollbar,
+.right::-webkit-scrollbar {
   display: none;
 }
 
@@ -106,8 +106,8 @@ div {
   flex: 1 1 auto;
 }
 
-@media (max-width: 800px){
-  .right{
+@media (max-width: 800px) {
+  .right {
     display: none;
   }
 }

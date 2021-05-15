@@ -1,24 +1,22 @@
 <template>
-        <div class="wrapper">
-          <div class="left"> 
-            <Hives v-on:event_child="onChange" v-if="show"/>
-            <HiveDetail :currentHive="currentHive" v-if="!show"/>
-          </div>
-          <div class="right">
-            <Hexagons />
-          </div>
-        </div>
+  <div class="wrapper">
+    <div class="left">
+      <Hives v-on:event_child="onChange" v-if="show" />
+      <HiveDetail :currentHive="currentHive" v-if="!show" />
+    </div>
+    <div class="right">
+      <Hexagons />
+    </div>
+  </div>
 </template>
 
 <script>
-
 import Hives from "../components/Hives.vue";
-import HiveDetail from "../components/HiveDetail"
+import HiveDetail from "../components/HiveDetail";
 import Hexagons from "../components/Hexagons.vue";
 
 export default {
-    components: {
-
+  components: {
     Hives,
     HiveDetail,
     Hexagons,
@@ -31,40 +29,34 @@ export default {
   },
   watch: {
     $route: function() {
-      if (parseInt(this.$route.query.hid) == 0 || !this.$route.query.hid){
-        this.show = true
-      }
-      else {
-        this.show = false
+      if (parseInt(this.$route.query.hid) == 0 || !this.$route.query.hid) {
+        this.show = true;
+      } else {
+        this.show = false;
       }
     },
   },
   methods: {
     onChange(current) {
-      this.currentHive = current
+      this.currentHive = current;
 
-      if (parseInt(this.$route.query.hid) == 0){
-        this.show = true
+      if (parseInt(this.$route.query.hid) == 0) {
+        this.show = true;
+      } else {
+        this.show = false;
       }
-      else {
-        this.show = false
-      }
-
-
     },
   },
   mounted() {
     if (this.$route.query.hid) {
       this.currentHive = parseInt(this.$route.query.hid);
-      if (this.currentHive == 0){
-        this.show = true
-      }
-      else {
-        this.show = false
+      if (this.currentHive == 0) {
+        this.show = true;
+      } else {
+        this.show = false;
       }
     }
   },
-
 };
 </script>
 
@@ -75,29 +67,29 @@ export default {
   padding: 0;
 }
 
-
 div {
-  /* font:15px/1.3 'Open Sans', sans-serif; */
   font-weight: bold;
   color: #5e5b64;
   text-align: left;
 }
 
-.wrapper{
+.wrapper {
   width: 100%;
   height: 100%;
   display: flex;
 }
 
-.left, .right {
+.left,
+.right {
   height: 100%;
   overflow: auto;
   -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; 
+  scrollbar-width: none;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
-.left::-webkit-scrollbar, .right::-webkit-scrollbar {
+.left::-webkit-scrollbar,
+.right::-webkit-scrollbar {
   display: none;
 }
 
@@ -113,8 +105,8 @@ div {
   flex: 1 1 auto;
 }
 
-@media (max-width: 1000px){
-  .right{
+@media (max-width: 1000px) {
+  .right {
     display: none;
   }
   .left {
@@ -122,5 +114,4 @@ div {
     widows: 100%;
   }
 }
-
 </style>

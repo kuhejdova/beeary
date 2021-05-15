@@ -2,15 +2,13 @@
   <div id="app">
     <MenuTop v-show="isVisible()" />
     <main class="app-content">
-    <router-view />
+      <router-view />
     </main>
   </div>
 </template>
 
 <script>
 import MenuTop from "./components/MenuTop.vue";
-
-
 
 export default {
   name: "App",
@@ -28,7 +26,6 @@ export default {
         [255, 174, 99], // #ffae63
       ],
       gradientLight: [
-        // [255, 202, 173], // #ffd4ad
         [173, 201, 255], // #adc9ff
         [193, 236, 191], // #c0ecbf
         [255, 237, 173], // #ffedad
@@ -110,14 +107,8 @@ export default {
       //Calculate ratio between the two closest colors
       var ratio = resultDays / seasonDays;
 
-      // console.log(seasonDays);
-      // console.log(resultDays);
-      // console.log(ratio);
-
       //Get the color with pickHex(thx, less.js's mix function!)
       var result = this.pickHex(secondcolor, firstcolor, ratio);
-
-      // console.log(result)
 
       this.root.style.setProperty(name, result);
     },
@@ -138,7 +129,6 @@ export default {
         return hex.length == 1 ? "0" + hex : hex;
       }
 
-      // console.log(rgb);
       function rgbToHex(r, g, b) {
         return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
       }
@@ -154,7 +144,7 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;600&display=swap");
 #app {
   font-family: Source Sans Pro, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -167,7 +157,8 @@ export default {
   height: 100%;
 }
 
-body, html {
+body,
+html {
   height: 100%;
   width: 100%;
   margin: 0px;
@@ -191,12 +182,11 @@ button {
   padding: 0px;
   color: rgb(0, 0, 0);
   font-weight: bold;
-  /* font-size: calc(8px + 0.5vw); */
-  
+
   text-decoration: none;
   line-height: 1;
   text-transform: uppercase;
-  background-color: var(--main_color); /* #FF8181 nice pink */
+  background-color: var(--main_color);
   height: 100%;
   min-height: 40px;
   width: 20vh;
@@ -208,14 +198,11 @@ button {
 }
 
 button:hover {
-  background-color: var(
-    --light_color
-  ); /* #fadb6a nice light yellow, #FFCACA nice pink */
+  background-color: var(--light_color);
   cursor: pointer;
 }
 
-.app-content{
+.app-content {
   height: calc(100% - 60px);
 }
-
 </style>
