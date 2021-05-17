@@ -103,8 +103,14 @@ export default {
         .then(() => this.$router.push("/home"));
     },
     signup() {
-      if (this.signupForm.password != this.signupForm.password2) {
+      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      // return re.test(String(email).toLowerCase());
+      if (!re.test(String(this.signupForm.email).toLowerCase())) {
+        alert("Email je ve špatném formátu!");
+        return;
+      } else if (this.signupForm.password != this.signupForm.password2) {
         alert("Zadaná hesla se neshodují");
+        return;
       } else {
         this.$store
           .dispatch("register", {
@@ -155,6 +161,10 @@ body {
 .form-background {
   background: #f4f4f4;
   padding: 30px;
+}
+
+label {
+  margin-right: 20px;
 }
 
 label,

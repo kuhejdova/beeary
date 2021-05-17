@@ -4,6 +4,9 @@
     <SelectSite v-on:event_child="onChangeSite" />
     <br /><br />
     <div class="wrapper">
+      <div id="inner" v-if="hives.length === 0">
+        Žádné úly ke zobrazení, přidejte k tomuto stanovišti úl v nastavení.
+      </div>
       <div class="outter" v-for="(hive, index) in hives" :key="index">
         <div id="inner">
           <h3>{{ hive.name }}</h3>

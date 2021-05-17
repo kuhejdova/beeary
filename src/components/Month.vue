@@ -93,7 +93,7 @@
                 placeholder="Přitejte poznámku"
               />
             </label>
-            <br /><br />
+            <br /><span id="displayError" ref="displayError"></span><br />
             <button @click="onSubmitNote" class="button">Uložit</button>
             <button @click="showForm" class="button" type="button">
               Zrušit
@@ -222,10 +222,20 @@ export default {
     },
 
     onSubmitNote(evt) {
+      evt.preventDefault();
       if (this.hives == []) {
         alert("no hive selected");
       }
-      evt.preventDefault();
+
+      var noteDateChecked = moment(this.noteDateToSave, "D.M.YYYY", true);
+      if (!noteDateChecked.isValid()) {
+        this.$refs.displayError.innerHTML =
+          "Zadané datum je ve špatném formátu. Datum zadejte ve formátu D.M.YYYY";
+        return;
+      }
+
+      this.$refs.displayError.innerHTML = "";
+
       const payload = {
         note_text: this.noteToSave,
         hid: this.selectedHive,
@@ -337,7 +347,7 @@ export default {
       this.selected = childSite[0];
       this.hives = childSite[1];
       this.selectedHive = childSite?.[1]?.[0]?.id ?? 0;
-      console.log(this.selectedHive);
+      // console.log(this.selectedHive);
       this.selectNotes();
       this.showWarnings();
     },
@@ -494,6 +504,10 @@ i:hover {
 label {
   margin-right: 10px;
   align-self: center;
+}
+
+#displayError {
+  color: red;
 }
 
 @media (max-width: 1000px) {

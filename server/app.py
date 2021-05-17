@@ -212,6 +212,16 @@ def add_hive():
     })
 
 
+@app.route('/delete_hive', methods=['POST'])
+def delete_hive():
+    post_data = request.get_json()
+    database.delete_hive(post_data['hid'])
+    return jsonify({
+        'status': 'success',
+        'message': 'ok'
+    })
+
+
 @app.route('/notes', methods=['POST'])
 def get_notes():
     hive = request.get_json()

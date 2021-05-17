@@ -7,13 +7,14 @@
           Lokalita: {{ site.location }}
           <h3>Upozornění ze senzorů</h3>
           <div class="warnings" v-if="site.have_hive != 0">
-            <div v-if="chartData.warnings.length === 0">
-              Žádné nové upozornění.
-            </div>
+            
             <div v-for="(warning, index) in chartData.warnings" :key="index">
               {{ chartData.name }} {{ "– " }} {{ formatDate(warning.date) }}
               {{ "– " }}{{ warning.value }}
             </div>
+            <!-- <div v-if="chartData.warnings.length === 0">
+              Žádné nové upozornění.
+            </div> -->
           </div>
           <div class="warnings" v-else>
             Žádný úl se senzory.
@@ -70,15 +71,21 @@ export default {
         .post(path, payload)
         .then((res) => {
           this.sites = res.data.sites;
+          console.log("3", this.sites);
         })
         .catch((error) => {
           console.error(error);
         });
     },
   },
+  mounted() {
+    this.getSites();
+    console.log("2", this.sites);
+  },
   created() {
     this.getSites();
     this.getHiveData();
+    console.log("1", this.sites);
   },
 };
 </script>
