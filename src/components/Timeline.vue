@@ -6,13 +6,19 @@
           class="block-edge"
           :style="{ visibility: randomShow() ? 'visible' : 'hidden' }"
         ></div>
-        <div class="block"></div>
-        <div class="block"></div>
+        <div class="block">
+          <img src="../../public/images/hives.svg" alt="Beeary" />
+        </div>
+        <div class="block">
+          <img src="../../public/images/hives.svg" alt="Beeary" />
+        </div>
         <div
           class="block-edge"
           :style="{ visibility: randomShow() ? 'visible' : 'hidden' }"
         ></div>
-        <div class="block"></div>
+        <div class="block">
+          <img src="../../public/images/hives.svg" alt="Beeary" />
+        </div>
         <div
           v-on:click="changeUrl(hex.date)"
           v-bind:class="
@@ -21,6 +27,25 @@
         >
           {{ hex.date }}
         </div>
+        <div class="block">
+          <img src="../../public/images/hives.svg" alt="Beeary" />
+        </div>
+        <div
+          class="block-edge"
+          :style="{ visibility: randomShow() ? 'visible' : 'hidden' }"
+        ></div>
+        <div class="block">
+          <img src="../../public/images/hives.svg" alt="Beeary" />
+        </div>
+        <div class="block">
+          <img src="../../public/images/hives.svg" alt="Beeary" />
+        </div>
+        <div
+          class="block-edge"
+          :style="{ visibility: randomShow() ? 'visible' : 'hidden' }"
+        ></div>
+        <div class="block"></div>
+        <div></div>
         <div class="block"></div>
       </div>
     </div>
@@ -29,6 +54,8 @@
 
 <script>
 import moment from "moment";
+import axios from "axios";
+import { baseUrl } from "../variables.js";
 
 export default {
   props: { selectedDate: String },
@@ -37,6 +64,7 @@ export default {
       hexagons: [],
       show: true,
       urlDate: moment(new Date()).format("M/YYYY"),
+      monthPictograms: [],
     };
   },
   methods: {
@@ -92,9 +120,32 @@ export default {
         matchingElement.scrollIntoView({ behavior: "smooth" });
       }
     },
+
+    getPictograms() {
+      for (var i = 0; i < 12; i++) {
+        console.log(i);
+        const payload = {
+          month: i+1,
+        };
+        const path = baseUrl + "/activities";
+        axios
+          .post(path, payload)
+          .then((res) => {
+            this.monthPictograms.push({
+              key: i+1,
+              value: res.data.activities.pictogram
+            });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    },
   },
   created() {
     this.fillHexagons();
+    this.getPictograms();
+    console.log(this.monthPictograms);
   },
   mounted() {
     if (this.$route.query.date) {

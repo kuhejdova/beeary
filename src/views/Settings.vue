@@ -132,7 +132,7 @@ export default {
       this.selected3 = childSite[0];
       this.hives3 = childSite[1];
       this.selectedHive3 = childSite?.[1]?.[0]?.id ?? 0;
-      console.log(this.selectedHive3);
+      // console.log(this.selectedHive3);
 
       this.site_name = "";
       this.location = "";
@@ -208,7 +208,7 @@ export default {
       axios.post(path, payload)
       .then(() => {
           this.redraw += 1;
-          console.log(this.redraw);
+          // console.log(this.redraw);
         })
         .catch((error) => {
         console.error(error);

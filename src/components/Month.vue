@@ -291,8 +291,10 @@ export default {
           console.error(error);
         });
     },
-
-    postMonth(payload) {
+    showActivities() {
+      const payload = {
+        month: moment(this.selectedDate, "MM-YYYY").month() + 1,
+      };
       const path = baseUrl + "/activities";
       axios
         .post(path, payload)
@@ -302,12 +304,6 @@ export default {
         .catch((error) => {
           console.error(error);
         });
-    },
-    showActivities() {
-      const payload = {
-        month: moment(this.selectedDate, "MM-YYYY").month() + 1,
-      };
-      this.postMonth(payload);
     },
     displayPictogram(pictogramId) {
       switch (pictogramId) {

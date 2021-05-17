@@ -45,11 +45,11 @@ export default {
       options: null,
     };
   },
-  watch: {
-    onChangeSite: function() {
-      console.log("magic");
-    },
-  },
+  // watch: {
+  //   onChangeSite: function() {
+  //     console.log("magic");
+  //   },
+  // },
   methods: {
     changeUrl(selectedHid) {
       this.hid = selectedHid;
