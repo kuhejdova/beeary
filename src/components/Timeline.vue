@@ -45,7 +45,7 @@
           :style="{ visibility: randomShow() ? 'visible' : 'hidden' }"
         ></div>
         <div class="block"></div>
-        <div></div>
+        <div class="block"></div>
         <div class="block"></div>
       </div>
     </div>
