@@ -57,7 +57,7 @@
           <div>
             <br />
             <div v-for="(note, index) in notes" :key="index">
-              <li v-if="displayNoteDate(note.note_date)">
+              <li  class="my-li" v-if="displayNoteDate(note.note_date)">
                 <div class="wrap-note">
                   <div class="wrap-note-text">
                     {{ note.note_date }} - {{ note.note_text }}
@@ -114,7 +114,7 @@
               :key="index"
               class="warning"
             >
-              <li>
+              <li class="my-li">
                 <div>{{ formatDate(warning.date) }} - {{ warning.value }}</div>
               </li>
             </div>
@@ -201,7 +201,9 @@ export default {
 
     postNote(payload) {
       const path = baseUrl + "/add_note";
-      axios.post(path, payload).catch((error) => {
+      axios.post(path, payload)
+      .then(() => this.selectNotes())
+      .catch((error) => {
         console.error(error);
       });
     },
@@ -245,7 +247,6 @@ export default {
 
       this.noteToSave = "";
       this.note_date = this.todayDate();
-      this.selectNotes();
     },
 
     deleteNote(nid) {
@@ -253,10 +254,11 @@ export default {
         note_id: nid,
       };
       const path = baseUrl + "/delete_note";
-      axios.post(path, payload).catch((error) => {
+      axios.post(path, payload)
+      .then(() => this.selectNotes())
+      .catch((error) => {
         console.error(error);
       });
-      this.selectNotes();
     },
 
     showForm() {
@@ -407,6 +409,9 @@ object {
 
 #dynamicSelect {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  /* flex-direction: column; */
 }
 
 span {
@@ -415,6 +420,22 @@ span {
 
 li {
   margin-left: 20px;
+}
+
+.my-li {
+  display: flex;
+  align-items: center;
+}
+
+.my-li::before {
+    display: block;
+    content: "";
+    width: 5px;
+    height: 5px;
+    background: black;
+    border-radius: 50%;
+    margin-right: 10px;
+    flex: 0 0 auto;
 }
 
 div {
@@ -510,9 +531,23 @@ label {
   color: red;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1200px) {
   #close {
     display: unset;
   }
+
+  .wrap-note {
+    max-width: calc(100% - 15px);
+  }
+
+  .left, .right {
+    width: 100%;
+    min-width: auto;
+  }
+
+  /* #dynamicSelect {
+  display: flex;
+  flex-direction: column;
+} */
 }
 </style>

@@ -3,7 +3,7 @@
     <div class="left">
       <Timeline :selectedDate="date" v-on:event_child="onChange" />
     </div>
-    <div class="right">
+    <div class="right" v-if="opened">
       <Month :selectedDate="date" :isOpened="opened" v-on:event_open="onOpen" />
     </div>
   </div>
@@ -71,7 +71,8 @@ div {
 .left,
 .right {
   height: 100%;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none;
 }
@@ -96,7 +97,7 @@ div {
   flex: 1 0 auto;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1200px) {
   template {
     display: flex;
   }
@@ -107,7 +108,7 @@ div {
   }
 
   .left {
-    width: auto;
+    width: 100%;
     left: 0px;
     top: 0px;
     min-width: 0px;
@@ -115,6 +116,7 @@ div {
   }
   .right {
     position: absolute;
+    width: 100%;
   }
 }
 </style>

@@ -3,14 +3,20 @@
     <div class="container">
       <div class="grid" v-for="(hex, index) in hexagons" :key="index">
         <div
-          class="block-edge"
-          :style="{ visibility: randomShow() ? 'visible' : 'hidden' }"
+          v-bind:class="
+            randomShow()
+              ? 'block-edge block-edge-show'
+              : 'block-edge block-edge-hide'
+          "
         ></div>
         <div class="block"></div>
         <div class="block"></div>
         <div
-          class="block-edge"
-          :style="{ visibility: randomShow() ? 'visible' : 'hidden' }"
+          v-bind:class="
+            randomShow()
+              ? 'block-edge block-edge-show'
+              : 'block-edge block-edge-hide'
+          "
         ></div>
         <div class="block"></div>
         <div
@@ -51,9 +57,6 @@ export default {
     },
 
     randomShow() {
-      if (window.screen.width < 400) {
-        return false;
-      }
       var min = 2;
       var max = 4;
       var rand = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -184,6 +187,12 @@ body {
   cursor: pointer;
 }
 
+.block-edge-hide {
+  visibility: hidden;
+  height: 0px;
+  width: 0px;
+}
+
 @media screen {
   .block:nth-child(5),
   .block:nth-child(7n + 12) {
@@ -192,8 +201,16 @@ body {
 }
 
 @media (max-width: 400px) {
-  .block-edge {
+  .block-edge-show {
     visibility: hidden;
+    height: 0px;
+    width: 0px;
+  }
+
+  .block-edge-hide {
+    visibility: hidden;
+    height: 0px;
+    width: 0px;
   }
   .container {
     overflow-x: hidden;

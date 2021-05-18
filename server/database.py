@@ -249,7 +249,7 @@ def insert_notes(note_text, hid, note_date):
 
 
 def select_notes(hid):
-    sql = text('''SELECT note_id, note_text, note_date FROM notes WHERE hid = :h order by note_date''')
+    sql = text('''SELECT note_id, note_text, note_date FROM notes WHERE hid = :h order by TO_DATE(note_date, 'DD.MM.YYYY')''')
     res = conn.execute(sql, h=hid)
     return res.fetchall()
 

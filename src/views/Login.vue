@@ -100,7 +100,7 @@ export default {
           email: this.loginForm.email,
           password: this.loginForm.password,
         })
-        .then(() => this.$router.push("/home"));
+        // .then(() => );
     },
     signup() {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -122,11 +122,16 @@ export default {
     },
   },
   mounted() {
+    EventBus.$on("successfullAuth", () => {
+      this.$router.push("/home")
+    });
     EventBus.$on("failedRegistering", (msg) => {
       this.errorMsg = msg;
     });
     EventBus.$on("failedAuthentication", (msg) => {
       this.errorMsg = msg;
+      alert("Chybně zadaný email nebo heslo");
+
     });
   },
   beforeDestroy() {

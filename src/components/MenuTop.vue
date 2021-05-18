@@ -141,9 +141,7 @@ nav {
     float: right;
     display: block;
   }
-}
 
-@media screen and (max-width: 700px) {
   .topnav.responsive {
     position: relative;
   }
@@ -160,8 +158,9 @@ nav {
 
   .topnav {
     display: block;
-    height: unset;
+    /* height: unset; */
     background-color: var(--main_color);
+    /* height: 60px; */
   }
 
   .logo {

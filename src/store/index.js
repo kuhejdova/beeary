@@ -22,10 +22,10 @@ const actions = {
       .then((response) => {
         context.commit("setJwtToken", { jwt: response.data.token });
         axios.defaults.headers.common["Authorization"] = localStorage.token;
+        EventBus.$emit("successfullAuth");
       })
       .catch((error) => {
         EventBus.$emit("failedAuthentication", error);
-        alert("Chybně zadaný email nebo heslo");
       });
   },
   register(context, userData) {

@@ -122,7 +122,7 @@ def login():
     token = jwt.encode({
         'sub': data['email'],
         'iat': datetime.utcnow(),
-        'exp': datetime.utcnow() + timedelta(minutes=30)
+        'exp': datetime.utcnow() + timedelta(hours=2)
     }, current_app.config['SECRET_KEY'])
     return jsonify({
         'status': 'success',

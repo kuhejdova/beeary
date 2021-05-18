@@ -33,9 +33,6 @@ const routes = [
     path: "/",
     name: "Landing",
     component: Landing,
-    meta: {
-      requiresAuth: true,
-    },
   },
   {
     path: "/hives",
