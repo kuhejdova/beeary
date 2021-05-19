@@ -31,10 +31,11 @@ const actions = {
   register(context, userData) {
     context.commit("setUserData", { userData });
     return register(userData)
-      .then(context.dispatch("login", userData))
+      .then(() => context.dispatch("login", userData))
       .catch((error) => {
         EventBus.$emit("failedRegistering: ", error);
-        alert("Zadaný email již existuje");
+        // alert("Zadaný email již existuje");
+        throw error;
       });
   },
   logout() {

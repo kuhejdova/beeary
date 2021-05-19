@@ -45,11 +45,6 @@ export default {
       options: null,
     };
   },
-  watch: {
-    onChangeSite: function() {
-      console.log("magic");
-    },
-  },
   methods: {
     changeUrl(selectedHid) {
       this.hid = selectedHid;
@@ -82,6 +77,7 @@ export default {
 .outter {
   width: 100%;
 }
+
 @media (min-width: 1000px) {
   .wrapper {
     display: grid;

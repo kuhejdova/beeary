@@ -71,7 +71,7 @@ export default {
         .post(path, payload)
         .then((res) => {
           this.sites = res.data.sites;
-          console.log("3", this.sites);
+          // console.log("3", this.sites);
         })
         .catch((error) => {
           console.error(error);
@@ -80,12 +80,12 @@ export default {
   },
   mounted() {
     this.getSites();
-    console.log("2", this.sites);
+    // console.log("2", this.sites);
   },
   created() {
     this.getSites();
     this.getHiveData();
-    console.log("1", this.sites);
+    // console.log("1", this.sites);
   },
 };
 </script>

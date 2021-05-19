@@ -21,6 +21,8 @@
             id="password1"
           />
         </div>
+<span id="displayError" ref="displayError"></span>
+
         <button @click="login()" class="button">Přihlásit se</button>
         <br /><br />
         <div class="extras">
@@ -57,7 +59,9 @@
             id="password3"
           />
         </div>
-        <button @click="signup()" class="button">Zaregistrovat se</button>
+
+        <span id="displayError" ref="displayError"></span>
+        <button @click="signup()" class="button" type="button">Zaregistrovat se</button>
         <br /><br />
         <div class="extras">
           <label> Už mám účet </label>
@@ -92,6 +96,8 @@ export default {
   methods: {
     toggleForm() {
       this.showLoginForm = !this.showLoginForm;
+      this.$refs.displayError.innerHTML =
+          "";
     },
 
     login() {
@@ -106,10 +112,14 @@ export default {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       // return re.test(String(email).toLowerCase());
       if (!re.test(String(this.signupForm.email).toLowerCase())) {
-        alert("Email je ve špatném formátu!");
+        // alert("Email je ve špatném formátu!");
+        this.$refs.displayError.innerHTML =
+          "Email je ve špatném formátu";
         return;
       } else if (this.signupForm.password != this.signupForm.password2) {
-        alert("Zadaná hesla se neshodují");
+        // alert("Zadaná hesla se neshodují");
+        this.$refs.displayError.innerHTML =
+          "Zadaná hesla se neshodují";
         return;
       } else {
         this.$store
@@ -117,7 +127,10 @@ export default {
             email: this.signupForm.email,
             password: this.signupForm.password,
           })
-          .then(() => this.$router.push("/home"));
+          .catch(() => {
+        
+        this.$refs.displayError.innerHTML = "Email už existuje";
+      })
       }
     },
   },
@@ -130,7 +143,9 @@ export default {
     });
     EventBus.$on("failedAuthentication", (msg) => {
       this.errorMsg = msg;
-      alert("Chybně zadaný email nebo heslo");
+      // alert("Chybně zadaný email nebo heslo");
+      this.$refs.displayError.innerHTML =
+          "Chybně zadaný email nebo heslo";
 
     });
   },
@@ -215,5 +230,9 @@ p b {
 }
 .resource {
   margin: 20px 0;
+}
+
+#displayError {
+  color: red;
 }
 </style>
