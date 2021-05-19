@@ -115,7 +115,7 @@
               class="warning"
             >
               <li class="my-li">
-                <div>{{ formatDate(warning.date) }} - {{ warning.value }}</div>
+                <div class="wrap-warning-text">{{ formatDate(warning.date) }} - {{ warning.value }}</div>
               </li>
             </div>
           </div>
@@ -529,6 +529,20 @@ label {
 
 #displayError {
   color: red;
+}
+
+.wrap-warning-text, .wrap-note-text{
+  width: 100vw;
+  max-width: 300px;
+  min-width: 200px;
+}
+
+@media (min-width: 1600px) {
+.wrap-warning-text, .wrap-note-text{
+
+  max-width: 450px;
+
+}
 }
 
 @media (max-width: 1200px) {

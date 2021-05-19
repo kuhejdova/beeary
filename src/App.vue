@@ -192,6 +192,9 @@ button {
   width: 20vh;
   min-width: 120px;
 
+  border: 2px solid;
+  border-style: outset;
+
   -webkit-transition: background-color 0.25s;
   -moz-transition: background-color 0.25s;
   transition: background-color 0.25s;

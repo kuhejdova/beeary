@@ -139,8 +139,14 @@ nav {
   }
   .topnav a.icon {
     float: right;
-    display: block;
-  }
+    padding: 0px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;  }
+
+
 
   .topnav.responsive {
     position: relative;
@@ -150,7 +156,7 @@ nav {
     right: 0;
     top: 0;
   }
-  .topnav.responsive a {
+  .topnav.responsive a:not(.icon) {
     float: none;
     display: block;
     text-align: left;
@@ -158,8 +164,9 @@ nav {
 
   .topnav {
     display: block;
-    /* height: unset; */
+    height: unset;
     background-color: var(--main_color);
+    min-height: 60px;
     /* height: 60px; */
   }
 
