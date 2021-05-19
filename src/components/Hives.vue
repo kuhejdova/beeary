@@ -93,6 +93,7 @@ export default {
 .wrap-input {
   display: flex;
   margin-left: 20px;
+  align-items: center;
 }
 
 @media (min-width: 1000px) {
