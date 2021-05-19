@@ -1,13 +1,16 @@
 <template>
   <div class="container">
+    <div id="inner" v-if="sites.length === 0">
+        Žádné stanoviště ke zobrazení, přidejte si stanoviště a úly v nastavení.
+      </div>
     <div class="wrapper">
+      
       <div class="outter" v-for="(site, index) in sites" :key="index">
         <div id="inner">
           <h2>{{ site.name }}</h2>
           Lokalita: {{ site.location }}
           <h3>Upozornění ze senzorů</h3>
           <div class="warnings" v-if="site.have_hive != 0">
-            
             <div v-for="(warning, index) in chartData.warnings" :key="index">
               {{ chartData.name }} {{ "– " }} {{ formatDate(warning.date) }}
               {{ "– " }}{{ warning.value }}

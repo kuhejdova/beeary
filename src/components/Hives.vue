@@ -1,12 +1,20 @@
 <template>
   <div class="container">
     <br /><br />
-    <SelectSite v-on:event_child="onChangeSite" />
-    <br /><br />
-    <div class="wrapper">
-      <div id="inner" v-if="hives.length === 0">
-        Žádné úly ke zobrazení, přidejte k tomuto stanovišti úl v nastavení.
+    <div class="wrap-input">
+      <label>
+        Zvolte stanoviště
+      </label>
+      <SelectSite v-on:event_child="onChangeSite" />
+    </div>
+    
+    <br />
+    <br />
+    <div id="inner" v-if="hives.length === 0">
+        Žádné úly ke zobrazení, přidejte si úly a stanoviště v nastavení.
       </div>
+    <div class="wrapper">
+      
       <div class="outter" v-for="(hive, index) in hives" :key="index">
         <div id="inner">
           <h3>{{ hive.name }}</h3>
@@ -76,6 +84,15 @@ export default {
 
 .outter {
   width: 100%;
+}
+
+.label {
+  padding-left: 20px;
+}
+
+.wrap-input {
+  display: flex;
+  margin-left: 20px;
 }
 
 @media (min-width: 1000px) {
