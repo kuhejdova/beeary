@@ -66,17 +66,17 @@
             <SelectSite v-on:event_child="onChangeSite3" :key="redraw" />
           </div>
           <br />
-          <div class="label-wrapper"  >
+          <div class="label-wrapper">
             <label>Úl</label>
             <select v-model="selectedHive3" :key="redraw">
-            <option
-              v-for="(hive, index) in hives3"
-              :key="index"
-              v-bind:value="hive.id"
-            >
-              {{ hive.name }}
-            </option>
-          </select>
+              <option
+                v-for="(hive, index) in hives3"
+                :key="index"
+                v-bind:value="hive.id"
+              >
+                {{ hive.name }}
+              </option>
+            </select>
           </div>
           <button @click="onSubmitDeleteHive" class="button">Uložit</button>
         </form>
@@ -108,7 +108,6 @@ export default {
       selectedHive3: 1,
       sites: [],
       redraw: 0,
-   
     };
   },
 
@@ -133,7 +132,6 @@ export default {
       this.selected3 = childSite[0];
       this.hives3 = childSite[1];
       this.selectedHive3 = childSite?.[1]?.[0]?.id ?? 0;
-      // console.log(this.selectedHive3);
 
       this.site_name = "";
       this.location = "";
@@ -174,13 +172,14 @@ export default {
         hive_name: this.hive_name,
       };
       const path = baseUrl + "/add_hive";
-      axios.post(path, payload)
-      .then(() => {
+      axios
+        .post(path, payload)
+        .then(() => {
           this.redraw += 1;
         })
         .catch((error) => {
-        console.error(error);
-      });
+          console.error(error);
+        });
 
       this.hive_name = "";
     },
@@ -191,13 +190,14 @@ export default {
         sid: this.selected2,
       };
       const path = baseUrl + "/delete_site";
-      axios.post(path, payload)
-      .then(() => {
+      axios
+        .post(path, payload)
+        .then(() => {
           this.redraw += 1;
         })
-      .catch((error) => {
-        console.error(error);
-      });
+        .catch((error) => {
+          console.error(error);
+        });
     },
 
     onSubmitDeleteHive(evt) {
@@ -206,20 +206,15 @@ export default {
         hid: this.selectedHive3,
       };
       const path = baseUrl + "/delete_hive";
-      axios.post(path, payload)
-      .then(() => {
+      axios
+        .post(path, payload)
+        .then(() => {
           this.redraw += 1;
-          // console.log(this.redraw);
         })
         .catch((error) => {
-        console.error(error);
-      });
+          console.error(error);
+        });
     },
-
-    // onSubmit(evt) {
-    //   evt.preventDefault();
-    //   this.selectedHive3 = 
-    // },
   },
 };
 </script>
@@ -242,7 +237,6 @@ h2 {
   background: #f4f4f4;
   margin-top: 10px;
   padding: 20px;
-  /* width: 50%; */
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;

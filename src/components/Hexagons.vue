@@ -65,7 +65,6 @@ body {
   grid-template-columns: repeat(auto-fit, 50px);
   grid-template-rows: repeat(auto-fit, minmax(78px, 78px));
   grid-auto-rows: 78px;
-  /* margin-bottom: 42px; */
 }
 .grid > * {
   -webkit-clip-path: polygon(50% 0, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);

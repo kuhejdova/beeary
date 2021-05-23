@@ -57,7 +57,7 @@
           <div>
             <br />
             <div v-for="(note, index) in notes" :key="index">
-              <li  class="my-li" v-if="displayNoteDate(note.note_date)">
+              <li class="my-li" v-if="displayNoteDate(note.note_date)">
                 <div class="wrap-note">
                   <div class="wrap-note-text">
                     {{ note.note_date }} - {{ note.note_text }}
@@ -68,37 +68,37 @@
             </div>
           </div>
           <div class="add-note-wrapper" v-if="hives.length !== 0">
-          <button @click="showForm" class="button" v-show="!show">
-            Přidat
-          </button>
-          <form @submit="selectNotes" v-show="show">
-            <label
-              >Datum
-              <input
-                v-model="noteDateToSave"
-                id="form-title-input"
-                type="text"
-                required
-                placeholder="D.M.YYYY"
-              />
-            </label>
-            <br />
-            <label
-              >Poznámka
-              <input
-                v-model="noteToSave"
-                id="form-date-input"
-                type="text"
-                required
-                placeholder="Přitejte poznámku"
-              />
-            </label>
-            <br /><span id="displayError" ref="displayError"></span><br />
-            <button @click="onSubmitNote" class="button">Uložit</button>
-            <button @click="showForm" class="button" type="button">
-              Zrušit
+            <button @click="showForm" class="button" v-show="!show">
+              Přidat
             </button>
-          </form>
+            <form @submit="selectNotes" v-show="show">
+              <label
+                >Datum
+                <input
+                  v-model="noteDateToSave"
+                  id="form-title-input"
+                  type="text"
+                  required
+                  placeholder="D.M.YYYY"
+                />
+              </label>
+              <br />
+              <label
+                >Poznámka
+                <input
+                  v-model="noteToSave"
+                  id="form-date-input"
+                  type="text"
+                  required
+                  placeholder="Přitejte poznámku"
+                />
+              </label>
+              <br /><span id="displayError" ref="displayError"></span><br />
+              <button @click="onSubmitNote" class="button">Uložit</button>
+              <button @click="showForm" class="button" type="button">
+                Zrušit
+              </button>
+            </form>
           </div>
         </div>
 
@@ -115,7 +115,9 @@
               class="warning"
             >
               <li class="my-li">
-                <div class="wrap-warning-text">{{ formatDate(warning.date) }} - {{ warning.value }}</div>
+                <div class="wrap-warning-text">
+                  {{ formatDate(warning.date) }} - {{ warning.value }}
+                </div>
               </li>
             </div>
           </div>
@@ -201,11 +203,12 @@ export default {
 
     postNote(payload) {
       const path = baseUrl + "/add_note";
-      axios.post(path, payload)
-      .then(() => this.selectNotes())
-      .catch((error) => {
-        console.error(error);
-      });
+      axios
+        .post(path, payload)
+        .then(() => this.selectNotes())
+        .catch((error) => {
+          console.error(error);
+        });
     },
 
     selectNotes() {
@@ -254,11 +257,12 @@ export default {
         note_id: nid,
       };
       const path = baseUrl + "/delete_note";
-      axios.post(path, payload)
-      .then(() => this.selectNotes())
-      .catch((error) => {
-        console.error(error);
-      });
+      axios
+        .post(path, payload)
+        .then(() => this.selectNotes())
+        .catch((error) => {
+          console.error(error);
+        });
     },
 
     showForm() {
@@ -349,7 +353,6 @@ export default {
       this.selected = childSite[0];
       this.hives = childSite[1];
       this.selectedHive = childSite?.[1]?.[0]?.id ?? 0;
-      // console.log(this.selectedHive);
       this.selectNotes();
       this.showWarnings();
     },
@@ -411,7 +414,6 @@ object {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  /* flex-direction: column; */
 }
 
 span {
@@ -428,14 +430,14 @@ li {
 }
 
 .my-li::before {
-    display: block;
-    content: "";
-    width: 5px;
-    height: 5px;
-    background: black;
-    border-radius: 50%;
-    margin-right: 10px;
-    flex: 0 0 auto;
+  display: block;
+  content: "";
+  width: 5px;
+  height: 5px;
+  background: black;
+  border-radius: 50%;
+  margin-right: 10px;
+  flex: 0 0 auto;
 }
 
 div {
@@ -531,18 +533,18 @@ label {
   color: red;
 }
 
-.wrap-warning-text, .wrap-note-text{
+.wrap-warning-text,
+.wrap-note-text {
   width: 100vw;
   max-width: 300px;
   min-width: 200px;
 }
 
 @media (min-width: 1600px) {
-.wrap-warning-text, .wrap-note-text{
-
-  max-width: 450px;
-
-}
+  .wrap-warning-text,
+  .wrap-note-text {
+    max-width: 450px;
+  }
 }
 
 @media (max-width: 1200px) {
@@ -554,14 +556,10 @@ label {
     max-width: calc(100% - 15px);
   }
 
-  .left, .right {
+  .left,
+  .right {
     width: 100%;
     min-width: auto;
   }
-
-  /* #dynamicSelect {
-  display: flex;
-  flex-direction: column;
-} */
 }
 </style>

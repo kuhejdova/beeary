@@ -55,7 +55,6 @@ export default {
 }
 
 div {
-  /* font:15px/1.3 'Open Sans', sans-serif; */
   font-weight: bold;
   color: #5e5b64;
   text-align: left;
@@ -75,20 +74,10 @@ div {
   display: none;
 }
 
-/* .right {
-  margin-left: auto;
-  margin-right: auto;
-  /* padding: 10px;  */
-
-/* .left {
-  padding-left: 20px;
-} */
-
 .col1 {
   background: #f4f4f4;
   margin-top: 10px;
   padding: 20px;
-  /* width: 50%; */
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -99,7 +88,6 @@ div {
   flex: 1 0 auto;
   display: flex;
   justify-content: center;
-  /* padding: 10px;  */
 }
 
 .left {

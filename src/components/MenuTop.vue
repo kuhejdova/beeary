@@ -144,9 +144,8 @@ nav {
     height: 60px;
     display: flex;
     justify-content: center;
-    align-items: center;  }
-
-
+    align-items: center;
+  }
 
   .topnav.responsive {
     position: relative;
@@ -167,7 +166,6 @@ nav {
     height: unset;
     background-color: var(--main_color);
     min-height: 60px;
-    /* height: 60px; */
   }
 
   .logo {

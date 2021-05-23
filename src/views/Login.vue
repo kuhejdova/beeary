@@ -21,7 +21,7 @@
             id="password1"
           />
         </div>
-<span id="displayError" ref="displayError"></span>
+        <span id="displayError" ref="displayError"></span>
 
         <button @click="login()" class="button">Přihlásit se</button>
         <br /><br />
@@ -61,7 +61,9 @@
         </div>
 
         <span id="displayError" ref="displayError"></span>
-        <button @click="signup()" class="button" type="button">Zaregistrovat se</button>
+        <button @click="signup()" class="button" type="button">
+          Zaregistrovat se
+        </button>
         <br /><br />
         <div class="extras">
           <label> Už mám účet </label>
@@ -96,30 +98,22 @@ export default {
   methods: {
     toggleForm() {
       this.showLoginForm = !this.showLoginForm;
-      this.$refs.displayError.innerHTML =
-          "";
+      this.$refs.displayError.innerHTML = "";
     },
 
     login() {
-      this.$store
-        .dispatch("login", {
-          email: this.loginForm.email,
-          password: this.loginForm.password,
-        })
-        // .then(() => );
+      this.$store.dispatch("login", {
+        email: this.loginForm.email,
+        password: this.loginForm.password,
+      });
     },
     signup() {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      // return re.test(String(email).toLowerCase());
       if (!re.test(String(this.signupForm.email).toLowerCase())) {
-        // alert("Email je ve špatném formátu!");
-        this.$refs.displayError.innerHTML =
-          "Email je ve špatném formátu";
+        this.$refs.displayError.innerHTML = "Email je ve špatném formátu";
         return;
       } else if (this.signupForm.password != this.signupForm.password2) {
-        // alert("Zadaná hesla se neshodují");
-        this.$refs.displayError.innerHTML =
-          "Zadaná hesla se neshodují";
+        this.$refs.displayError.innerHTML = "Zadaná hesla se neshodují";
         return;
       } else {
         this.$store
@@ -128,25 +122,21 @@ export default {
             password: this.signupForm.password,
           })
           .catch(() => {
-        
-        this.$refs.displayError.innerHTML = "Email už existuje";
-      })
+            this.$refs.displayError.innerHTML = "Email už existuje";
+          });
       }
     },
   },
   mounted() {
     EventBus.$on("successfullAuth", () => {
-      this.$router.push("/home")
+      this.$router.push("/home");
     });
     EventBus.$on("failedRegistering", (msg) => {
       this.errorMsg = msg;
     });
     EventBus.$on("failedAuthentication", (msg) => {
       this.errorMsg = msg;
-      // alert("Chybně zadaný email nebo heslo");
-      this.$refs.displayError.innerHTML =
-          "Chybně zadaný email nebo heslo";
-
+      this.$refs.displayError.innerHTML = "Chybně zadaný email nebo heslo";
     });
   },
   beforeDestroy() {

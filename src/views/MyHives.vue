@@ -98,7 +98,6 @@ div {
   flex: 1 0 auto;
   display: flex;
   justify-content: left;
-  /* padding: 10px;  */
 }
 
 .left {

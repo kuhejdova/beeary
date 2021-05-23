@@ -7,14 +7,13 @@
       </label>
       <SelectSite v-on:event_child="onChangeSite" />
     </div>
-    
+
     <br />
     <br />
     <div id="inner" v-if="hives.length === 0">
-        Žádné úly ke zobrazení, přidejte si úly a stanoviště v nastavení.
-      </div>
+      Žádné úly ke zobrazení, přidejte si úly a stanoviště v nastavení.
+    </div>
     <div class="wrapper">
-      
       <div class="outter" v-for="(hive, index) in hives" :key="index">
         <div id="inner">
           <h3>{{ hive.name }}</h3>

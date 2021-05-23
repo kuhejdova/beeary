@@ -1,10 +1,9 @@
 <template>
   <div class="container">
     <div id="inner" v-if="sites.length === 0">
-        Žádné stanoviště ke zobrazení, přidejte si stanoviště a úly v nastavení.
-      </div>
+      Žádné stanoviště ke zobrazení, přidejte si stanoviště a úly v nastavení.
+    </div>
     <div class="wrapper">
-      
       <div class="outter" v-for="(site, index) in sites" :key="index">
         <div id="inner">
           <h2>{{ site.name }}</h2>
@@ -15,9 +14,6 @@
               {{ chartData.name }} {{ "– " }} {{ formatDate(warning.date) }}
               {{ "– " }}{{ warning.value }}
             </div>
-            <!-- <div v-if="chartData.warnings.length === 0">
-              Žádné nové upozornění.
-            </div> -->
           </div>
           <div class="warnings" v-else>
             Žádný úl se senzory.
@@ -74,7 +70,6 @@ export default {
         .post(path, payload)
         .then((res) => {
           this.sites = res.data.sites;
-          // console.log("3", this.sites);
         })
         .catch((error) => {
           console.error(error);
@@ -83,12 +78,10 @@ export default {
   },
   mounted() {
     this.getSites();
-    // console.log("2", this.sites);
   },
   created() {
     this.getSites();
     this.getHiveData();
-    // console.log("1", this.sites);
   },
 };
 </script>

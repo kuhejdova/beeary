@@ -34,7 +34,6 @@ const actions = {
       .then(() => context.dispatch("login", userData))
       .catch((error) => {
         EventBus.$emit("failedRegistering: ", error);
-        // alert("Zadaný email již existuje");
         throw error;
       });
   },

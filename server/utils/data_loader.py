@@ -1,16 +1,16 @@
-import sqlite3
 import csv
+import os
 from datetime import datetime
+from sqlalchemy import create_engine, text
 
-
-def create_connection():
-    con = sqlite3.connect('../beeary.db')
-    cur = con.cursor()
-    return con, cur
+connection_string = os.getenv('DATABASE_URL', default="postgresql+psycopg2://postgres:bakalarka@localhost:5432/beeary")
+if connection_string.startswith("postgres://"):
+    connection_string = connection_string.replace("postgres://", "postgresql://", 1)
+engine = create_engine(connection_string)
+conn = engine.connect()
 
 
 def load_csv():
-    con, cur = create_connection()
     with open('temperature_schwartau.csv') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
@@ -24,20 +24,17 @@ def load_csv():
                 if dt.minute == 0 and row[1] != '':
                     new_date = datetime(dt.year + 4, dt.month, dt.day, dt.hour, dt.minute, dt.second)
                     updated_date = datetime.strftime(new_date, '%Y-%m-%d %H:%M:%S')
-                    insert_line(con, cur, updated_date, new_date.year, dt.month, round(float(row[1]), 2))
+                    insert_line(updated_date, new_date.year, dt.month, round(float(row[1]), 2))
                 line_count += 1
         print(f'read {line_count} lines')
-    con.close()
 
 
-def insert_line(con, cur, date, year, month, value):
-    sql = '''INSERT INTO temperature(hid, date, year, month, value) VALUES (1, ?, ?, ?, ?)'''
-    cur.execute(sql, (date, year, month, value))
-    con.commit()
+def insert_line(date, year, month, value):
+    sql = text('''INSERT INTO temperature(hid, date, year, month, value) VALUES (1, :d, :y, :m, :v)''')
+    conn.execute(sql, d=date, y=year, m=month, v=value)
 
 
 def load_csv_months():
-    con, cur = create_connection()
     with open('months.csv') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=';')
         line_count = 0
@@ -45,15 +42,13 @@ def load_csv_months():
             if line_count == 0:
                 line_count += 1
             else:
-                insert_line_month(con, cur, row[0], row[1], row[2])
+                insert_line_month(row[0], row[1], row[2])
                 line_count += 1
-    con.close()
 
 
-def insert_line_month(con, cur, month, description, pictogram):
-    sql = '''INSERT INTO months(month_id, description, pictogram) VALUES (?, ?, ?)'''
-    cur.execute(sql, (month, description, pictogram))
-    con.commit()
+def insert_line_month(month, description, pictogram):
+    sql = '''INSERT INTO months(month_id, description, pictogram) VALUES (:mi, :d, :p)'''
+    conn.execute(sql, mi=month, d=description, p=pictogram)
 
 
 # if __name__ == '__main__':

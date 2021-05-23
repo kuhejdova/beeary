@@ -5,25 +5,25 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { baseUrl } from "../variables.js"
+import axios from "axios";
+import { baseUrl } from "../variables.js";
 
 export default {
-  name: 'Ping',
+  name: "Ping",
   data() {
     return {
-      msg: '',
+      msg: "",
     };
   },
   methods: {
     getMessage() {
-      const path = baseUrl + '/ping';
-      axios.get(path)
+      const path = baseUrl + "/ping";
+      axios
+        .get(path)
         .then((res) => {
           this.msg = res.data;
         })
         .catch((error) => {
-          // eslint-disable-next-line
           console.error(error);
         });
     },

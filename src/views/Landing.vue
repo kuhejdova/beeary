@@ -35,7 +35,6 @@
               <img src="../../public/images/timeline.svg" alt="Beeary" />
             </object>
             <p>Časová osa s poznámkami</p>
-            <!-- <img src="../../public/images/timeline.svg" alt="Beeary" /> -->
           </div>
           <div class="pictogram3">
             <object
@@ -47,7 +46,6 @@
               <img src="../../public/images/monitoring.svg" alt="Beeary" />
             </object>
             <p>Celoroční monitoring</p>
-            <!-- <img src="../../public/images/monitoring.svg" alt="Beeary" /> -->
           </div>
         </div>
         <div class="buttonwrapper">
@@ -59,7 +57,6 @@
 </template>
 
 <script>
-// import { auth } from "../firebase";
 import store from "@/store";
 
 export default {
@@ -91,10 +88,6 @@ export default {
 </script>
 
 <style scoped>
-/* * {
-  margin: 0;
-} */
-
 .landing-wrapper {
   height: calc(100% + 60px);
   background-image: url(../../public/images/background_pattern_missing.svg);
@@ -136,15 +129,10 @@ export default {
   margin-bottom: 10px;
 }
 
-/* .container,
-section {
-} */
-
 .container {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  /* justify-content: flex-start; */
   height: 100%;
   position: relative;
   left: 0px;
@@ -153,15 +141,9 @@ section {
   top: 0px;
   bottom: 0px;
   height: 100%;
-  /* background-image: url(../../public/images/background_pattern_missing.svg) ;
-  background-size: cover;
-  background-repeat: space;
-  background-position: center; */
-  /* margin-bottom: 10px; */
 }
 
 .container > div > div {
-  /* background-color: rgba(255, 255, 255, 0.8); */
   align-self: center;
   min-width: 250px;
 }
@@ -172,9 +154,6 @@ section {
 .logo {
   height: 125px;
   width: 250px;
-  /* margin-top: 0px; */
-  /* height: min(30vw, 100%);
-    width: 90vw; */
 }
 
 #svgSetColor {
@@ -184,8 +163,6 @@ section {
 object {
   height: 100%;
   width: 100%;
-  /* height: min(30vw, 100%);
-    width: 50vw; */
 }
 
 body {
@@ -193,10 +170,6 @@ body {
   color: #5e5b64;
   text-align: left;
 }
-
-/* #login {
-  margin-top: 200px; 
-} */
 
 svg {
   fill: #ff0000;
@@ -225,12 +198,6 @@ p {
   .container {
     width: 80%;
   }
-  /* img {
-    height: 100%;
-    width: 70%;
-    /* height: min(30vw, 100%);
-    width: min(30vw, 100%); 
-  } */
   .pictograms {
     width: 100%;
     overflow-x: auto;
@@ -250,8 +217,6 @@ p {
     min-width: 400px;
     height: 20vh;
     width: 25vw;
-    /* height: min(30vw, 100%);
-    width: 90vw; */
   }
 
   p {

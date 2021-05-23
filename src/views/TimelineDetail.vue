@@ -62,7 +62,6 @@ export default {
 }
 
 div {
-  /* font:15px/1.3 'Open Sans', sans-serif; */
   font-weight: bold;
   color: #5e5b64;
   text-align: left;
@@ -89,8 +88,6 @@ div {
   display: flex;
   justify-content: center;
   max-width: 500px;
-
-  /* padding: 10px;  */
 }
 
 .right {
