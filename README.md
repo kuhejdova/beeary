@@ -1,8 +1,14 @@
 # Beeary
 
+Aplikace je dostupná na https://beeary.herokuapp.com/
+
+Při prvním spuštění může načítání trvat déle, heroku aplikace automaticky po nějaké době uspí.
+
+---
+
 ## Český návod
 
----------------
+---
 
 Tento postup byl vytvořen pro Linux Ubuntu.
 
@@ -15,9 +21,11 @@ apt install -y python3.8 python3-pip nodejs npm postgresql libpq-dev
 ```
 
 Dále je potřeba nainstalovat všechny závislosti
+
 ```
 npm install
 ```
+
 ```
 pip install -r requirements.txt
 ```
@@ -33,7 +41,6 @@ createdb beeary
 psql beeary < server/beeary.sql
 ```
 
-
 ### Spuštění Python backendu
 
 Spustí Python backend s env proměnnou DATABASE_URL.
@@ -43,16 +50,16 @@ DATABASE_URL=postgresql+psycopg2:///beeary python3 server/app.py
 ```
 
 ### Spuštění Vue.js frontendu
+
 ```
 npm run serve
 ```
 
+---
 
-
----------------
 ## English version
 
----------------
+---
 
 This works for Linux Ubuntu,
 
@@ -69,6 +76,7 @@ Also it is required to install all dependencies
 ```
 npm install
 ```
+
 ```
 pip install -r requirements.txt
 ```
@@ -84,7 +92,6 @@ createdb beeary
 psql beeary < server/beeary.sql
 ```
 
-
 ### Run Python backend
 
 Run backend with env variable DATABASE_URL.
@@ -94,6 +101,7 @@ DATABASE_URL=postgresql+psycopg2:///beeary python3 server/app.py
 ```
 
 ### Run Vue.js frontend
+
 ```
 npm run serve
 ```
