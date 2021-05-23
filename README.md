@@ -10,6 +10,10 @@ Tento postup byl vytvořen pro Linux Ubuntu.
 
 Pro spuštění aplikace je potřeba mít nainstalovaný Python 3.8, Node.js a npm a PostgreSQL.
 
+```
+apt install -y python3.8 python3-pip nodejs npm postgresql libpq-dev
+```
+
 Dále je potřeba nainstalovat všechny závislosti
 ```
 npm install
@@ -22,14 +26,20 @@ pip install -r requirements.txt
 
 Je třeba vytvořit prázdnou PostgreSQL databázi, do které dále importujete dump databáze s názvem beeary.sql
 
+```
+service postgresql start
+su postgres
+createdb beeary
+psql beeary < server/beeary.sql
+```
+
+
 ### Spuštění Python backendu
 
-Před spuštěním je třeba nastavit do env proměnné DATABASE_URL váš connection string, kterým se připojíte k vlastní databázi.
+Spustí Python backend s env proměnnou DATABASE_URL.
 
 ```
-source env/bin/activate
-
-DATABASE_URL=your_connection_string python app.py
+DATABASE_URL=postgresql+psycopg2:///beeary python3 server/app.py
 ```
 
 ### Spuštění Vue.js frontendu
@@ -38,6 +48,8 @@ npm run serve
 ```
 
 
+
+---------------
 ## English version
 
 ---------------
@@ -47,6 +59,10 @@ This works for Linux Ubuntu,
 ### Setup
 
 It is necessary to have installed Python 3.8, Node.js and npm and PostgreSQL.
+
+```
+apt install -y python3.8 python3-pip nodejs npm postgresql libpq-dev
+```
 
 Also it is required to install all dependencies
 
@@ -61,67 +77,23 @@ pip install -r requirements.txt
 
 It is necessary to create empty PostgreSQL database where you import dump of database called beeary.sql
 
+```
+service postgresql start
+su postgres
+createdb beeary
+psql beeary < server/beeary.sql
+```
+
 
 ### Run Python backend
 
-Before run it is required to setup env variable DATABASE_URL with your connection string for connecting to your creaded database.
-
+Run backend with env variable DATABASE_URL.
 
 ```
-source env/bin/activate
-
-DATABASE_URL=your_connection_string python app.py
+DATABASE_URL=postgresql+psycopg2:///beeary python3 server/app.py
 ```
 
 ### Run Vue.js frontend
 ```
 npm run serve
 ```
-
-
-<!-- ## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-
-
-## Run Python backend
-```
-source env/bin/activate
-
-python app.py
-```
-
-## Postgres DB
-```
-sudo -u postgres psql
-``` -->
-
-
-
-
-[comment]: <> (### Compiles and minifies for production)
-
-[comment]: <> (```)
-
-[comment]: <> (npm run build)
-
-[comment]: <> (```)
-
-[comment]: <> (### Lints and fixes files)
-
-[comment]: <> (```)
-
-[comment]: <> (npm run lint)
-
-[comment]: <> (```)
-
-[comment]: <> (### Customize configuration)
-
-[comment]: <> (See [Configuration Reference]&#40;https://cli.vuejs.org/config/&#41;.)
