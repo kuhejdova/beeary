@@ -44,7 +44,7 @@ export default {
       var presentDate = new Date(
         today.getFullYear(),
         today.getMonth(),
-        today.getDay()
+        today.getDate()
       );
 
       var spring = new Date(today.getFullYear(), 2, 20);

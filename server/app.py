@@ -16,33 +16,7 @@ else:
     import database
     import config
 
-
-
-
 mimetypes.add_type('text/css', '.css')
-# SITES = [
-#     {
-#         'id': 1,
-#         'name': 'Nej uly',
-#         'user': 'Evik',
-#         'location': 'Metylovice',
-#         'event': 'Žádná nová událost'
-#     },
-# {
-#         'id': 2,
-#         'name': 'Stanoviste',
-#         'user': 'Evik',
-#         'location': 'Ostrava',
-#         'event': 'Pokles teploty'
-#     },
-# {
-#         'id': 3,
-#         'name': 'Study',
-#         'user': 'Evik',
-#         'location': 'Brno',
-#         'event': 'Žádná nová událost'
-#     },
-# ]
 
 
 # configuration
@@ -75,9 +49,6 @@ def add_header(response):
 
 
 @app.route('/')
-# '/*'
-# @app.route('/', defaults={'path': ''})
-# @app.route('/<path:path>')
 def index():
     return app.send_static_file('index.html')
 
@@ -142,7 +113,6 @@ def all_sites():
     result = database.select_sites(data['email'])
     sites = database.sites_to_jsonify(result)
 
-    # print(sites)
     return jsonify({
         'status': 'success',
         'sites': sites
@@ -153,7 +123,6 @@ def all_sites():
 def add_site():
     post_data = request.get_json()
     database.insert_sites(post_data['site_name'], post_data['uid'], post_data['location'])
-    # print(post_data['site_name'], post_data['uid'], post_data['location'])
     return jsonify({
         'status': 'success',
         'message': 'ok'
@@ -194,7 +163,6 @@ def get_month_activities():
         month = 1
         result = database.select_hives(month)
         activities = database.hives_to_jsonify(result)
-    # print(activities)
     return jsonify({
         'status': 'success',
         'activities': activities
@@ -205,7 +173,6 @@ def get_month_activities():
 def add_hive():
     post_data = request.get_json()
     database.insert_hive(post_data['hive_name'], post_data['sid'])
-    # print(post_data['site_name'], post_data['uid'], post_data['location'])
     return jsonify({
         'status': 'success',
         'message': 'ok'
@@ -229,10 +196,7 @@ def get_notes():
         result = database.select_notes(hive['hid'])
         notes = database.notes_to_jsonify(result)
     else:
-        # hid = 1
-        # result = database.select_month(hid)
         notes = []
-    # print(notes)
     return jsonify({
         'status': 'success',
         'notes': notes
@@ -265,13 +229,8 @@ def get_hive_graph():
     data = request.get_json()
     if data is not None:
         graph_data = database.hive_with_graphs(data['hid'], data['dateFrom'], data['dateTo'])
-        # graph_data = database.graph_data_for_hid_to_jsonify(result)
     else:
         graph_data = []
-        # sid = 1
-        # result = database.select_hives(sid)
-        # hives = database.hives_to_jsonify(result)
-    # print(graph_data)
     return jsonify({
         'status': 'success',
         'graphData': graph_data

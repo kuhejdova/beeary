@@ -1,41 +1,12 @@
 import os
-import sqlite3
 from datetime import datetime, timedelta
-
-import werkzeug.security
 from sqlalchemy import create_engine, text
 
-# postgresql+psycopg2://postgres:bakalarka@localhost:5432/beeary
 connection_string = os.getenv('DATABASE_URL', default="postgresql+psycopg2://postgres:bakalarka@localhost:5432/beeary")
 if connection_string.startswith("postgres://"):
     connection_string = connection_string.replace("postgres://", "postgresql://", 1)
 engine = create_engine(connection_string)
 conn = engine.connect()
-
-#
-# def create_connection():
-#     con = sqlite3.connect('beeary.db')
-#     cur = con.cursor()
-#     return con, cur
-
-
-# def create_tables():
-#     con = sqlite3.connect('beeary.db')
-#     cur = con.cursor()
-#     # cur.execute('''CREATE TABLE sites (site_id INTEGER PRIMARY KEY, site_name text, uid text, location text)''')
-#     # cur.execute('''CREATE TABLE hives (hive_id INTEGER PRIMARY KEY, hive_name text, sid integer)''')
-#     # cur.execute('''CREATE TABLE notes (note_id integer primary key, hid integer, note_text text, note_date text)''')
-#     # cur.execute('''CREATE TABLE temperature (hid integer, date text, year integer, month integer, value real)''')
-#     # cur.execute('''CREATE TABLE weight (hid integer, date text, year integer, month integer, value real)''')
-#     # cur.execute('''CREATE TABLE humidity (hid integer, date text, year integer, month integer, value real)''')
-#     # cur.execute('''CREATE TABLE months (id integer primary key, month_id integer, description text, pictogram integer)''')
-#     # cur.execute('''CREATE TABLE warnings (warning_id integer primary key, hid integer, sid integer, warning_text text, warning_date text)''')
-#     cur.execute(
-#         '''CREATE TABLE warnings_temperature (warning_id integer primary key, hid integer, sid integer, warning_text text, warning_date text)''')
-#     cur.execute(
-#         '''CREATE TABLE warnings_weight (warning_id integer primary key, hid integer, sid integer, warning_text text, warning_date text)''')
-#     con.commit()
-#     con.close()
 
 
 def insert_sites(name, email, location):
@@ -108,12 +79,7 @@ def select_weight_graph(date_from, date_to):
 
 def graph_data_to_jsonify(graphdata):
     data_list = []
-    # now = datetime.today()
-    # fake_now = now
-    # week_back = fake_now - timedelta(days=7)
     for row in graphdata:
-        # dt = datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S')
-        # if week_back <= dt <= fake_now:
         line_dict = {'date': row[0], 'value': row[1]}
         data_list.append(line_dict)
     return data_list
@@ -163,16 +129,13 @@ def generate_warnings_weight(graphdata):
 
 
 def warnings_to_jsonify(table_name, date_from, date_to):
-    sql = text("SELECT warning_date, warning_text FROM " + table_name + " WHERE warning_date BETWEEN \'" + date_from + "\' AND \'" + date_to + "\'")
+    sql = text("SELECT warning_date, warning_text FROM " + table_name +
+               " WHERE warning_date BETWEEN \'" + date_from + "\' AND \'" + date_to + "\'")
     data = conn.execute(sql, t=table_name)
     res = data.fetchall()
 
     data_list = []
-    # date_from_date = datetime.strptime(date_from, '%d.%m.%Y')
-    # date_to_date = datetime.strptime(date_to, '%d.%m.%Y')
     for row in res:
-        # dt = datetime.strptime(row[0], '%Y-%m-%d')
-        # if date_from_date <= dt < date_to_date:
         line_dict = {'date': row[0], 'value': row[1]}
         data_list.append(line_dict)
     return data_list
@@ -249,7 +212,10 @@ def insert_notes(note_text, hid, note_date):
 
 
 def select_notes(hid):
-    sql = text('''SELECT note_id, note_text, note_date FROM notes WHERE hid = :h order by TO_DATE(note_date, 'DD.MM.YYYY')''')
+    sql = text('''SELECT note_id, note_text, note_date 
+                  FROM notes 
+                  WHERE hid = :h 
+                  ORDER BY TO_DATE(note_date, 'DD.MM.YYYY')''')
     res = conn.execute(sql, h=hid)
     return res.fetchall()
 
@@ -280,35 +246,4 @@ def insert_user(email, password):
 
 if __name__ == '__main__':
     pass
-    # create_tables()
-    # uid = "gXifKfOg06XvU9NewGfqiFwasE12"
-    # res = select_sites(uid)
-    # hives = select_hives(1)
-    # print(res)
-
-    # my_pass = werkzeug.security.generate_password_hash("heslo123", method='sha256')
-    # print(my_pass)
-    # insert_sites('Stanoviste1', uid, 'Ostrava')
-    # insert_sites('Bees', uid, 'Metylovice')
-    # insert_sites('Something', uid, 'Brno')
-
-    # insert_hive('ul1', 1)
-    # insert_hive('ul2', 1)
-    # insert_hive('ul3', 1)
-    #
-    # insert_hive('ul1', 3)
-    # insert_hive('ul2', 3)
-    # result = select_hives(2)
-    # print(result)
-    # graphdata = select_humidity_graph()
-    # generate_warnings_humidity(graphdata)
-    # graphdata = select_temperature_graph()
-    # generate_warnings_temperature(graphdata)
-    # graphdata = select_weight_graph()
-    # generate_warnings_weight(graphdata)
-
-
-    # h = select_hives(1)
-    # r = hives_to_jsonify(h)
-    # print(r)
 

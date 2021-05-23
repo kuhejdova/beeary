@@ -24,7 +24,6 @@ def load_csv():
                 if dt.minute == 0 and row[1] != '':
                     new_date = datetime(dt.year + 4, dt.month, dt.day, dt.hour, dt.minute, dt.second)
                     updated_date = datetime.strftime(new_date, '%Y-%m-%d %H:%M:%S')
-                    # insert_line(con, cur, updated_date, new_date.year, dt.month, round(float(row[1])/1000, 2))
                     insert_line(con, cur, updated_date, new_date.year, dt.month, round(float(row[1]), 2))
                 line_count += 1
         print(f'read {line_count} lines')
