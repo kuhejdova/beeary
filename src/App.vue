@@ -88,6 +88,10 @@ export default {
         colorRange = [gradient[0], gradient[3]];
       } else {
         var nextSpring = new Date(spring.getFullYear() + 1, 2, 20);
+        if (presentDate.getMonth() < 3) {
+          nextSpring = new Date(spring.getFullYear(), 2, 20);
+        }
+
         resultDays = parseInt(
           (nextSpring.getTime() - presentDate.getTime()) /
             (1000 * 60 * 60 * 24),
@@ -97,6 +101,14 @@ export default {
           (nextSpring.getTime() - winter.getTime()) / (1000 * 60 * 60 * 24),
           10
         );
+        if (presentDate.getMonth() < 3) {
+          seasonDays =
+            365 -
+            parseInt(
+              (winter.getTime() - nextSpring.getTime()) / (1000 * 60 * 60 * 24),
+              10
+            );
+        }
         colorRange = [gradient[1], gradient[0]];
       }
 
